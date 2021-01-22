@@ -1,0 +1,14 @@
+{
+    "name": "NMA",
+    "api_version": "1.0",
+    "package_version": "1.8.30",
+    "imports": {
+        "Gtk": "3.0",
+        "NM": "1.0",
+        "Atk": "1.0",
+        "Gio": "2.0",
+        "GObject": "2.0",
+        "cairo": "1.0",
+        "GLib": "2.0"
+    }
+}

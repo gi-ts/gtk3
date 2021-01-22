@@ -1,0 +1,44 @@
+{
+    "name": "@gi-types/gweather",
+    "publishConfig": {
+        "access": "public",
+        "tag": "latest"
+    },
+    "version": "3.0.5",
+    "description": "TypeScript definitions for GWeather",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Evan Welsh",
+            "url": "https://gitlab.gnome.org/ewlsh/",
+            "githubUsername": "ewlsh"
+        }
+    ],
+    "main": "",
+    "files": [
+        "index.d.ts",
+        "doc.json",
+        "package.json",
+        "README.md",
+        "LICENSE"
+    ],
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://gitlab.gnome.org/ewlsh/packages.gi.ts.git",
+        "directory": "packages/gweather3"
+    },
+    "scripts": {},
+    "contentHash": "eff198bdc59130f07552bf29f45b9496",
+    "dependencies": {
+        "@gi-types/atk": "^2.36.7",
+        "@gi-types/gdk": "^3.24.6",
+        "@gi-types/gdkpixbuf": "^2.0.5",
+        "@gi-types/gio": "^2.66.9",
+        "@gi-types/glib": "^2.66.9",
+        "@gi-types/gobject": "^2.66.8",
+        "@gi-types/gtk": "^3.24.7"
+    },
+    "typeScriptVersion": "4.1",
+    "gitHead": null
+}

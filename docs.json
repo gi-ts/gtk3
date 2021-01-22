@@ -1,0 +1,25 @@
+{
+    "options": {
+        "outputFormat": "folder",
+        "versionedOutput": true,
+        "propertyCase": "both",
+        "out": "./packages",
+        "versionedImports": false,
+        "importPrefix": "@gi-types/",
+        "emitMetadata": true,
+        "inferGenerics": true,
+        "promisify": true
+    },
+    "libraries": {
+        "Gdk": [
+            "3.0"
+        ],
+        "Gst": "1.0",
+        "Gtk": [
+            "3.0"
+        ],
+        "GWeather": "3.0",
+        "GnomeBluetooth": "1.0",
+        "NMA": "1.0"
+    }
+}
