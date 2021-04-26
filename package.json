@@ -12,7 +12,6 @@
   "scripts": {
     "pub": "lerna publish",
     "pub:package": "lerna publish from-package",
-    "generate": "gi-ts generate docs.json",
-    "configure": "XDG_DATA_DIRS=/usr/share/ gi-ts config --lock"
+    "generate": "gi-ts generate docs.json"
   }
 }
