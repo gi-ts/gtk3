@@ -1,10 +1,8 @@
 {
-  "name": "gtk3",
+  "name": "@gi.ts/packages-gtk3",
   "private": true,
   "devDependencies": {
-    "lerna": "^3.22.1",
-    "npm-api": "^1.0.0",
-    "semver": "^7.3.4"
+    "lerna": "^3.22.1"
   },
   "workspaces": [
     "packages/@gi-types/**"
