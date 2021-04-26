@@ -1,9 +1,9 @@
 {
     "options": {
         "outputFormat": "folder",
-        "versionedOutput": true,
+        "versionedOutput": false,
         "propertyCase": "both",
-        "out": "./packages",
+        "out": "./packages/@gi-types/",
         "versionedImports": false,
         "importPrefix": "@gi-types/",
         "emitMetadata": true,
@@ -17,6 +17,12 @@
         "Gst": "1.0",
         "Gtk": [
             "3.0"
+        ],
+        "WebKit2": [
+            "4.0"
+        ],
+        "WebKit2WebExtension": [
+            "4.0"
         ],
         "GWeather": "3.0",
         "GnomeBluetooth": "1.0",
