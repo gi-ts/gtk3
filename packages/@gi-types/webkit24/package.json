@@ -1,5 +1,5 @@
 {
-    "name": "@gi-types/webkit22",
+    "name": "@gi-types/webkit24",
     "publishConfig": {
         "access": "public",
         "tag": "latest"
