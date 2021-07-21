@@ -11,6 +11,7 @@
         "promisify": true
     },
     "libraries": {
+        "GDesktopEnums": "3.0",
         "Gdk": [
             "3.0"
         ],
