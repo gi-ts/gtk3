@@ -1,6 +1,4 @@
-import Gtk from 'gtk';
-import Pango from 'pango';
-
+import Gtk from 'gtk3';
 
 function gtk3_test1() {
     Gtk.init(null);
@@ -28,13 +26,13 @@ function gtk3_test1() {
         label.set_markup(`<span size='30000'>${calcVal}</span>`);
     }
 
-    function pressedOperator(button) {
+    function pressedOperator(button: Gtk.Button) {
         calcVal += button.label;
         updateDisplay();
     }
 
-    function pressedNumber(button) {
-        calcVal = (calcVal === 0 ? '' : calcVal) + button.label;
+    function pressedNumber(button: Gtk.Button) {
+        calcVal = calcVal + button.label;
         updateDisplay();
     }
 
@@ -48,7 +46,7 @@ function gtk3_test1() {
         updateDisplay();
     }
 
-    function packButtons(buttons, vbox) {
+    function packButtons(buttons: Gtk.Button[], vbox: Gtk.Box) {
         var hbox = new Gtk.HBox();
 
         hbox.homogeneous = true;
@@ -59,7 +57,7 @@ function gtk3_test1() {
             hbox.pack_start(buttons[i], true, true, 1);
     }
 
-    function createButton(str, func) {
+    function createButton(str: string, func: (button: Gtk.Button) => void) {
         var btn = new Gtk.Button({ label: str });
         btn.connect('clicked', func);
         return btn;

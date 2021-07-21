@@ -1,8 +1,9 @@
-import Gtk from 'gtk';
-import WebKit from 'webkit2';
+import Gtk from 'gtk3';
+import WebKit from 'webkit24';
+import Pango from 'pango1';
 
 function webkit2_test1() {
-    function makeButton(label: string, callback): Gtk.Button {
+    function makeButton(label: string, callback: () => void): Gtk.Button {
         const but = new Gtk.Button({ label: label });
         but.get_child()?.modify_font(Pango.FontDescription.from_string('sans bold 16'))
         but.connect('clicked', () => {

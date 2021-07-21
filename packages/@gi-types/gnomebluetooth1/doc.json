@@ -1,0 +1,12 @@
+{
+    "name": "GnomeBluetooth",
+    "api_version": "1.0",
+    "package_version": "1.0",
+    "imports": {
+        "Atk": "1.0",
+        "Gtk": "3.0",
+        "GObject": "2.0",
+        "GLib": "2.0",
+        "Gio": "2.0"
+    }
+}

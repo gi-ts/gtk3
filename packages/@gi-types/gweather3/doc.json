@@ -1,0 +1,14 @@
+{
+    "name": "GWeather",
+    "api_version": "3.0",
+    "package_version": "3.0",
+    "imports": {
+        "Atk": "1.0",
+        "GObject": "2.0",
+        "Gtk": "3.0",
+        "Gio": "2.0",
+        "GdkPixbuf": "2.0",
+        "Gdk": "3.0",
+        "GLib": "2.0"
+    }
+}

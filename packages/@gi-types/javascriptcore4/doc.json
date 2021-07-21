@@ -1,0 +1,9 @@
+{
+    "name": "JavaScriptCore",
+    "api_version": "4.0",
+    "package_version": "2.32.1",
+    "imports": {
+        "GObject": "2.0",
+        "GLib": "2.0"
+    }
+}
