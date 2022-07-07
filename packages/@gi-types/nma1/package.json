@@ -4,7 +4,7 @@
         "access": "public",
         "tag": "latest"
     },
-    "version": "1.8.0",
+    "version": "1.8.1",
     "description": "TypeScript definitions for NMA",
     "license": "MIT",
     "contributors": [
@@ -35,7 +35,7 @@
         "@gi-types/gio2": "^2.68.0",
         "@gi-types/glib2": "^2.68.0",
         "@gi-types/gobject2": "^2.68.0",
-        "@gi-types/gtk3": "^3.24.0",
+        "@gi-types/gtk3": "^3.24.1",
         "@gi-types/nm1": "^1.32.0"
     },
     "typeScriptVersion": "4.1",

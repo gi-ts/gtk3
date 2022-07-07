@@ -4,7 +4,7 @@
         "access": "public",
         "tag": "latest"
     },
-    "version": "3.24.0",
+    "version": "3.24.1",
     "description": "TypeScript definitions for Gdk",
     "license": "MIT",
     "contributors": [
