@@ -1,7 +1,7 @@
 /**
  * NMA 1.0
  *
- * Generated from 1.8.30
+ * Generated from 1.8.40
  */
 
 import * as Atk from "@gi-types/atk1";
@@ -45,6 +45,7 @@ export enum CertChooserFlags {
     CERT = 1,
     PASSWORDS = 2,
     PEM = 4,
+    NO_PASSWORDS = 8,
 }
 
 export namespace MobileFamily {
@@ -103,12 +104,6 @@ export class BarCodeWidget extends Gtk.Box implements Atk.ImplementorIface, Gtk.
 
     get orientation(): Gtk.Orientation;
     set orientation(val: Gtk.Orientation);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection): BarCodeWidget;
-    // Conflicted with Gtk.Box.new
-    static ["new"](...args: never[]): any;
 
     // Implemented Members
 
@@ -236,6 +231,9 @@ export class MobileProvidersDatabase
     get service_providers(): string;
     get serviceProviders(): string;
 
+    // Fields
+    priv: MobileProvidersDatabasePrivate;
+
     // Constructors
 
     static new_finish(res: Gio.AsyncResult): MobileProvidersDatabase;
@@ -303,11 +301,11 @@ export class MobileProvidersDatabase
     vfunc_init(cancellable?: Gio.Cancellable | null): boolean;
 }
 export module MobileWizard {
-    export interface ConstructorProperties extends Gtk.Assistant.ConstructorProperties {
+    export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
         [key: string]: any;
     }
 }
-export class MobileWizard extends Gtk.Assistant implements Atk.ImplementorIface, Gtk.Buildable {
+export class MobileWizard extends GObject.Object {
     static $gtype: GObject.GType<MobileWizard>;
 
     constructor(properties?: Partial<MobileWizard.ConstructorProperties>, ...args: any[]);
@@ -393,309 +391,6 @@ export class WifiDialog extends Gtk.Dialog implements Atk.ImplementorIface, Gtk.
     nag_user(): Gtk.Widget;
     set_nag_ignored(ignored: boolean): void;
 }
-export module Ws8021x {
-    export interface ConstructorProperties extends Gtk.Grid.ConstructorProperties {
-        [key: string]: any;
-        is_editor: boolean;
-        isEditor: boolean;
-        secrets_hints: string[];
-        secretsHints: string[];
-    }
-}
-export class Ws8021x extends Gtk.Grid implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<Ws8021x>;
-
-    constructor(properties?: Partial<Ws8021x.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<Ws8021x.ConstructorProperties>, ...args: any[]): void;
-
-    // Properties
-    get is_editor(): boolean;
-    set is_editor(val: boolean);
-    get isEditor(): boolean;
-    set isEditor(val: boolean);
-    get secrets_hints(): string[];
-    set secrets_hints(val: string[]);
-    get secretsHints(): string[];
-    set secretsHints(val: string[]);
-
-    // Implemented Properties
-
-    get orientation(): Gtk.Orientation;
-    set orientation(val: Gtk.Orientation);
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection, is_editor: boolean, secrets_only: boolean): Ws8021x;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    get_orientation(): Gtk.Orientation;
-    set_orientation(orientation: Gtk.Orientation): void;
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsDynamicWep {
-    export interface ConstructorProperties extends Ws8021x.ConstructorProperties {
-        [key: string]: any;
-    }
-}
-export class WsDynamicWep extends Ws8021x implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsDynamicWep>;
-
-    constructor(properties?: Partial<WsDynamicWep.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsDynamicWep.ConstructorProperties>, ...args: any[]): void;
-
-    // Implemented Properties
-
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection, is_editor: boolean, secrets_only: boolean): WsDynamicWep;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsLeap {
-    export interface ConstructorProperties extends Gtk.Grid.ConstructorProperties {
-        [key: string]: any;
-    }
-}
-export class WsLeap extends Gtk.Grid implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsLeap>;
-
-    constructor(properties?: Partial<WsLeap.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsLeap.ConstructorProperties>, ...args: any[]): void;
-
-    // Implemented Properties
-
-    get orientation(): Gtk.Orientation;
-    set orientation(val: Gtk.Orientation);
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection, secrets_only: boolean): WsLeap;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    get_orientation(): Gtk.Orientation;
-    set_orientation(orientation: Gtk.Orientation): void;
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsSae {
-    export interface ConstructorProperties extends Gtk.Grid.ConstructorProperties {
-        [key: string]: any;
-    }
-}
-export class WsSae extends Gtk.Grid implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsSae>;
-
-    constructor(properties?: Partial<WsSae.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsSae.ConstructorProperties>, ...args: any[]): void;
-
-    // Implemented Properties
-
-    get orientation(): Gtk.Orientation;
-    set orientation(val: Gtk.Orientation);
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection, secrets_only: boolean): WsSae;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    get_orientation(): Gtk.Orientation;
-    set_orientation(orientation: Gtk.Orientation): void;
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsWepKey {
-    export interface ConstructorProperties extends Gtk.Grid.ConstructorProperties {
-        [key: string]: any;
-        adhoc_create: boolean;
-        adhocCreate: boolean;
-        key_type: number;
-        keyType: number;
-    }
-}
-export class WsWepKey extends Gtk.Grid implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsWepKey>;
-
-    constructor(properties?: Partial<WsWepKey.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsWepKey.ConstructorProperties>, ...args: any[]): void;
-
-    // Properties
-    get adhoc_create(): boolean;
-    set adhoc_create(val: boolean);
-    get adhocCreate(): boolean;
-    set adhocCreate(val: boolean);
-    get key_type(): number;
-    set key_type(val: number);
-    get keyType(): number;
-    set keyType(val: number);
-
-    // Implemented Properties
-
-    get orientation(): Gtk.Orientation;
-    set orientation(val: Gtk.Orientation);
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](
-        connection: NM.Connection,
-        type: NM.WepKeyType,
-        adhoc_create: boolean,
-        secrets_only: boolean
-    ): WsWepKey;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    get_orientation(): Gtk.Orientation;
-    set_orientation(orientation: Gtk.Orientation): void;
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsWpaEap {
-    export interface ConstructorProperties extends Ws8021x.ConstructorProperties {
-        [key: string]: any;
-    }
-}
-export class WsWpaEap extends Ws8021x implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsWpaEap>;
-
-    constructor(properties?: Partial<WsWpaEap.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsWpaEap.ConstructorProperties>, ...args: any[]): void;
-
-    // Implemented Properties
-
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](
-        connection: NM.Connection,
-        is_editor: boolean,
-        secrets_only: boolean,
-        secrets_hints: string
-    ): WsWpaEap;
-    // Conflicted with NMA.Ws8021x.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
-export module WsWpaPsk {
-    export interface ConstructorProperties extends Gtk.Grid.ConstructorProperties {
-        [key: string]: any;
-    }
-}
-export class WsWpaPsk extends Gtk.Grid implements Atk.ImplementorIface, Gtk.Buildable, Gtk.Orientable, Ws {
-    static $gtype: GObject.GType<WsWpaPsk>;
-
-    constructor(properties?: Partial<WsWpaPsk.ConstructorProperties>, ...args: any[]);
-    _init(properties?: Partial<WsWpaPsk.ConstructorProperties>, ...args: any[]): void;
-
-    // Implemented Properties
-
-    get orientation(): Gtk.Orientation;
-    set orientation(val: Gtk.Orientation);
-    get connection(): NM.Connection;
-    set connection(val: NM.Connection);
-    get secrets_only(): boolean;
-    set secrets_only(val: boolean);
-    get secretsOnly(): boolean;
-    set secretsOnly(val: boolean);
-
-    // Constructors
-
-    static ["new"](connection: NM.Connection, secrets_only: boolean): WsWpaPsk;
-    // Conflicted with Gtk.Grid.new
-    static ["new"](...args: never[]): any;
-
-    // Implemented Members
-
-    get_orientation(): Gtk.Orientation;
-    set_orientation(orientation: Gtk.Orientation): void;
-    add_to_size_group(group: Gtk.SizeGroup): void;
-    adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
-    hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
-    validate(): boolean;
-}
 
 export class CountryInfo {
     static $gtype: GObject.GType<CountryInfo>;
@@ -761,25 +456,115 @@ export class MobileWizardAccessMethod {
     gsm_apn: string;
 }
 
-export interface WsNamespace {
-    $gtype: GObject.GType<Ws>;
-    prototype: WsPrototype;
-}
-export type Ws = WsPrototype;
-export interface WsPrototype extends GObject.Object {
-    // Properties
-    connection: NM.Connection;
-    secrets_only: boolean;
-    secretsOnly: boolean;
+export class Ws {
+    static $gtype: GObject.GType<Ws>;
+
+    constructor(copy: Ws);
 
     // Members
-
-    add_to_size_group(group: Gtk.SizeGroup): void;
     adhoc_compatible(): boolean;
-    fill_connection(connection: NM.Connection): void;
     hotspot_compatible(): boolean;
-    update_secrets(connection: NM.Connection): void;
     validate(): boolean;
 }
 
-export const Ws: WsNamespace;
+export class Ws8021x {
+    static $gtype: GObject.GType<Ws8021x>;
+
+    constructor(copy: Ws8021x);
+}
+
+export class Ws8021xClass {
+    static $gtype: GObject.GType<Ws8021xClass>;
+
+    constructor(copy: Ws8021xClass);
+}
+
+export class WsDynamicWep {
+    static $gtype: GObject.GType<WsDynamicWep>;
+
+    constructor(copy: WsDynamicWep);
+}
+
+export class WsDynamicWepClass {
+    static $gtype: GObject.GType<WsDynamicWepClass>;
+
+    constructor(copy: WsDynamicWepClass);
+}
+
+export class WsInterface {
+    static $gtype: GObject.GType<WsInterface>;
+
+    constructor(copy: WsInterface);
+}
+
+export class WsLeap {
+    static $gtype: GObject.GType<WsLeap>;
+
+    constructor(copy: WsLeap);
+}
+
+export class WsLeapClass {
+    static $gtype: GObject.GType<WsLeapClass>;
+
+    constructor(copy: WsLeapClass);
+}
+
+export class WsOwe {
+    static $gtype: GObject.GType<WsOwe>;
+
+    constructor(copy: WsOwe);
+}
+
+export class WsOweClass {
+    static $gtype: GObject.GType<WsOweClass>;
+
+    constructor(copy: WsOweClass);
+}
+
+export class WsSae {
+    static $gtype: GObject.GType<WsSae>;
+
+    constructor(copy: WsSae);
+}
+
+export class WsSaeClass {
+    static $gtype: GObject.GType<WsSaeClass>;
+
+    constructor(copy: WsSaeClass);
+}
+
+export class WsWepKey {
+    static $gtype: GObject.GType<WsWepKey>;
+
+    constructor(copy: WsWepKey);
+}
+
+export class WsWepKeyClass {
+    static $gtype: GObject.GType<WsWepKeyClass>;
+
+    constructor(copy: WsWepKeyClass);
+}
+
+export class WsWpaEap {
+    static $gtype: GObject.GType<WsWpaEap>;
+
+    constructor(copy: WsWpaEap);
+}
+
+export class WsWpaEapClass {
+    static $gtype: GObject.GType<WsWpaEapClass>;
+
+    constructor(copy: WsWpaEapClass);
+}
+
+export class WsWpaPsk {
+    static $gtype: GObject.GType<WsWpaPsk>;
+
+    constructor(copy: WsWpaPsk);
+}
+
+export class WsWpaPskClass {
+    static $gtype: GObject.GType<WsWpaPskClass>;
+
+    constructor(copy: WsWpaPskClass);
+}

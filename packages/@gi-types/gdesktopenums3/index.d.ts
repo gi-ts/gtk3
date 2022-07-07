@@ -39,6 +39,16 @@ export enum ClockFormat {
     "12H" = 1,
 }
 
+export namespace ColorScheme {
+    export const $gtype: GObject.GType<ColorScheme>;
+}
+
+export enum ColorScheme {
+    DEFAULT = 0,
+    PREFER_DARK = 1,
+    PREFER_LIGHT = 2,
+}
+
 export namespace DeviceSendEvents {
     export const $gtype: GObject.GType<DeviceSendEvents>;
 }

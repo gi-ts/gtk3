@@ -1,14 +1,14 @@
 {
     "name": "WebKit2",
     "api_version": "4.0",
-    "package_version": "2.32.1",
+    "package_version": "2.36.3",
     "imports": {
         "Atk": "1.0",
         "GObject": "2.0",
         "Gtk": "3.0",
         "GLib": "2.0",
-        "Gdk": "3.0",
         "Gio": "2.0",
+        "Gdk": "3.0",
         "Soup": "2.4",
         "cairo": "1.0",
         "JavaScriptCore": "4.0"

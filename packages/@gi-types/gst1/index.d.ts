@@ -1,7 +1,7 @@
 /**
  * Gst 1.0
  *
- * Generated from 1.18.4
+ * Generated from 1.20.3
  */
 
 import * as GObject from "@gi-types/gobject2";
@@ -189,8 +189,14 @@ export const VERSION_MICRO: number;
 export const VERSION_MINOR: number;
 export const VERSION_NANO: number;
 export function buffer_get_max_memory(): number;
+export function buffer_list_replace(
+    old_list?: BufferList | null,
+    new_list?: BufferList | null
+): [boolean, BufferList | null];
+export function buffer_list_take(old_list: BufferList, new_list?: BufferList | null): [boolean, BufferList];
 export function caps_features_from_string(features: string): CapsFeatures | null;
 export function caps_from_string(string: string): Caps | null;
+export function context_replace(old_context: Context, new_context?: Context | null): [boolean, Context];
 export function core_error_quark(): GLib.Quark;
 export function debug_add_log_function(func: LogFunction): void;
 export function debug_add_ring_buffer_logger(max_size_per_thread: number, thread_timeout: number): void;
@@ -225,6 +231,15 @@ export function debug_log_get_line(
     object: GObject.Object | null,
     message: DebugMessage
 ): string;
+export function debug_log_literal(
+    category: DebugCategory,
+    level: DebugLevel,
+    file: string,
+    _function: string,
+    line: number,
+    object: GObject.Object | null,
+    message_string: string
+): void;
 export function debug_print_stack_trace(): void;
 export function debug_remove_log_function(func?: LogFunction | null): number;
 export function debug_remove_log_function_by_data(data?: any | null): number;
@@ -260,6 +275,7 @@ export function init_check(argv?: string[] | null): [boolean, string[] | null];
 export function is_caps_features(obj?: any | null): boolean;
 export function is_initialized(): boolean;
 export function library_error_quark(): GLib.Quark;
+export function message_take(old_message: Message, new_message?: Message | null): [boolean, Message];
 export function message_type_get_name(type: MessageType): string;
 export function message_type_to_quark(type: MessageType): GLib.Quark;
 export function meta_api_type_get_tags(api: GObject.GType): string[];
@@ -273,7 +289,12 @@ export function meta_register(
     init_func: MetaInitFunction,
     free_func: MetaFreeFunction,
     transform_func: MetaTransformFunction
-): MetaInfo | null;
+): MetaInfo;
+export function meta_register_custom(
+    name: string,
+    tags: string[],
+    transform_func?: CustomMetaTransformFunction | null
+): MetaInfo;
 export function mini_object_replace(
     olddata?: MiniObject | null,
     newdata?: MiniObject | null
@@ -324,6 +345,7 @@ export function protection_filter_systems_by_available_decryptors(system_identif
 export function protection_meta_api_get_type(): GObject.GType;
 export function protection_meta_get_info(): MetaInfo;
 export function protection_select_system(system_identifiers: string[]): string | null;
+export function query_take(old_query?: Query | null, new_query?: Query | null): [boolean, Query | null];
 export function query_type_get_flags(type: QueryType): QueryTypeFlags;
 export function query_type_get_name(type: QueryType): string;
 export function query_type_to_quark(type: QueryType): GLib.Quark;
@@ -345,6 +367,8 @@ export function tag_get_nick(tag: string): string | null;
 export function tag_get_type(tag: string): GObject.GType;
 export function tag_is_fixed(tag: string): boolean;
 export function tag_list_copy_value(list: TagList, tag: string): [boolean, unknown];
+export function tag_list_replace(old_taglist?: TagList | null, new_taglist?: TagList | null): [boolean, TagList | null];
+export function tag_list_take(old_taglist: TagList, new_taglist?: TagList | null): [boolean, TagList];
 export function tag_merge_strings_with_comma(src: GObject.Value | any): unknown;
 export function tag_merge_use_first(src: GObject.Value | any): unknown;
 export function toc_entry_type_get_nick(type: TocEntryType): string;
@@ -412,6 +436,7 @@ export function value_can_subtract(minuend: GObject.Value | any, subtrahend: GOb
 export function value_can_union(value1: GObject.Value | any, value2: GObject.Value | any): boolean;
 export function value_compare(value1: GObject.Value | any, value2: GObject.Value | any): number;
 export function value_deserialize(src: string): [boolean, unknown];
+export function value_deserialize_with_pspec(src: string, pspec?: GObject.ParamSpec | null): [boolean, unknown];
 export function value_fixate(dest: GObject.Value | any, src: GObject.Value | any): boolean;
 export function value_fraction_multiply(
     product: GObject.Value | any,
@@ -501,6 +526,13 @@ export type ControlSourceGetValueArray = (
     n_values: number,
     values: number
 ) => boolean;
+export type CustomMetaTransformFunction = (
+    transbuf: Buffer,
+    meta: CustomMeta,
+    buffer: Buffer,
+    type: GLib.Quark,
+    data?: any | null
+) => boolean;
 export type DebugFuncPtr = () => void;
 export type ElementCallAsyncFunc = (element: Element) => void;
 export type ElementForeachPadFunc = (element: Element, pad: Pad) => boolean;
@@ -536,6 +568,7 @@ export type MetaTransformFunction = (
     type: GLib.Quark,
     data?: any | null
 ) => boolean;
+export type MiniObjectCopyFunction = (obj: MiniObject) => MiniObject;
 export type MiniObjectDisposeFunction = (obj: MiniObject) => boolean;
 export type MiniObjectFreeFunction = (obj: MiniObject) => void;
 export type MiniObjectNotify = (obj: MiniObject) => void;
@@ -575,6 +608,7 @@ export type TaskThreadFunc = (task: Task, thread: GLib.Thread) => void;
 export type TypeFindFunction = (find: TypeFind) => void;
 export type ValueCompareFunc = (value1: GObject.Value | any, value2: GObject.Value | any) => number;
 export type ValueDeserializeFunc = (dest: GObject.Value | any, s: string) => boolean;
+export type ValueDeserializeWithPSpecFunc = (dest: GObject.Value | any, s: string, pspec: GObject.ParamSpec) => boolean;
 export type ValueSerializeFunc = (value1: GObject.Value | any) => string;
 
 export namespace BufferingMode {
@@ -1400,6 +1434,14 @@ export enum EventTypeFlags {
     STICKY_MULTI = 16,
 }
 
+export namespace GapFlags {
+    export const $gtype: GObject.GType<GapFlags>;
+}
+
+export enum GapFlags {
+    DATA = 1,
+}
+
 export namespace LockFlags {
     export const $gtype: GObject.GType<LockFlags>;
 }
@@ -1693,6 +1735,15 @@ export enum SegmentFlags {
     TRICKMODE_NO_AUDIO = 256,
 }
 
+export namespace SerializeFlags {
+    export const $gtype: GObject.GType<SerializeFlags>;
+}
+
+export enum SerializeFlags {
+    NONE = 0,
+    BACKWARD_COMPAT = 1,
+}
+
 export namespace StackTraceFlags {
     export const $gtype: GObject.GType<StackTraceFlags>;
 }
@@ -1746,6 +1797,7 @@ export abstract class Allocator extends Object {
     _init(properties?: Partial<Allocator.ConstructorProperties>, ...args: any[]): void;
 
     // Fields
+    object: Object;
     mem_type: string;
     mem_map: MemoryMapFunction;
     mem_unmap: MemoryUnmapFunction;
@@ -1791,11 +1843,17 @@ export class Bin extends Element implements ChildProxy {
     set messageForward(val: boolean);
 
     // Fields
+    element: Element;
     numchildren: number;
+    children: Element[];
     children_cookie: number;
+    child_bus: Bus;
+    messages: Message[];
     polling: boolean;
     state_dirty: boolean;
     clock_dirty: boolean;
+    provided_clock: Clock;
+    clock_provider: Element;
 
     // Signals
 
@@ -1899,6 +1957,7 @@ export class BufferPool extends Object {
     _init(properties?: Partial<BufferPool.ConstructorProperties>, ...args: any[]): void;
 
     // Fields
+    object: Object;
     flushing: number;
 
     // Constructors
@@ -1917,7 +1976,7 @@ export class BufferPool extends Object {
     set_config(config: Structure): boolean;
     set_flushing(flushing: boolean): void;
     vfunc_acquire_buffer(params?: BufferPoolAcquireParams | null): [FlowReturn, Buffer];
-    vfunc_alloc_buffer(buffer: Buffer, params: BufferPoolAcquireParams): FlowReturn;
+    vfunc_alloc_buffer(params?: BufferPoolAcquireParams | null): [FlowReturn, Buffer];
     vfunc_flush_start(): void;
     vfunc_flush_stop(): void;
     vfunc_free_buffer(buffer: Buffer): void;
@@ -1930,7 +1989,7 @@ export class BufferPool extends Object {
     static config_add_option(config: Structure, option: string): void;
     static config_get_allocator(config: Structure): [boolean, Allocator | null, AllocationParams | null];
     static config_get_option(config: Structure, index: number): string | null;
-    static config_get_params(config: Structure): [boolean, Caps | null, number | null, number | null, number | null];
+    static config_get_params(config: Structure): [boolean, Caps | null, number, number, number];
     static config_has_option(config: Structure, option: string): boolean;
     static config_n_options(config: Structure): number;
     static config_set_allocator(
@@ -1969,6 +2028,9 @@ export class Bus extends Object {
     // Properties
     set enable_async(val: boolean);
     set enableAsync(val: boolean);
+
+    // Fields
+    object: Object;
 
     // Signals
 
@@ -2040,6 +2102,9 @@ export abstract class Clock extends Object {
     get windowThreshold(): number;
     set windowThreshold(val: number);
 
+    // Fields
+    object: Object;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -2093,7 +2158,7 @@ export abstract class Clock extends Object {
     vfunc_get_internal_time(): ClockTime;
     vfunc_get_resolution(): ClockTime;
     vfunc_unschedule(entry: ClockEntry): void;
-    vfunc_wait(entry: ClockEntry, jitter: ClockTimeDiff): ClockReturn;
+    vfunc_wait(entry: ClockEntry): [ClockReturn, ClockTimeDiff | null];
     vfunc_wait_async(entry: ClockEntry): ClockReturn;
     static id_compare_func(id1?: any | null, id2?: any | null): number;
     static id_get_clock(id: ClockID): Clock | null;
@@ -2109,7 +2174,7 @@ export module ControlBinding {
     export interface ConstructorProperties extends Object.ConstructorProperties {
         [key: string]: any;
         name: string;
-        object: Object;
+        object: Object | any;
     }
 }
 export abstract class ControlBinding extends Object {
@@ -2120,7 +2185,12 @@ export abstract class ControlBinding extends Object {
 
     // Properties
     get name(): string;
+    // This accessor conflicts with a property, field, or function name in a parent class or interface.
+    // @ts-expect-error
     get object(): Object;
+
+    // Fields
+    pspec: GObject.ParamSpec;
 
     // Members
 
@@ -2244,6 +2314,9 @@ export abstract class DeviceProvider extends Object {
     constructor(properties?: Partial<DeviceProvider.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<DeviceProvider.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    devices: any[];
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -2268,12 +2341,18 @@ export abstract class DeviceProvider extends Object {
     get_hidden_providers(): string[];
     get_metadata(key: string): string;
     hide_provider(name: string): void;
+    is_started(): boolean;
     start(): boolean;
     stop(): void;
     unhide_provider(name: string): void;
     vfunc_start(): boolean;
     vfunc_stop(): void;
     static register(plugin: Plugin | null, name: string, rank: number, type: GObject.GType): boolean;
+    static add_metadata(key: string, value: string): void;
+    static add_static_metadata(key: string, value: string): void;
+    static get_metadata(key: string): string | null;
+    static set_metadata(longname: string, classification: string, description: string, author: string): void;
+    static set_static_metadata(longname: string, classification: string, description: string, author: string): void;
 }
 export module DeviceProviderFactory {
     export interface ConstructorProperties extends PluginFeature.ConstructorProperties {
@@ -2336,18 +2415,27 @@ export abstract class Element extends Object {
     _init(properties?: Partial<Element.ConstructorProperties>, ...args: any[]): void;
 
     // Fields
+    object: Object;
+    state_lock: GLib.RecMutex;
+    state_cond: GLib.Cond;
     state_cookie: number;
     target_state: State;
     current_state: State;
     next_state: State;
     pending_state: State;
     last_return: StateChangeReturn;
+    bus: Bus;
+    clock: Clock;
     base_time: ClockTimeDiff;
     start_time: ClockTime;
     numpads: number;
+    pads: Pad[];
     numsrcpads: number;
+    srcpads: Pad[];
     numsinkpads: number;
+    sinkpads: Pad[];
     pads_cookie: number;
+    contexts: Context[];
 
     // Signals
 
@@ -2436,12 +2524,13 @@ export abstract class Element extends Object {
     provide_clock(): Clock | null;
     query(query: Query): boolean;
     query_convert(src_format: Format, src_val: number, dest_format: Format): [boolean, number];
-    query_duration(format: Format): [boolean, number | null];
-    query_position(format: Format): [boolean, number | null];
+    query_duration(format: Format): [boolean, number];
+    query_position(format: Format): [boolean, number];
     release_request_pad(pad: Pad): void;
     remove_pad(pad: Pad): boolean;
     remove_property_notify_watch(watch_id: number): void;
     request_pad(templ: PadTemplate, name?: string | null, caps?: Caps | null): Pad | null;
+    request_pad_simple(name: string): Pad | null;
     seek(
         rate: number,
         format: Format,
@@ -2483,6 +2572,17 @@ export abstract class Element extends Object {
     static register(plugin: Plugin | null, name: string, rank: number, type: GObject.GType): boolean;
     static state_change_return_get_name(state_ret: StateChangeReturn): string;
     static state_get_name(state: State): string;
+    static type_set_skip_documentation(type: GObject.GType): void;
+    static add_metadata(key: string, value: string): void;
+    static add_pad_template(templ: PadTemplate): void;
+    static add_static_metadata(key: string, value: string): void;
+    static add_static_pad_template(static_templ: StaticPadTemplate): void;
+    static add_static_pad_template_with_gtype(static_templ: StaticPadTemplate, pad_type: GObject.GType): void;
+    static get_metadata(key: string): string;
+    static get_pad_template(name: string): PadTemplate | null;
+    static get_pad_template_list(): PadTemplate[];
+    static set_metadata(longname: string, classification: string, description: string, author: string): void;
+    static set_static_metadata(longname: string, classification: string, description: string, author: string): void;
 }
 export module ElementFactory {
     export interface ConstructorProperties extends PluginFeature.ConstructorProperties {
@@ -2502,10 +2602,12 @@ export class ElementFactory extends PluginFeature {
     can_src_all_caps(caps: Caps): boolean;
     can_src_any_caps(caps: Caps): boolean;
     create(name?: string | null): Element | null;
+    create_with_properties(names?: string[] | null, values?: GObject.Value[] | null): Element | null;
     get_element_type(): GObject.GType;
     get_metadata(key: string): string | null;
     get_metadata_keys(): string[] | null;
     get_num_pad_templates(): number;
+    get_skip_documentation(): boolean;
     get_static_pad_templates(): StaticPadTemplate[];
     get_uri_protocols(): string[];
     get_uri_type(): URIType;
@@ -2520,6 +2622,11 @@ export class ElementFactory extends PluginFeature {
     ): ElementFactory[];
     static list_get_elements(type: ElementFactoryListType, minrank: Rank): ElementFactory[];
     static make(factoryname: string, name?: string | null): Element | null;
+    static make_with_properties(
+        factoryname: string,
+        names?: string[] | null,
+        values?: GObject.Value[] | null
+    ): Element | null;
 }
 export module FlagSet {
     export interface ConstructorProperties {
@@ -2568,6 +2675,9 @@ export class GhostPad extends ProxyPad {
 
     constructor(properties?: Partial<GhostPad.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<GhostPad.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    pad: ProxyPad;
 
     // Constructors
 
@@ -2627,6 +2737,8 @@ export abstract class Object extends GObject.InitiallyUnowned {
     set name(val: string);
 
     // Fields
+    object: GObject.InitiallyUnowned;
+    lock: GLib.Mutex;
     flags: number;
 
     // Signals
@@ -2709,7 +2821,9 @@ export class Pad extends Object {
     set template(val: PadTemplate);
 
     // Fields
+    object: Object;
     element_private: any;
+    padtemplate: PadTemplate;
 
     // Signals
 
@@ -2774,8 +2888,8 @@ export class Pad extends Object {
     peer_query_accept_caps(caps: Caps): boolean;
     peer_query_caps(filter?: Caps | null): Caps;
     peer_query_convert(src_format: Format, src_val: number, dest_format: Format): [boolean, number];
-    peer_query_duration(format: Format): [boolean, number | null];
-    peer_query_position(format: Format): [boolean, number | null];
+    peer_query_duration(format: Format): [boolean, number];
+    peer_query_position(format: Format): [boolean, number];
     proxy_query_accept_caps(query: Query): boolean;
     proxy_query_caps(query: Query): boolean;
     pull_range(offset: number, size: number): [FlowReturn, Buffer];
@@ -2787,8 +2901,8 @@ export class Pad extends Object {
     query_caps(filter?: Caps | null): Caps;
     query_convert(src_format: Format, src_val: number, dest_format: Format): [boolean, number];
     query_default(parent: Object | null, query: Query): boolean;
-    query_duration(format: Format): [boolean, number | null];
-    query_position(format: Format): [boolean, number | null];
+    query_duration(format: Format): [boolean, number];
+    query_position(format: Format): [boolean, number];
     remove_probe(id: number): void;
     send_event(event: Event): boolean;
     set_activate_function_full(activate: PadActivateFunction): void;
@@ -2839,6 +2953,9 @@ export class PadTemplate extends Object {
     get name_template(): string;
     get nameTemplate(): string;
     get presence(): PadPresence;
+
+    // Fields
+    object: Object;
 
     // Signals
 
@@ -2899,6 +3016,8 @@ export class Pipeline extends Bin implements ChildProxy {
     set latency(val: number);
 
     // Fields
+    bin: Bin;
+    fixed_clock: Clock;
     stream_time: ClockTime;
 
     // Constructors
@@ -3043,6 +3162,9 @@ export class ProxyPad extends Pad {
     constructor(properties?: Partial<ProxyPad.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ProxyPad.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    pad: Pad;
+
     // Members
 
     get_internal(): ProxyPad | null;
@@ -3061,6 +3183,9 @@ export class Registry extends Object {
 
     constructor(properties?: Partial<Registry.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Registry.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    object: Object;
 
     // Signals
 
@@ -3095,6 +3220,26 @@ export class Registry extends Object {
     static fork_is_enabled(): boolean;
     static fork_set_enabled(enabled: boolean): void;
     static get(): Registry;
+}
+export module SharedTaskPool {
+    export interface ConstructorProperties extends TaskPool.ConstructorProperties {
+        [key: string]: any;
+    }
+}
+export class SharedTaskPool extends TaskPool {
+    static $gtype: GObject.GType<SharedTaskPool>;
+
+    constructor(properties?: Partial<SharedTaskPool.ConstructorProperties>, ...args: any[]);
+    _init(properties?: Partial<SharedTaskPool.ConstructorProperties>, ...args: any[]): void;
+
+    // Constructors
+
+    static ["new"](): SharedTaskPool;
+
+    // Members
+
+    get_max_threads(): number;
+    set_max_threads(max_threads: number): void;
 }
 export module Stream {
     export interface ConstructorProperties extends Object.ConstructorProperties {
@@ -3209,6 +3354,9 @@ export class SystemClock extends Clock {
     get clockType(): ClockType;
     set clockType(val: ClockType);
 
+    // Fields
+    clock: Clock;
+
     // Members
 
     static obtain(): Clock;
@@ -3226,7 +3374,10 @@ export class Task extends Object {
     _init(properties?: Partial<Task.ConstructorProperties>, ...args: any[]): void;
 
     // Fields
+    object: Object;
     state: TaskState;
+    cond: GLib.Cond;
+    lock: GLib.RecMutex | any;
     func: TaskFunction;
     user_data: any;
     notify: GLib.DestroyNotify | any;
@@ -3263,6 +3414,9 @@ export class TaskPool extends Object {
     constructor(properties?: Partial<TaskPool.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TaskPool.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    object: Object;
+
     // Constructors
 
     static ["new"](): TaskPool;
@@ -3270,10 +3424,12 @@ export class TaskPool extends Object {
     // Members
 
     cleanup(): void;
+    dispose_handle(id?: any | null): void;
     join(id?: any | null): void;
     prepare(): void;
     push(func: TaskPoolFunction): any | null;
     vfunc_cleanup(): void;
+    vfunc_dispose_handle(id?: any | null): void;
     vfunc_join(id?: any | null): void;
     vfunc_prepare(): void;
     vfunc_push(func: TaskPoolFunction): any | null;
@@ -3390,6 +3546,15 @@ export class ValueList {
 export class AllocationParams {
     static $gtype: GObject.GType<AllocationParams>;
 
+    constructor();
+    constructor(
+        properties?: Partial<{
+            flags?: MemoryFlags;
+            align?: number;
+            prefix?: number;
+            padding?: number;
+        }>
+    );
     constructor(copy: AllocationParams);
 
     // Fields
@@ -3397,6 +3562,9 @@ export class AllocationParams {
     align: number;
     prefix: number;
     padding: number;
+
+    // Constructors
+    static ["new"](): AllocationParams;
 
     // Members
     copy(): AllocationParams | null;
@@ -3438,9 +3606,22 @@ export class Buffer {
     static $gtype: GObject.GType<Buffer>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            mini_object?: MiniObject;
+            pool?: BufferPool;
+            pts?: ClockTime;
+            dts?: ClockTime;
+            duration?: ClockTime;
+            offset?: number;
+            offset_end?: number;
+        }>
+    );
     constructor(copy: Buffer);
 
     // Fields
+    mini_object: MiniObject;
+    pool: BufferPool;
     pts: ClockTime;
     dts: ClockTime;
     duration: ClockTime;
@@ -3450,6 +3631,7 @@ export class Buffer {
     // Constructors
     static ["new"](): Buffer;
     static new_allocate(allocator: Allocator | null, size: number, params?: AllocationParams | null): Buffer;
+    static new_memdup(data: Uint8Array | string): Buffer;
     static new_wrapped(data: Uint8Array | string): Buffer;
     static new_wrapped_bytes(bytes: GLib.Bytes | Uint8Array): Buffer;
     static new_wrapped_full(
@@ -3461,6 +3643,7 @@ export class Buffer {
     ): Buffer;
 
     // Members
+    add_custom_meta(name: string): CustomMeta | null;
     add_meta(info: MetaInfo, params?: any | null): Meta | null;
     add_parent_buffer_meta(ref: Buffer): ParentBufferMeta | null;
     add_protection_meta(info: Structure): ProtectionMeta;
@@ -3481,6 +3664,7 @@ export class Buffer {
     find_memory(offset: number, size: number): [boolean, number, number, number];
     foreach_meta(func: BufferForeachMetaFunc): boolean;
     get_all_memory(): Memory | null;
+    get_custom_meta(name: string): CustomMeta | null;
     get_flags(): BufferFlags;
     get_memory(idx: number): Memory | null;
     get_memory_range(idx: number, length: number): Memory | null;
@@ -3488,8 +3672,8 @@ export class Buffer {
     get_n_meta(api_type: GObject.GType): number;
     get_reference_timestamp_meta(reference?: Caps | null): ReferenceTimestampMeta | null;
     get_size(): number;
-    get_sizes(): [number, number | null, number | null];
-    get_sizes_range(idx: number, length: number): [number, number | null, number | null];
+    get_sizes(): [number, number, number];
+    get_sizes_range(idx: number, length: number): [number, number, number];
     has_flags(flags: BufferFlags): boolean;
     insert_memory(idx: number, mem: Memory): void;
     is_all_memory_writable(): boolean;
@@ -3521,6 +3705,7 @@ export class BufferList {
     static $gtype: GObject.GType<BufferList>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: BufferList);
 
     // Constructors
@@ -3536,6 +3721,8 @@ export class BufferList {
     insert(idx: number, buffer: Buffer): void;
     length(): number;
     remove(idx: number, length: number): void;
+    static replace(old_list?: BufferList | null, new_list?: BufferList | null): [boolean, BufferList | null];
+    static take(old_list: BufferList, new_list?: BufferList | null): [boolean, BufferList];
 }
 
 export class BufferPoolAcquireParams {
@@ -3566,7 +3753,15 @@ export class Caps {
     static $gtype: GObject.GType<Caps>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            mini_object?: MiniObject;
+        }>
+    );
     constructor(copy: Caps);
+
+    // Fields
+    mini_object: MiniObject;
 
     // Constructors
     static new_any(): Caps;
@@ -3604,6 +3799,7 @@ export class Caps {
     merge_structure_full(structure: Structure, features?: CapsFeatures | null): Caps;
     normalize(): Caps;
     remove_structure(idx: number): void;
+    serialize(flags: SerializeFlags): string;
     set_features(index: number, features?: CapsFeatures | null): void;
     set_features_simple(features?: CapsFeatures | null): void;
     set_value(field: string, value: GObject.Value | any): void;
@@ -3619,11 +3815,13 @@ export class CapsFeatures {
     static $gtype: GObject.GType<CapsFeatures>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: CapsFeatures);
 
     // Constructors
     static new_any(): CapsFeatures;
     static new_empty(): CapsFeatures;
+    static new_single(feature: string): CapsFeatures;
 
     // Members
     add(feature: string): void;
@@ -3647,19 +3845,15 @@ export class CapsFeatures {
 export class ClockEntry {
     static $gtype: GObject.GType<ClockEntry>;
 
+    constructor(
+        properties?: Partial<{
+            refcount?: number;
+        }>
+    );
     constructor(copy: ClockEntry);
 
     // Fields
     refcount: number;
-    type: ClockEntryType;
-    time: ClockTime;
-    interval: ClockTime;
-    status: ClockReturn;
-    func: ClockCallback;
-    user_data: any;
-    destroy_data: GLib.DestroyNotify;
-    unscheduled: boolean;
-    woken_up: boolean;
 }
 
 export class ClockPrivate {
@@ -3678,11 +3872,15 @@ export class Context {
     static ["new"](context_type: string, persistent: boolean): Context;
 
     // Members
+    copy(): Context;
     get_context_type(): string;
     get_structure(): Structure;
     has_context_type(context_type: string): boolean;
     is_persistent(): boolean;
+    ref(): Context;
+    unref(): void;
     writable_structure(): Structure;
+    static replace(old_context: Context, new_context?: Context | null): [boolean, Context];
 }
 
 export class ControlBindingPrivate {
@@ -3691,18 +3889,24 @@ export class ControlBindingPrivate {
     constructor(copy: ControlBindingPrivate);
 }
 
+export class CustomMeta {
+    static $gtype: GObject.GType<CustomMeta>;
+
+    constructor(copy: CustomMeta);
+
+    // Fields
+    meta: Meta;
+
+    // Members
+    get_structure(): Structure;
+    has_name(name: string): boolean;
+}
+
 export class DateTime {
     static $gtype: GObject.GType<DateTime>;
 
-    constructor(
-        tzoffset: number,
-        year: number,
-        month: number,
-        day: number,
-        hour: number,
-        minute: number,
-        seconds: number
-    );
+    constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: DateTime);
 
     // Constructors
@@ -3715,7 +3919,7 @@ export class DateTime {
         minute: number,
         seconds: number
     ): DateTime;
-    static new_from_g_date_time(dt: GLib.DateTime): DateTime;
+    static new_from_g_date_time(dt?: GLib.DateTime | null): DateTime;
     static new_from_iso8601_string(string: string): DateTime;
     static new_from_unix_epoch_local_time(secs: number): DateTime;
     static new_from_unix_epoch_local_time_usecs(usecs: number): DateTime;
@@ -3758,21 +3962,7 @@ export class DateTime {
 export class DebugCategory {
     static $gtype: GObject.GType<DebugCategory>;
 
-    constructor(
-        properties?: Partial<{
-            threshold?: number;
-            color?: number;
-            name?: string;
-            description?: string;
-        }>
-    );
     constructor(copy: DebugCategory);
-
-    // Fields
-    threshold: number;
-    color: number;
-    name: string;
-    description: string;
 
     // Members
     free(): void;
@@ -3814,10 +4004,19 @@ export class DeviceProviderPrivate {
 export class Event {
     static $gtype: GObject.GType<Event>;
 
-    constructor(format: Format, minsize: number, maxsize: number, async: boolean);
+    constructor();
+    constructor(
+        properties?: Partial<{
+            mini_object?: MiniObject;
+            type?: EventType;
+            timestamp?: number;
+            seqnum?: number;
+        }>
+    );
     constructor(copy: Event);
 
     // Fields
+    mini_object: MiniObject;
     type: EventType;
     timestamp: number;
     seqnum: number;
@@ -3873,19 +4072,20 @@ export class Event {
     parse_caps(): Caps;
     parse_flush_stop(): boolean;
     parse_gap(): [ClockTime | null, ClockTime | null];
+    parse_gap_flags(): GapFlags;
     parse_group_id(): [boolean, number];
-    parse_instant_rate_change(): [number | null, SegmentFlags | null];
-    parse_instant_rate_sync_time(): [number | null, ClockTime | null, ClockTime | null];
+    parse_instant_rate_change(): [number, SegmentFlags | null];
+    parse_instant_rate_sync_time(): [number, ClockTime | null, ClockTime | null];
     parse_latency(): ClockTime;
-    parse_protection(): [string | null, Buffer | null, string | null];
+    parse_protection(): [string, Buffer | null, string];
     parse_qos(): [QOSType, number, ClockTimeDiff, ClockTime];
     parse_seek(): [number, Format, SeekFlags, SeekType, number, SeekType, number];
     parse_seek_trickmode_interval(): ClockTime;
     parse_segment(): Segment;
-    parse_segment_done(): [Format | null, number | null];
+    parse_segment_done(): [Format | null, number];
     parse_select_streams(): string[];
     parse_sink_message(): Message;
-    parse_step(): [Format | null, number | null, number | null, boolean | null, boolean | null];
+    parse_step(): [Format | null, number, number, boolean, boolean];
     parse_stream(): Stream;
     parse_stream_collection(): StreamCollection;
     parse_stream_flags(): StreamFlags;
@@ -3893,7 +4093,8 @@ export class Event {
     parse_stream_start(): string;
     parse_tag(): TagList;
     parse_toc(): [Toc, boolean];
-    parse_toc_select(): string | null;
+    parse_toc_select(): string;
+    set_gap_flags(flags: GapFlags): void;
     set_group_id(group_id: number): void;
     set_running_time_offset(offset: number): void;
     set_seek_trickmode_interval(interval: ClockTime): void;
@@ -3929,7 +4130,9 @@ export class Iterator {
 
     // Fields
     item: IteratorItemFunction;
+    pushed: Iterator;
     type: GObject.GType;
+    lock: GLib.Mutex;
     cookie: number;
     master_cookie: number;
     size: number;
@@ -3955,9 +4158,12 @@ export class MapInfo {
     constructor(copy: MapInfo);
 
     // Fields
+    memory: Memory;
     flags: MapFlags;
+    data: Uint8Array;
     size: number;
     maxsize: number;
+    user_data: any[];
 }
 
 export class Memory {
@@ -3970,17 +4176,12 @@ export class Memory {
         offset: number,
         notify?: GLib.DestroyNotify | null
     );
-    constructor(
-        properties?: Partial<{
-            maxsize?: number;
-            align?: number;
-            offset?: number;
-            size?: number;
-        }>
-    );
     constructor(copy: Memory);
 
     // Fields
+    mini_object: MiniObject;
+    allocator: Allocator;
+    parent: Memory;
     maxsize: number;
     align: number;
     offset: number;
@@ -3997,7 +4198,7 @@ export class Memory {
 
     // Members
     copy(offset: number, size: number): Memory;
-    get_sizes(): [number, number | null, number | null];
+    get_sizes(): [number, number, number];
     is_span(mem2: Memory): [boolean, number];
     is_type(mem_type: string): boolean;
     make_mapped(flags: MapFlags): [Memory | null, MapInfo];
@@ -4014,8 +4215,10 @@ export class Message {
     constructor(copy: Message);
 
     // Fields
+    mini_object: MiniObject;
     type: MessageType;
     timestamp: number;
+    src: Object;
     seqnum: number;
 
     // Constructors
@@ -4115,50 +4318,42 @@ export class Message {
     get_structure(): Structure | null;
     has_name(name: string): boolean;
     parse_async_done(): ClockTime | null;
-    parse_buffering(): number | null;
-    parse_buffering_stats(): [BufferingMode | null, number | null, number | null, number | null];
+    parse_buffering(): number;
+    parse_buffering_stats(): [BufferingMode | null, number, number, number];
     parse_clock_lost(): Clock | null;
-    parse_clock_provide(): [Clock | null, boolean | null];
-    parse_context_type(): [boolean, string | null];
+    parse_clock_provide(): [Clock | null, boolean];
+    parse_context_type(): [boolean, string];
     parse_device_added(): Device | null;
     parse_device_changed(): [Device | null, Device | null];
     parse_device_removed(): Device | null;
-    parse_error(): [GLib.Error | null, string | null];
+    parse_error(): [GLib.Error | null, string];
     parse_error_details(): Structure;
-    parse_group_id(): [boolean, number | null];
+    parse_group_id(): [boolean, number];
     parse_have_context(): Context | null;
-    parse_info(): [GLib.Error | null, string | null];
+    parse_info(): [GLib.Error | null, string];
     parse_info_details(): Structure;
-    parse_instant_rate_request(): number | null;
+    parse_instant_rate_request(): number;
     parse_new_clock(): Clock | null;
-    parse_progress(): [ProgressType | null, string | null, string | null];
-    parse_property_notify(): [Object | null, string | null, GObject.Value | null];
-    parse_qos(): [boolean | null, number | null, number | null, number | null, number | null];
-    parse_qos_stats(): [Format | null, number | null, number | null];
-    parse_qos_values(): [number | null, number | null, number | null];
-    parse_redirect_entry(entry_index: number): [string | null, TagList | null, Structure | null];
+    parse_progress(): [ProgressType | null, string, string];
+    parse_property_notify(): [Object | null, string, GObject.Value | null];
+    parse_qos(): [boolean, number, number, number, number];
+    parse_qos_stats(): [Format | null, number, number];
+    parse_qos_values(): [number, number, number];
+    parse_redirect_entry(entry_index: number): [string, TagList | null, Structure | null];
     parse_request_state(): State | null;
     parse_reset_time(): ClockTime | null;
-    parse_segment_done(): [Format | null, number | null];
-    parse_segment_start(): [Format | null, number | null];
+    parse_segment_done(): [Format | null, number];
+    parse_segment_start(): [Format | null, number];
     parse_state_changed(): [State | null, State | null, State | null];
-    parse_step_done(): [
-        Format | null,
-        number | null,
-        number | null,
-        boolean | null,
-        boolean | null,
-        number | null,
-        boolean | null
-    ];
-    parse_step_start(): [boolean | null, Format | null, number | null, number | null, boolean | null, boolean | null];
+    parse_step_done(): [Format | null, number, number, boolean, boolean, number, boolean];
+    parse_step_start(): [boolean, Format | null, number, number, boolean, boolean];
     parse_stream_collection(): StreamCollection | null;
     parse_stream_status(): [StreamStatusType, Element];
     parse_streams_selected(): StreamCollection | null;
-    parse_structure_change(): [StructureChangeType, Element | null, boolean | null];
+    parse_structure_change(): [StructureChangeType, Element | null, boolean];
     parse_tag(): TagList;
     parse_toc(): [Toc, boolean];
-    parse_warning(): [GLib.Error | null, string | null];
+    parse_warning(): [GLib.Error | null, string];
     parse_warning_details(): Structure;
     set_buffering_stats(mode: BufferingMode, avg_in: number, avg_out: number, buffering_left: number): void;
     set_group_id(group_id: number): void;
@@ -4170,6 +4365,7 @@ export class Message {
     streams_selected_get_size(): number;
     streams_selected_get_stream(idx: number): Stream | null;
     writable_structure(): Structure;
+    static take(old_message: Message, new_message?: Message | null): [boolean, Message];
 }
 
 export class Meta {
@@ -4179,6 +4375,7 @@ export class Meta {
 
     // Fields
     flags: MetaFlags;
+    info: MetaInfo;
 
     // Members
     compare_seqnum(meta2: Meta): number;
@@ -4194,7 +4391,8 @@ export class Meta {
         init_func: MetaInitFunction,
         free_func: MetaFreeFunction,
         transform_func: MetaTransformFunction
-    ): MetaInfo | null;
+    ): MetaInfo;
+    static register_custom(name: string, tags: string[], transform_func?: CustomMetaTransformFunction | null): MetaInfo;
 }
 
 export class MetaInfo {
@@ -4209,6 +4407,9 @@ export class MetaInfo {
     init_func: MetaInitFunction;
     free_func: MetaFreeFunction;
     transform_func: MetaTransformFunction;
+
+    // Members
+    is_custom(): boolean;
 }
 
 export class MetaTransformCopy {
@@ -4239,10 +4440,9 @@ export class MiniObject {
     refcount: number;
     lockstate: number;
     flags: number;
+    copy: MiniObjectCopyFunction;
     dispose: MiniObjectDisposeFunction;
     free: MiniObjectFreeFunction;
-    priv_uint: number;
-    priv_pointer: any;
 
     // Members
     add_parent(parent: MiniObject): void;
@@ -4286,24 +4486,19 @@ export class ParamSpecArray {
     static $gtype: GObject.GType<ParamSpecArray>;
 
     constructor(copy: ParamSpecArray);
+
+    // Fields
+    parent_instance: GObject.ParamSpec;
+    element_spec: GObject.ParamSpec;
 }
 
 export class ParamSpecFraction {
     static $gtype: GObject.GType<ParamSpecFraction>;
 
-    constructor(
-        properties?: Partial<{
-            min_num?: number;
-            min_den?: number;
-            max_num?: number;
-            max_den?: number;
-            def_num?: number;
-            def_den?: number;
-        }>
-    );
     constructor(copy: ParamSpecFraction);
 
     // Fields
+    parent_instance: GObject.ParamSpec;
     min_num: number;
     min_den: number;
     max_num: number;
@@ -4317,6 +4512,10 @@ export class ParentBufferMeta {
 
     constructor(copy: ParentBufferMeta);
 
+    // Fields
+    parent: Meta;
+    buffer: Buffer;
+
     // Members
     static get_info(): MetaInfo;
 }
@@ -4325,6 +4524,7 @@ export class ParseContext {
     static $gtype: GObject.GType<ParseContext>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: ParseContext);
 
     // Constructors
@@ -4394,14 +4594,12 @@ export class PollFD {
     constructor(
         properties?: Partial<{
             fd?: number;
-            idx?: number;
         }>
     );
     constructor(copy: PollFD);
 
     // Fields
     fd: number;
-    idx: number;
 
     // Members
     init(): void;
@@ -4411,7 +4609,15 @@ export class Promise {
     static $gtype: GObject.GType<Promise>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            parent?: MiniObject;
+        }>
+    );
     constructor(copy: Promise);
+
+    // Fields
+    parent: MiniObject;
 
     // Constructors
     static ["new"](): Promise;
@@ -4421,7 +4627,9 @@ export class Promise {
     expire(): void;
     get_reply(): Structure | null;
     interrupt(): void;
+    ref(): Promise;
     reply(s?: Structure | null): void;
+    unref(): void;
     wait(): PromiseResult;
 }
 
@@ -4429,6 +4637,10 @@ export class ProtectionMeta {
     static $gtype: GObject.GType<ProtectionMeta>;
 
     constructor(copy: ProtectionMeta);
+
+    // Fields
+    meta: Meta;
+    info: Structure;
 
     // Members
     static get_info(): MetaInfo;
@@ -4443,10 +4655,17 @@ export class ProxyPadPrivate {
 export class Query {
     static $gtype: GObject.GType<Query>;
 
-    constructor(caps: Caps);
+    constructor();
+    constructor(
+        properties?: Partial<{
+            mini_object?: MiniObject;
+            type?: QueryType;
+        }>
+    );
     constructor(copy: Query);
 
     // Fields
+    mini_object: MiniObject;
     type: QueryType;
 
     // Constructors
@@ -4474,7 +4693,7 @@ export class Query {
     add_allocation_pool(pool: BufferPool | null, size: number, min_buffers: number, max_buffers: number): void;
     add_buffering_range(start: number, stop: number): boolean;
     add_scheduling_mode(mode: PadMode): void;
-    find_allocation_meta(api: GObject.GType): [boolean, number | null];
+    find_allocation_meta(api: GObject.GType): [boolean, number];
     get_n_allocation_metas(): number;
     get_n_allocation_params(): number;
     get_n_allocation_pools(): number;
@@ -4484,33 +4703,34 @@ export class Query {
     has_scheduling_mode(mode: PadMode): boolean;
     has_scheduling_mode_with_flags(mode: PadMode, flags: SchedulingFlags): boolean;
     parse_accept_caps(): Caps;
-    parse_accept_caps_result(): boolean | null;
-    parse_allocation(): [Caps | null, boolean | null];
-    parse_bitrate(): number | null;
-    parse_buffering_percent(): [boolean | null, number | null];
-    parse_buffering_range(): [Format | null, number | null, number | null, number | null];
-    parse_buffering_stats(): [BufferingMode | null, number | null, number | null, number | null];
+    parse_accept_caps_result(): boolean;
+    parse_allocation(): [Caps | null, boolean];
+    parse_bitrate(): number;
+    parse_buffering_percent(): [boolean, number];
+    parse_buffering_range(): [Format | null, number, number, number];
+    parse_buffering_stats(): [BufferingMode | null, number, number, number];
     parse_caps(): Caps;
     parse_caps_result(): Caps;
     parse_context(): Context;
-    parse_context_type(): [boolean, string | null];
-    parse_convert(): [Format | null, number | null, Format | null, number | null];
-    parse_duration(): [Format | null, number | null];
-    parse_latency(): [boolean | null, ClockTime | null, ClockTime | null];
-    parse_n_formats(): number | null;
+    parse_context_type(): [boolean, string];
+    parse_convert(): [Format | null, number, Format | null, number];
+    parse_duration(): [Format | null, number];
+    parse_latency(): [boolean, ClockTime | null, ClockTime | null];
+    parse_n_formats(): number;
     parse_nth_allocation_meta(index: number): [GObject.GType, Structure | null];
     parse_nth_allocation_param(index: number): [Allocator | null, AllocationParams | null];
-    parse_nth_allocation_pool(index: number): [BufferPool | null, number | null, number | null, number | null];
-    parse_nth_buffering_range(index: number): [boolean, number | null, number | null];
+    parse_nth_allocation_pool(index: number): [BufferPool | null, number, number, number];
+    parse_nth_buffering_range(index: number): [boolean, number, number];
     parse_nth_format(nth: number): Format | null;
     parse_nth_scheduling_mode(index: number): PadMode;
-    parse_position(): [Format | null, number | null];
-    parse_scheduling(): [SchedulingFlags | null, number | null, number | null, number | null];
-    parse_seeking(): [Format | null, boolean | null, number | null, number | null];
-    parse_segment(): [number | null, Format | null, number | null, number | null];
-    parse_uri(): string | null;
-    parse_uri_redirection(): string | null;
-    parse_uri_redirection_permanent(): boolean | null;
+    parse_position(): [Format | null, number];
+    parse_scheduling(): [SchedulingFlags | null, number, number, number];
+    parse_seeking(): [Format | null, boolean, number, number];
+    parse_segment(): [number, Format | null, number, number];
+    parse_uri(): string;
+    parse_uri_redirection(): string;
+    parse_uri_redirection_permanent(): boolean;
+    ref(): Query;
     remove_nth_allocation_meta(index: number): void;
     remove_nth_allocation_param(index: number): void;
     remove_nth_allocation_pool(index: number): void;
@@ -4541,6 +4761,7 @@ export class Query {
     set_uri_redirection(uri: string): void;
     set_uri_redirection_permanent(permanent: boolean): void;
     writable_structure(): Structure;
+    static take(old_query?: Query | null, new_query?: Query | null): [boolean, Query | null];
 }
 
 export class ReferenceTimestampMeta {
@@ -4549,6 +4770,8 @@ export class ReferenceTimestampMeta {
     constructor(copy: ReferenceTimestampMeta);
 
     // Fields
+    parent: Meta;
+    reference: Caps;
     timestamp: ClockTime;
     duration: ClockTime;
 
@@ -4593,6 +4816,21 @@ export class Segment {
     static $gtype: GObject.GType<Segment>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            flags?: SegmentFlags;
+            rate?: number;
+            applied_rate?: number;
+            format?: Format;
+            base?: number;
+            offset?: number;
+            start?: number;
+            stop?: number;
+            time?: number;
+            position?: number;
+            duration?: number;
+        }>
+    );
     constructor(copy: Segment);
 
     // Fields
@@ -4612,7 +4850,7 @@ export class Segment {
     static ["new"](): Segment;
 
     // Members
-    clip(format: Format, start: number, stop: number): [boolean, number | null, number | null];
+    clip(format: Format, start: number, stop: number): [boolean, number, number];
     copy(): Segment;
     copy_into(dest: Segment): void;
     do_seek(
@@ -4623,7 +4861,7 @@ export class Segment {
         start: number,
         stop_type: SeekType,
         stop: number
-    ): [boolean, boolean | null];
+    ): [boolean, boolean];
     free(): void;
     init(format: Format): void;
     is_equal(s1: Segment): boolean;
@@ -4635,22 +4873,24 @@ export class Segment {
     set_running_time(format: Format, running_time: number): boolean;
     to_position(format: Format, running_time: number): number;
     to_running_time(format: Format, position: number): number;
-    to_running_time_full(format: Format, position: number): [number, number | null];
+    to_running_time_full(format: Format, position: number): [number, number];
     to_stream_time(format: Format, position: number): number;
     to_stream_time_full(format: Format, position: number): [number, number];
+}
+
+export class SharedTaskPoolPrivate {
+    static $gtype: GObject.GType<SharedTaskPoolPrivate>;
+
+    constructor(copy: SharedTaskPoolPrivate);
 }
 
 export class StaticCaps {
     static $gtype: GObject.GType<StaticCaps>;
 
-    constructor(
-        properties?: Partial<{
-            string?: string;
-        }>
-    );
     constructor(copy: StaticCaps);
 
     // Fields
+    caps: Caps;
     string: string;
 
     // Members
@@ -4667,6 +4907,7 @@ export class StaticPadTemplate {
     name_template: string;
     direction: PadDirection;
     presence: PadPresence;
+    static_caps: StaticCaps;
 
     // Members
     get(): PadTemplate | null;
@@ -4693,7 +4934,6 @@ export class Structure {
 
     // Fields
     type: GObject.GType;
-    name: GLib.Quark;
 
     // Constructors
     static from_string(string: string): Structure;
@@ -4722,7 +4962,7 @@ export class Structure {
     get_double(fieldname: string): [boolean, number];
     get_enum(fieldname: string, enumtype: GObject.GType): [boolean, number];
     get_field_type(fieldname: string): GObject.GType;
-    get_flagset(fieldname: string): [boolean, number | null, number | null];
+    get_flagset(fieldname: string): [boolean, number, number];
     get_fraction(fieldname: string): [boolean, number, number];
     get_int(fieldname: string): [boolean, number];
     get_int64(fieldname: string): [boolean, number];
@@ -4749,6 +4989,7 @@ export class Structure {
     nth_field_name(index: number): string;
     remove_all_fields(): void;
     remove_field(fieldname: string): void;
+    serialize(flags: SerializeFlags): string;
     set_array(fieldname: string, array: GObject.ValueArray): void;
     set_list(fieldname: string, array: GObject.ValueArray): void;
     set_name(name: string): void;
@@ -4769,7 +5010,15 @@ export class TagList {
     static $gtype: GObject.GType<TagList>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            mini_object?: MiniObject;
+        }>
+    );
     constructor(copy: TagList);
+
+    // Fields
+    mini_object: MiniObject;
 
     // Constructors
     static new_empty(): TagList;
@@ -4793,8 +5042,8 @@ export class TagList {
     get_int64(tag: string): [boolean, number];
     get_int64_index(tag: string, index: number): [boolean, number];
     get_int_index(tag: string, index: number): [boolean, number];
-    get_pointer(tag: string): [boolean, any | null];
-    get_pointer_index(tag: string, index: number): [boolean, any | null];
+    get_pointer(tag: string): [boolean, any];
+    get_pointer_index(tag: string, index: number): [boolean, any];
     get_sample(tag: string): [boolean, Sample];
     get_sample_index(tag: string, index: number): [boolean, Sample];
     get_scope(): TagScope;
@@ -4817,6 +5066,8 @@ export class TagList {
     set_scope(scope: TagScope): void;
     to_string(): string | null;
     static copy_value(list: TagList, tag: string): [boolean, unknown];
+    static replace(old_taglist?: TagList | null, new_taglist?: TagList | null): [boolean, TagList | null];
+    static take(old_taglist: TagList, new_taglist?: TagList | null): [boolean, TagList];
 }
 
 export class TaskPrivate {
@@ -4867,9 +5118,9 @@ export class TocEntry {
     // Members
     append_sub_entry(subentry: TocEntry): void;
     get_entry_type(): TocEntryType;
-    get_loop(): [boolean, TocLoopType | null, number | null];
+    get_loop(): [boolean, TocLoopType | null, number];
     get_parent(): TocEntry | null;
-    get_start_stop_times(): [boolean, number | null, number | null];
+    get_start_stop_times(): [boolean, number, number];
     get_sub_entries(): TocEntry[];
     get_tags(): TagList;
     get_toc(): Toc;
@@ -4905,6 +5156,7 @@ export class TypeFind {
     get_length(): number;
     peek(offset: number): Uint8Array | null;
     suggest(probability: number, caps: Caps): void;
+    suggest_empty_simple(probability: number, media_type: string): void;
     static register(
         plugin: Plugin | null,
         name: string,
@@ -4943,6 +5195,7 @@ export class Uri {
     // Members
     append_path(relative_path: string): boolean;
     append_path_segment(path_segment: string): boolean;
+    copy(): Uri;
     equal(second: Uri): boolean;
     from_string_with_base(uri: string): Uri;
     get_fragment(): string | null;
@@ -4973,6 +5226,7 @@ export class Uri {
     ): Uri;
     normalize(): boolean;
     query_has_key(query_key: string): boolean;
+    ref(): Uri;
     remove_query_key(query_key: string): boolean;
     set_fragment(fragment?: string | null): boolean;
     set_host(host: string): boolean;
@@ -4986,6 +5240,7 @@ export class Uri {
     set_scheme(scheme: string): boolean;
     set_userinfo(userinfo: string): boolean;
     to_string(): string;
+    unref(): void;
     static construct(protocol: string, location: string): string;
     static from_string(uri: string): Uri | null;
     static from_string_escaped(uri: string): Uri | null;
@@ -5008,6 +5263,7 @@ export class ValueTable {
     compare: ValueCompareFunc;
     serialize: ValueSerializeFunc;
     deserialize: ValueDeserializeFunc;
+    deserialize_with_pspec: ValueDeserializeWithPSpecFunc;
 }
 
 export interface ChildProxyNamespace {

@@ -4936,6 +4936,9 @@ export class DOMObject extends GObject.Object {
     // Properties
     set core_object(val: any);
     set coreObject(val: any);
+
+    // Fields
+    parentInstance: GObject.Object;
 }
 export module DOMProcessingInstruction {
     export interface ConstructorProperties extends DOMCharacterData.ConstructorProperties {
@@ -5333,6 +5336,9 @@ export class Frame extends GObject.Object {
     constructor(properties?: Partial<Frame.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Frame.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: FramePrivate;
+
     // Members
 
     get_id(): number;
@@ -5378,6 +5384,9 @@ export class HitTestResult extends GObject.Object {
     get media_uri(): string;
     get mediaUri(): string;
 
+    // Fields
+    priv: HitTestResultPrivate;
+
     // Members
 
     context_is_editable(): boolean;
@@ -5403,6 +5412,9 @@ export class ScriptWorld extends GObject.Object {
 
     constructor(properties?: Partial<ScriptWorld.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ScriptWorld.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ScriptWorldPrivate;
 
     // Signals
 
@@ -5518,6 +5530,9 @@ export class UserMessage extends GObject.InitiallyUnowned {
     get name(): string;
     get parameters(): GLib.Variant;
 
+    // Fields
+    priv: UserMessagePrivate;
+
     // Constructors
 
     static ["new"](name: string, parameters?: GLib.Variant | null): UserMessage;
@@ -5546,6 +5561,9 @@ export class WebEditor extends GObject.Object {
     constructor(properties?: Partial<WebEditor.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WebEditor.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: WebEditorPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -5569,6 +5587,9 @@ export class WebExtension extends GObject.Object {
 
     constructor(properties?: Partial<WebExtension.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WebExtension.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: WebExtensionPrivate;
 
     // Signals
 
@@ -5613,6 +5634,9 @@ export class WebHitTestResult extends HitTestResult {
     // Properties
     get node(): DOMNode;
 
+    // Fields
+    priv: WebHitTestResultPrivate | any;
+
     // Members
 
     get_node(): DOMNode;
@@ -5631,6 +5655,9 @@ export class WebPage extends GObject.Object {
 
     // Properties
     get uri(): string;
+
+    // Fields
+    priv: WebPagePrivate;
 
     // Signals
 
@@ -5828,12 +5855,20 @@ export class _ContextMenu {
     static $gtype: GObject.GType<_ContextMenu>;
 
     constructor(copy: _ContextMenu);
+
+    // Fields
+    parent: GObject.Object;
+    priv: ContextMenuPrivate;
 }
 
 export class _ContextMenuItem {
     static $gtype: GObject.GType<_ContextMenuItem>;
 
     constructor(copy: _ContextMenuItem);
+
+    // Fields
+    parent: GObject.InitiallyUnowned;
+    priv: ContextMenuItemPrivate;
 }
 
 export interface DOMEventTargetNamespace {

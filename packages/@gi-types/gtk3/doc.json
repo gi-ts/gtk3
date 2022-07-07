@@ -1,15 +1,15 @@
 {
     "name": "Gtk",
     "api_version": "3.0",
-    "package_version": "3.24.29",
+    "package_version": "3.24.34",
     "imports": {
         "Gio": "2.0",
         "GObject": "2.0",
         "Pango": "1.0",
         "Gdk": "3.0",
+        "cairo": "1.0",
         "GLib": "2.0",
         "Atk": "1.0",
-        "cairo": "1.0",
         "GdkPixbuf": "2.0",
         "xlib": "2.0"
     }

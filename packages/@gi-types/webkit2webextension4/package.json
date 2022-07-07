@@ -34,7 +34,7 @@
         "@gi-types/glib2": "^2.68.0",
         "@gi-types/gobject2": "^2.68.0",
         "@gi-types/gtk3": "^3.24.0",
-        "@gi-types/javascriptcore4": "^2.32.0",
+        "@gi-types/javascriptcore4": "^2.36.0",
         "@gi-types/soup2": "^2.72.0"
     },
     "typeScriptVersion": "4.1",

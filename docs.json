@@ -11,6 +11,9 @@
         "promisify": true
     },
     "libraries": {
+        "Handy": [
+            "1"
+        ],
         "GDesktopEnums": "3.0",
         "Gdk": [
             "3.0"

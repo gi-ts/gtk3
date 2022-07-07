@@ -1,15 +1,15 @@
 /**
  * WebKit2 4.0
  *
- * Generated from 2.32.1
+ * Generated from 2.36.3
  */
 
 import * as Atk from "@gi-types/atk1";
 import * as GObject from "@gi-types/gobject2";
 import * as Gtk from "@gi-types/gtk3";
 import * as GLib from "@gi-types/glib2";
-import * as Gdk from "@gi-types/gdk3";
 import * as Gio from "@gi-types/gio2";
+import * as Gdk from "@gi-types/gdk3";
 import * as Soup from "@gi-types/soup2";
 import * as cairo from "@gi-types/cairo1";
 import * as JavaScriptCore from "@gi-types/javascriptcore4";
@@ -41,6 +41,7 @@ export function snapshot_error_quark(): GLib.Quark;
 export function uri_for_display(uri: string): string | null;
 export function user_content_filter_error_quark(): GLib.Quark;
 export function user_media_permission_is_for_audio_device(request: UserMediaPermissionRequest): boolean;
+export function user_media_permission_is_for_display_device(request: UserMediaPermissionRequest): boolean;
 export function user_media_permission_is_for_video_device(request: UserMediaPermissionRequest): boolean;
 export function user_message_error_quark(): GLib.Quark;
 export type URISchemeRequestCallback = (request: URISchemeRequest) => void;
@@ -58,6 +59,7 @@ export enum AuthenticationScheme {
     NEGOTIATE = 6,
     CLIENT_CERTIFICATE_REQUESTED = 7,
     SERVER_TRUST_EVALUATION_REQUESTED = 8,
+    CLIENT_CERTIFICATE_PIN_REQUESTED = 9,
     UNKNOWN = 100,
 }
 
@@ -258,6 +260,16 @@ export enum LoadEvent {
     REDIRECTED = 1,
     COMMITTED = 2,
     FINISHED = 3,
+}
+
+export namespace MediaCaptureState {
+    export const $gtype: GObject.GType<MediaCaptureState>;
+}
+
+export enum MediaCaptureState {
+    NONE = 0,
+    ACTIVE = 1,
+    MUTED = 2,
 }
 
 export namespace NavigationType {
@@ -489,6 +501,7 @@ export namespace WebProcessTerminationReason {
 export enum WebProcessTerminationReason {
     CRASHED = 0,
     EXCEEDED_MEMORY_LIMIT = 1,
+    TERMINATED_BY_API = 2,
 }
 
 export namespace EditorTypingAttributes {
@@ -603,6 +616,7 @@ export class AuthenticationRequest extends GObject.Object {
     authenticate(credential?: Credential | null): void;
     can_save_credentials(): boolean;
     cancel(): void;
+    get_certificate_pin_flags(): Gio.TlsPasswordFlags;
     get_host(): string;
     get_port(): number;
     get_proposed_credential(): Credential;
@@ -629,6 +643,9 @@ export class AutomationSession extends GObject.Object {
     // Properties
     get id(): string;
 
+    // Fields
+    priv: AutomationSessionPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -654,6 +671,9 @@ export class BackForwardList extends GObject.Object {
 
     constructor(properties?: Partial<BackForwardList.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<BackForwardList.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: BackForwardListPrivate;
 
     // Signals
 
@@ -692,6 +712,9 @@ export class BackForwardListItem extends GObject.InitiallyUnowned {
 
     constructor(properties?: Partial<BackForwardListItem.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<BackForwardListItem.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: BackForwardListItemPrivate;
 
     // Members
 
@@ -743,6 +766,9 @@ export class ContextMenu extends GObject.Object {
     constructor(properties?: Partial<ContextMenu.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ContextMenu.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ContextMenuPrivate;
+
     // Constructors
 
     static ["new"](): ContextMenu;
@@ -775,6 +801,9 @@ export class ContextMenuItem extends GObject.InitiallyUnowned {
     constructor(properties?: Partial<ContextMenuItem.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ContextMenuItem.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ContextMenuItemPrivate;
+
     // Constructors
 
     static ["new"](action: Gtk.Action): ContextMenuItem;
@@ -803,6 +832,9 @@ export class CookieManager extends GObject.Object {
 
     constructor(properties?: Partial<CookieManager.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<CookieManager.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: CookieManagerPrivate;
 
     // Signals
 
@@ -911,6 +943,9 @@ export class Download extends GObject.Object {
     get estimatedProgress(): number;
     get response(): URIResponse;
 
+    // Fields
+    priv: DownloadPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -967,6 +1002,9 @@ export class EditorState extends GObject.Object {
     get typing_attributes(): number;
     get typingAttributes(): number;
 
+    // Fields
+    priv: EditorStatePrivate;
+
     // Members
 
     get_typing_attributes(): number;
@@ -986,6 +1024,9 @@ export class FaviconDatabase extends GObject.Object {
 
     constructor(properties?: Partial<FaviconDatabase.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<FaviconDatabase.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: FaviconDatabasePrivate;
 
     // Signals
 
@@ -1212,6 +1253,9 @@ export class HitTestResult extends GObject.Object {
     get media_uri(): string;
     get mediaUri(): string;
 
+    // Fields
+    priv: HitTestResultPrivate;
+
     // Members
 
     context_is_editable(): boolean;
@@ -1281,7 +1325,7 @@ export abstract class InputMethodContext extends GObject.Object {
     filter_key_event(key_event: Gdk.EventKey): boolean;
     get_input_hints(): InputHints;
     get_input_purpose(): InputPurpose;
-    get_preedit(): [string | null, InputMethodUnderline[] | null, number | null];
+    get_preedit(): [string, InputMethodUnderline[] | null, number];
     notify_cursor_area(x: number, y: number, width: number, height: number): void;
     notify_focus_in(): void;
     notify_focus_out(): void;
@@ -1293,7 +1337,7 @@ export abstract class InputMethodContext extends GObject.Object {
     vfunc_committed(text: string): void;
     vfunc_delete_surrounding(offset: number, n_chars: number): void;
     vfunc_filter_key_event(key_event: Gdk.EventKey): boolean;
-    vfunc_get_preedit(): [string | null, InputMethodUnderline[] | null, number | null];
+    vfunc_get_preedit(): [string, InputMethodUnderline[] | null, number];
     vfunc_notify_cursor_area(x: number, y: number, width: number, height: number): void;
     vfunc_notify_focus_in(): void;
     vfunc_notify_focus_out(): void;
@@ -1320,6 +1364,9 @@ export class InstallMissingMediaPluginsPermissionRequest extends GObject.Object 
         properties?: Partial<InstallMissingMediaPluginsPermissionRequest.ConstructorProperties>,
         ...args: any[]
     ): void;
+
+    // Fields
+    priv: InstallMissingMediaPluginsPermissionRequestPrivate;
 
     // Members
 
@@ -1413,6 +1460,9 @@ export class Notification extends GObject.Object {
     get tag(): string;
     get title(): string;
 
+    // Fields
+    priv: NotificationPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -1463,6 +1513,9 @@ export class OptionMenu extends GObject.Object {
     constructor(properties?: Partial<OptionMenu.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<OptionMenu.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: OptionMenuPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -1490,6 +1543,9 @@ export class Plugin extends GObject.Object {
 
     constructor(properties?: Partial<Plugin.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Plugin.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: PluginPrivate;
 
     // Members
 
@@ -1551,6 +1607,9 @@ export class PrintCustomWidget extends GObject.Object {
     get title(): string;
     get widget(): Gtk.Widget;
 
+    // Fields
+    priv: PrintCustomWidgetPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -1608,6 +1667,9 @@ export class PrintOperation extends GObject.Object {
     set printSettings(val: Gtk.PrintSettings);
     get web_view(): WebView;
     get webView(): WebView;
+
+    // Fields
+    priv: PrintOperationPrivate;
 
     // Signals
 
@@ -1670,6 +1732,9 @@ export class SecurityManager extends GObject.Object {
 
     constructor(properties?: Partial<SecurityManager.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SecurityManager.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: SecurityManagerPrivate;
 
     // Members
 
@@ -2053,6 +2118,9 @@ export class Settings extends GObject.Object {
     get zoomTextOnly(): boolean;
     set zoomTextOnly(val: boolean);
 
+    // Fields
+    priv: SettingsPrivate;
+
     // Constructors
 
     static ["new"](): Settings;
@@ -2266,14 +2334,52 @@ export class URISchemeRequest extends GObject.Object {
     constructor(properties?: Partial<URISchemeRequest.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<URISchemeRequest.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: URISchemeRequestPrivate;
+
     // Members
 
     finish(stream: Gio.InputStream, stream_length: number, content_type?: string | null): void;
     finish_error(error: GLib.Error): void;
+    finish_with_response(response: URISchemeResponse): void;
+    get_http_headers(): Soup.MessageHeaders;
+    get_http_method(): string;
     get_path(): string;
     get_scheme(): string;
     get_uri(): string;
     get_web_view(): WebView;
+}
+export module URISchemeResponse {
+    export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
+        [key: string]: any;
+        stream: Gio.InputStream;
+        stream_length: number;
+        streamLength: number;
+    }
+}
+export class URISchemeResponse extends GObject.Object {
+    static $gtype: GObject.GType<URISchemeResponse>;
+
+    constructor(properties?: Partial<URISchemeResponse.ConstructorProperties>, ...args: any[]);
+    _init(properties?: Partial<URISchemeResponse.ConstructorProperties>, ...args: any[]): void;
+
+    // Properties
+    set stream(val: Gio.InputStream);
+    set stream_length(val: number);
+    set streamLength(val: number);
+
+    // Fields
+    priv: URISchemeResponsePrivate;
+
+    // Constructors
+
+    static ["new"](input_stream: Gio.InputStream, stream_length: number): URISchemeResponse;
+
+    // Members
+
+    set_content_type(content_type: string): void;
+    set_http_headers(headers: Soup.MessageHeaders): void;
+    set_status(status_code: number, reason_phrase?: string | null): void;
 }
 export module UserContentFilterStore {
     export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
@@ -2454,6 +2560,9 @@ export class UserMessage extends GObject.InitiallyUnowned {
     get name(): string;
     get parameters(): GLib.Variant;
 
+    // Fields
+    priv: UserMessagePrivate;
+
     // Constructors
 
     static ["new"](name: string, parameters?: GLib.Variant | null): UserMessage;
@@ -2475,6 +2584,8 @@ export module WebContext {
         [key: string]: any;
         local_storage_directory: string;
         localStorageDirectory: string;
+        memory_pressure_settings: MemoryPressureSettings;
+        memoryPressureSettings: MemoryPressureSettings;
         process_swap_on_cross_site_navigation_enabled: boolean;
         processSwapOnCrossSiteNavigationEnabled: boolean;
         use_system_appearance_for_scrollbars: boolean;
@@ -2492,6 +2603,8 @@ export class WebContext extends GObject.Object {
     // Properties
     get local_storage_directory(): string;
     get localStorageDirectory(): string;
+    set memory_pressure_settings(val: MemoryPressureSettings);
+    set memoryPressureSettings(val: MemoryPressureSettings);
     get process_swap_on_cross_site_navigation_enabled(): boolean;
     get processSwapOnCrossSiteNavigationEnabled(): boolean;
     get use_system_appearance_for_scrollbars(): boolean;
@@ -2609,6 +2722,9 @@ export class WebInspector extends GObject.Object {
     get inspected_uri(): string;
     get inspectedUri(): string;
 
+    // Fields
+    priv: WebInspectorPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -2658,6 +2774,9 @@ export class WebResource extends GObject.Object {
     // Properties
     get response(): URIResponse;
     get uri(): string;
+
+    // Fields
+    priv: WebResourcePrivate;
 
     // Signals
 
@@ -2711,6 +2830,10 @@ export module WebView {
         [key: string]: any;
         automation_presentation_type: AutomationBrowsingContextPresentation;
         automationPresentationType: AutomationBrowsingContextPresentation;
+        camera_capture_state: MediaCaptureState;
+        cameraCaptureState: MediaCaptureState;
+        display_capture_state: MediaCaptureState;
+        displayCaptureState: MediaCaptureState;
         editable: boolean;
         estimated_load_progress: number;
         estimatedLoadProgress: number;
@@ -2725,6 +2848,10 @@ export module WebView {
         isMuted: boolean;
         is_playing_audio: boolean;
         isPlayingAudio: boolean;
+        is_web_process_responsive: boolean;
+        isWebProcessResponsive: boolean;
+        microphone_capture_state: MediaCaptureState;
+        microphoneCaptureState: MediaCaptureState;
         page_id: number;
         pageId: number;
         related_view: WebView;
@@ -2751,6 +2878,14 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     // Properties
     get automation_presentation_type(): AutomationBrowsingContextPresentation;
     get automationPresentationType(): AutomationBrowsingContextPresentation;
+    get camera_capture_state(): MediaCaptureState;
+    set camera_capture_state(val: MediaCaptureState);
+    get cameraCaptureState(): MediaCaptureState;
+    set cameraCaptureState(val: MediaCaptureState);
+    get display_capture_state(): MediaCaptureState;
+    set display_capture_state(val: MediaCaptureState);
+    get displayCaptureState(): MediaCaptureState;
+    set displayCaptureState(val: MediaCaptureState);
     get editable(): boolean;
     set editable(val: boolean);
     get estimated_load_progress(): number;
@@ -2768,6 +2903,12 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     set isMuted(val: boolean);
     get is_playing_audio(): boolean;
     get isPlayingAudio(): boolean;
+    get is_web_process_responsive(): boolean;
+    get isWebProcessResponsive(): boolean;
+    get microphone_capture_state(): MediaCaptureState;
+    set microphone_capture_state(val: MediaCaptureState);
+    get microphoneCaptureState(): MediaCaptureState;
+    set microphoneCaptureState(val: MediaCaptureState);
     get page_id(): number;
     get pageId(): number;
     set related_view(val: WebView);
@@ -2941,13 +3082,13 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     emit(signal: "show-notification", notification: Notification): void;
     connect(
         signal: "show-option-menu",
-        callback: (_source: this, object: OptionMenu, p0: Gdk.Event, p1: Gdk.Rectangle) => boolean
+        callback: (_source: this, menu: OptionMenu, event: Gdk.Event, rectangle: Gdk.Rectangle) => boolean
     ): number;
     connect_after(
         signal: "show-option-menu",
-        callback: (_source: this, object: OptionMenu, p0: Gdk.Event, p1: Gdk.Rectangle) => boolean
+        callback: (_source: this, menu: OptionMenu, event: Gdk.Event, rectangle: Gdk.Rectangle) => boolean
     ): number;
-    emit(signal: "show-option-menu", object: OptionMenu, p0: Gdk.Event, p1: Gdk.Rectangle): void;
+    emit(signal: "show-option-menu", menu: OptionMenu, event: Gdk.Event, rectangle: Gdk.Rectangle): void;
     connect(signal: "submit-form", callback: (_source: this, request: FormSubmissionRequest) => void): number;
     connect_after(signal: "submit-form", callback: (_source: this, request: FormSubmissionRequest) => void): number;
     emit(signal: "submit-form", request: FormSubmissionRequest): void;
@@ -2998,8 +3139,10 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     get_automation_presentation_type(): AutomationBrowsingContextPresentation;
     get_back_forward_list(): BackForwardList;
     get_background_color(): Gdk.RGBA;
+    get_camera_capture_state(): MediaCaptureState;
     get_context(): WebContext;
     get_custom_charset(): string;
+    get_display_capture_state(): MediaCaptureState;
     get_editor_state(): EditorState;
     get_estimated_load_progress(): number;
     get_favicon(): cairo.Surface;
@@ -3007,7 +3150,9 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     get_input_method_context(): InputMethodContext | null;
     get_inspector(): WebInspector;
     get_is_muted(): boolean;
+    get_is_web_process_responsive(): boolean;
     get_main_resource(): WebResource;
+    get_microphone_capture_state(): MediaCaptureState;
     get_page_id(): number;
     get_session_state(): WebViewSessionState;
     get_settings(): Settings;
@@ -3134,13 +3279,18 @@ export class WebView extends WebViewBase implements Atk.ImplementorIface, Gtk.Bu
     ): Promise<UserMessage> | void;
     send_message_to_page_finish(result: Gio.AsyncResult): UserMessage;
     set_background_color(rgba: Gdk.RGBA): void;
+    set_camera_capture_state(state: MediaCaptureState): void;
+    set_cors_allowlist(allowlist?: string[] | null): void;
     set_custom_charset(charset?: string | null): void;
+    set_display_capture_state(state: MediaCaptureState): void;
     set_editable(editable: boolean): void;
     set_input_method_context(context?: InputMethodContext | null): void;
     set_is_muted(muted: boolean): void;
+    set_microphone_capture_state(state: MediaCaptureState): void;
     set_settings(settings: Settings): void;
     set_zoom_level(zoom_level: number): void;
     stop_loading(): void;
+    terminate_web_process(): void;
     try_close(): void;
     vfunc_authenticate(request: AuthenticationRequest): boolean;
     vfunc_close(): void;
@@ -3183,6 +3333,9 @@ export class WebViewBase extends Gtk.Container implements Atk.ImplementorIface, 
 
     constructor(properties?: Partial<WebViewBase.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WebViewBase.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    parentInstance: Gtk.Container;
 }
 export module WebsiteDataAccessPermissionRequest {
     export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
@@ -3268,6 +3421,9 @@ export class WebsiteDataManager extends GObject.Object {
     get websql_directory(): string;
     get websqlDirectory(): string;
 
+    // Fields
+    priv: WebsiteDataManagerPrivate;
+
     // Constructors
 
     static new_ephemeral(): WebsiteDataManager;
@@ -3344,6 +3500,7 @@ export class WebsiteDataManager extends GObject.Object {
     set_network_proxy_settings(proxy_mode: NetworkProxyMode, proxy_settings?: NetworkProxySettings | null): void;
     set_persistent_credential_storage_enabled(enabled: boolean): void;
     set_tls_errors_policy(policy: TLSErrorsPolicy): void;
+    static set_memory_pressure_settings(settings: MemoryPressureSettings): void;
 }
 export module WebsitePolicies {
     export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
@@ -3359,6 +3516,9 @@ export class WebsitePolicies extends GObject.Object {
 
     // Properties
     get autoplay(): AutoplayPolicy;
+
+    // Fields
+    priv: WebsitePoliciesPrivate;
 
     // Constructors
 
@@ -3423,6 +3583,7 @@ export class ApplicationInfo {
     static $gtype: GObject.GType<ApplicationInfo>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: ApplicationInfo);
 
     // Constructors
@@ -3430,7 +3591,7 @@ export class ApplicationInfo {
 
     // Members
     get_name(): string;
-    get_version(): [number, number | null, number | null];
+    get_version(): [number, number, number];
     ref(): ApplicationInfo;
     set_name(name: string): void;
     set_version(major: number, minor: number, micro: number): void;
@@ -3493,10 +3654,13 @@ export class Credential {
 
     // Constructors
     static ["new"](username: string, password: string, persistence: CredentialPersistence): Credential;
+    static new_for_certificate(certificate: Gio.TlsCertificate | null, persistence: CredentialPersistence): Credential;
+    static new_for_certificate_pin(pin: string, persistence: CredentialPersistence): Credential;
 
     // Members
     copy(): Credential;
     free(): void;
+    get_certificate(): Gio.TlsCertificate;
     get_password(): string;
     get_persistence(): CredentialPersistence;
     get_username(): string;
@@ -3649,6 +3813,31 @@ export class MediaKeySystemPermissionRequestPrivate {
     static $gtype: GObject.GType<MediaKeySystemPermissionRequestPrivate>;
 
     constructor(copy: MediaKeySystemPermissionRequestPrivate);
+}
+
+export class MemoryPressureSettings {
+    static $gtype: GObject.GType<MemoryPressureSettings>;
+
+    constructor();
+    constructor(properties?: Partial<{}>);
+    constructor(copy: MemoryPressureSettings);
+
+    // Constructors
+    static ["new"](): MemoryPressureSettings;
+
+    // Members
+    copy(): MemoryPressureSettings;
+    free(): void;
+    get_conservative_threshold(): number;
+    get_kill_threshold(): number;
+    get_memory_limit(): number;
+    get_poll_interval(): number;
+    get_strict_threshold(): number;
+    set_conservative_threshold(value: number): void;
+    set_kill_threshold(value: number): void;
+    set_memory_limit(memory_limit: number): void;
+    set_poll_interval(value: number): void;
+    set_strict_threshold(value: number): void;
 }
 
 export class MimeInfo {
@@ -3835,6 +4024,12 @@ export class URISchemeRequestPrivate {
     static $gtype: GObject.GType<URISchemeRequestPrivate>;
 
     constructor(copy: URISchemeRequestPrivate);
+}
+
+export class URISchemeResponsePrivate {
+    static $gtype: GObject.GType<URISchemeResponsePrivate>;
+
+    constructor(copy: URISchemeResponsePrivate);
 }
 
 export class UserContentFilter {

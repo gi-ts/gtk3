@@ -1,16 +1,16 @@
 /**
  * Gtk 3.0
  *
- * Generated from 3.24.29
+ * Generated from 3.24.34
  */
 
 import * as Gio from "@gi-types/gio2";
 import * as GObject from "@gi-types/gobject2";
 import * as Pango from "@gi-types/pango1";
 import * as Gdk from "@gi-types/gdk3";
+import * as cairo from "@gi-types/cairo1";
 import * as GLib from "@gi-types/glib2";
 import * as Atk from "@gi-types/atk1";
-import * as cairo from "@gi-types/cairo1";
 import * as GdkPixbuf from "@gi-types/gdkpixbuf2";
 import * as xlib from "@gi-types/xlib2";
 
@@ -293,10 +293,8 @@ export function accelerator_name_with_keycode(
     keycode: number,
     accelerator_mods: Gdk.ModifierType
 ): string;
-export function accelerator_parse(accelerator: string): [number | null, Gdk.ModifierType | null];
-export function accelerator_parse_with_keycode(
-    accelerator: string
-): [number | null, number[] | null, Gdk.ModifierType | null];
+export function accelerator_parse(accelerator: string): [number, Gdk.ModifierType | null];
+export function accelerator_parse_with_keycode(accelerator: string): [number, number[] | null, Gdk.ModifierType | null];
 export function accelerator_set_default_mod_mask(default_mod_mask: Gdk.ModifierType): void;
 export function accelerator_valid(keyval: number, modifiers: Gdk.ModifierType): boolean;
 export function alternative_dialog_button_order(screen?: Gdk.Screen | null): boolean;
@@ -369,11 +367,8 @@ export function get_option_group(open_default_display: boolean): GLib.OptionGrou
 export function grab_get_current(): Widget | null;
 export function icon_size_from_name(name: string): number;
 export function icon_size_get_name(size: number): string;
-export function icon_size_lookup(size: number): [boolean, number | null, number | null];
-export function icon_size_lookup_for_settings(
-    settings: Settings,
-    size: number
-): [boolean, number | null, number | null];
+export function icon_size_lookup(size: number): [boolean, number, number];
+export function icon_size_lookup_for_settings(settings: Settings, size: number): [boolean, number, number];
 export function icon_size_register(name: string, width: number, height: number): number;
 export function icon_size_register_alias(alias: string, target: number): void;
 export function icon_theme_error_quark(): GLib.Quark;
@@ -2721,6 +2716,9 @@ export class AccelGroup extends GObject.Object {
     get modifier_mask(): Gdk.ModifierType;
     get modifierMask(): Gdk.ModifierType;
 
+    // Fields
+    priv: AccelGroupPrivate;
+
     // Signals
 
     connect_after(id: string, callback: (...args: any[]) => any): number;
@@ -2788,6 +2786,12 @@ export class AccelLabel extends Label implements Atk.ImplementorIface, Buildable
     set accel_widget(val: Widget);
     get accelWidget(): Widget;
     set accelWidget(val: Widget);
+
+    // Fields
+    // This accessor conflicts with a property, field, or function name in a parent class or interface.
+    // @ts-expect-error
+    label: Label | any;
+    priv: AccelLabelPrivate;
 
     // Constructors
 
@@ -2963,6 +2967,9 @@ export class Action extends GObject.Object implements Buildable {
     get visibleVertical(): boolean;
     set visibleVertical(val: boolean);
 
+    // Fields
+    object: GObject.Object;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -3036,7 +3043,7 @@ export class Action extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     parser_finished(builder: Builder): void;
     set_buildable_property(builder: Builder, name: string, value: GObject.Value | any): void;
@@ -3049,7 +3056,7 @@ export class Action extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -3156,7 +3163,7 @@ export class ActionGroup extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     parser_finished(builder: Builder): void;
     set_buildable_property(builder: Builder, name: string, value: GObject.Value | any): void;
@@ -3169,7 +3176,7 @@ export class ActionGroup extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -3215,6 +3222,9 @@ export class Adjustment extends GObject.InitiallyUnowned {
     set upper(val: number);
     get value(): number;
     set value(val: number);
+
+    // Fields
+    priv: AdjustmentPrivate;
 
     // Signals
 
@@ -3317,13 +3327,16 @@ export class Alignment extends Bin implements Atk.ImplementorIface, Buildable {
     get yscale(): number;
     set yscale(val: number);
 
+    // Fields
+    bin: Bin;
+
     // Constructors
 
     static ["new"](xalign: number, yalign: number, xscale: number, yscale: number): Alignment;
 
     // Members
 
-    get_padding(): [number | null, number | null, number | null, number | null];
+    get_padding(): [number, number, number, number];
     set(xalign: number, yalign: number, xscale: number, yscale: number): void;
     // Conflicted with GObject.Object.set
     set(...args: never[]): any;
@@ -3794,6 +3807,9 @@ export class Arrow extends Misc implements Atk.ImplementorIface, Buildable {
     get shadowType(): ShadowType;
     set shadowType(val: ShadowType);
 
+    // Fields
+    misc: Misc;
+
     // Constructors
 
     static ["new"](arrow_type: ArrowType, shadow_type: ShadowType): Arrow;
@@ -3815,15 +3831,18 @@ export class ArrowAccessible extends WidgetAccessible implements Atk.Component, 
     constructor(properties?: Partial<ArrowAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ArrowAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ArrowAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -3835,11 +3854,11 @@ export class ArrowAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -3850,13 +3869,13 @@ export class ArrowAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_set_size(width: number, height: number): boolean;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module AspectFrame {
@@ -3886,6 +3905,9 @@ export class AspectFrame extends Frame implements Atk.ImplementorIface, Buildabl
     set xalign(val: number);
     get yalign(): number;
     set yalign(val: number);
+
+    // Fields
+    frame: Frame;
 
     // Constructors
 
@@ -3992,6 +4014,9 @@ export abstract class Bin extends Container implements Atk.ImplementorIface, Bui
     constructor(properties?: Partial<Bin.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Bin.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    container: Container;
+
     // Members
 
     get_child(): Widget | null;
@@ -4006,6 +4031,9 @@ export class BooleanCellAccessible extends RendererCellAccessible implements Atk
 
     constructor(properties?: Partial<BooleanCellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<BooleanCellAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: BooleanCellAccessiblePrivate | any;
 }
 export module Box {
     export interface ConstructorProperties extends Container.ConstructorProperties {
@@ -4031,6 +4059,9 @@ export class Box extends Container implements Atk.ImplementorIface, Buildable, O
     set homogeneous(val: boolean);
     get spacing(): number;
     set spacing(val: number);
+
+    // Fields
+    container: Container;
 
     // Implemented Properties
 
@@ -4080,6 +4111,9 @@ export class Builder extends GObject.Object {
     set translation_domain(val: string);
     get translationDomain(): string;
     set translationDomain(val: string);
+
+    // Fields
+    priv: BuilderPrivate;
 
     // Constructors
 
@@ -4279,6 +4313,9 @@ export class ButtonAccessible extends ContainerAccessible implements Atk.Action,
     constructor(properties?: Partial<ButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ButtonAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ButtonAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -4309,13 +4346,13 @@ export class ButtonAccessible extends ContainerAccessible implements Atk.Action,
     vfunc_set_description(...args: never[]): any;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module ButtonBox {
@@ -4336,6 +4373,9 @@ export class ButtonBox extends Box implements Atk.ImplementorIface, Buildable, O
     set layout_style(val: ButtonBoxStyle);
     get layoutStyle(): ButtonBoxStyle;
     set layoutStyle(val: ButtonBoxStyle);
+
+    // Fields
+    box: Box;
 
     // Implemented Properties
 
@@ -4424,6 +4464,10 @@ export class Calendar extends Widget implements Atk.ImplementorIface, Buildable 
     get year(): number;
     set year(val: number);
 
+    // Fields
+    widget: Widget;
+    priv: CalendarPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -4458,7 +4502,7 @@ export class Calendar extends Widget implements Atk.ImplementorIface, Buildable 
     // Members
 
     clear_marks(): void;
-    get_date(): [number | null, number | null, number | null];
+    get_date(): [number, number, number];
     get_day_is_marked(day: number): boolean;
     get_detail_height_rows(): number;
     get_detail_width_chars(): number;
@@ -4489,7 +4533,7 @@ export class Calendar extends Widget implements Atk.ImplementorIface, Buildable 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -4503,7 +4547,7 @@ export class Calendar extends Widget implements Atk.ImplementorIface, Buildable 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -4520,6 +4564,9 @@ export class CellAccessible extends Accessible implements Atk.Action, Atk.Compon
 
     constructor(properties?: Partial<CellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<CellAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: CellAccessiblePrivate;
 
     // Members
 
@@ -4555,13 +4602,13 @@ export class CellAccessible extends Accessible implements Atk.Action, Atk.Compon
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.get_position
     get_position(...args: never[]): any;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -4573,13 +4620,13 @@ export class CellAccessible extends Accessible implements Atk.Action, Atk.Compon
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.vfunc_get_position
     vfunc_get_position(...args: never[]): any;
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -4752,18 +4799,10 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
     get_focus_cell(): CellRenderer;
     get_focus_from_sibling(renderer: CellRenderer): CellRenderer | null;
     get_focus_siblings(renderer: CellRenderer): CellRenderer[];
-    get_preferred_height(context: CellAreaContext, widget: Widget): [number | null, number | null];
-    get_preferred_height_for_width(
-        context: CellAreaContext,
-        widget: Widget,
-        width: number
-    ): [number | null, number | null];
-    get_preferred_width(context: CellAreaContext, widget: Widget): [number | null, number | null];
-    get_preferred_width_for_height(
-        context: CellAreaContext,
-        widget: Widget,
-        height: number
-    ): [number | null, number | null];
+    get_preferred_height(context: CellAreaContext, widget: Widget): [number, number];
+    get_preferred_height_for_width(context: CellAreaContext, widget: Widget, width: number): [number, number];
+    get_preferred_width(context: CellAreaContext, widget: Widget): [number, number];
+    get_preferred_width_for_height(context: CellAreaContext, widget: Widget, height: number): [number, number];
     get_request_mode(): SizeRequestMode;
     has_renderer(renderer: CellRenderer): boolean;
     inner_cell_area(widget: Widget, cell_area: Gdk.Rectangle): Gdk.Rectangle;
@@ -4785,7 +4824,7 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
         orientation: Orientation,
         widget: Widget,
         for_size: number
-    ): [number | null, number | null];
+    ): [number, number];
     set_focus_cell(renderer: CellRenderer): void;
     stop_editing(canceled: boolean): void;
     vfunc_activate(
@@ -4821,18 +4860,10 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
         value: GObject.Value | any,
         pspec: GObject.ParamSpec
     ): void;
-    vfunc_get_preferred_height(context: CellAreaContext, widget: Widget): [number | null, number | null];
-    vfunc_get_preferred_height_for_width(
-        context: CellAreaContext,
-        widget: Widget,
-        width: number
-    ): [number | null, number | null];
-    vfunc_get_preferred_width(context: CellAreaContext, widget: Widget): [number | null, number | null];
-    vfunc_get_preferred_width_for_height(
-        context: CellAreaContext,
-        widget: Widget,
-        height: number
-    ): [number | null, number | null];
+    vfunc_get_preferred_height(context: CellAreaContext, widget: Widget): [number, number];
+    vfunc_get_preferred_height_for_width(context: CellAreaContext, widget: Widget, width: number): [number, number];
+    vfunc_get_preferred_width(context: CellAreaContext, widget: Widget): [number, number];
+    vfunc_get_preferred_width_for_height(context: CellAreaContext, widget: Widget, height: number): [number, number];
     vfunc_get_request_mode(): SizeRequestMode;
     vfunc_is_activatable(): boolean;
     vfunc_remove(renderer: CellRenderer): void;
@@ -4851,6 +4882,9 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
         value: GObject.Value | any,
         pspec: GObject.ParamSpec
     ): void;
+    static find_cell_property(property_name: string): GObject.ParamSpec;
+    static install_cell_property(property_id: number, pspec: GObject.ParamSpec): void;
+    static list_cell_properties(): GObject.ParamSpec[];
 
     // Implemented Members
 
@@ -4862,7 +4896,7 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -4876,7 +4910,7 @@ export abstract class CellArea extends GObject.InitiallyUnowned implements Build
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -4947,7 +4981,7 @@ export class CellAreaBox extends CellArea implements Buildable, CellLayout, Orie
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -4961,7 +4995,7 @@ export class CellAreaBox extends CellArea implements Buildable, CellLayout, Orie
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -5020,18 +5054,18 @@ export class CellAreaContext extends GObject.Object {
     // Members
 
     allocate(width: number, height: number): void;
-    get_allocation(): [number | null, number | null];
+    get_allocation(): [number, number];
     get_area(): CellArea;
-    get_preferred_height(): [number | null, number | null];
-    get_preferred_height_for_width(width: number): [number | null, number | null];
-    get_preferred_width(): [number | null, number | null];
-    get_preferred_width_for_height(height: number): [number | null, number | null];
+    get_preferred_height(): [number, number];
+    get_preferred_height_for_width(width: number): [number, number];
+    get_preferred_width(): [number, number];
+    get_preferred_width_for_height(height: number): [number, number];
     push_preferred_height(minimum_height: number, natural_height: number): void;
     push_preferred_width(minimum_width: number, natural_width: number): void;
     reset(): void;
     vfunc_allocate(width: number, height: number): void;
-    vfunc_get_preferred_height_for_width(width: number): [number | null, number | null];
-    vfunc_get_preferred_width_for_height(height: number): [number | null, number | null];
+    vfunc_get_preferred_height_for_width(width: number): [number, number];
+    vfunc_get_preferred_width_for_height(height: number): [number, number];
     vfunc_reset(): void;
 }
 export module CellRenderer {
@@ -5136,20 +5170,17 @@ export abstract class CellRenderer extends GObject.InitiallyUnowned {
         flags: CellRendererState
     ): boolean;
     get_aligned_area(widget: Widget, flags: CellRendererState, cell_area: Gdk.Rectangle): Gdk.Rectangle;
-    get_alignment(): [number | null, number | null];
-    get_fixed_size(): [number | null, number | null];
-    get_padding(): [number | null, number | null];
-    get_preferred_height(widget: Widget): [number | null, number | null];
-    get_preferred_height_for_width(widget: Widget, width: number): [number | null, number | null];
+    get_alignment(): [number, number];
+    get_fixed_size(): [number, number];
+    get_padding(): [number, number];
+    get_preferred_height(widget: Widget): [number, number];
+    get_preferred_height_for_width(widget: Widget, width: number): [number, number];
     get_preferred_size(widget: Widget): [Requisition | null, Requisition | null];
-    get_preferred_width(widget: Widget): [number | null, number | null];
-    get_preferred_width_for_height(widget: Widget, height: number): [number | null, number | null];
+    get_preferred_width(widget: Widget): [number, number];
+    get_preferred_width_for_height(widget: Widget, height: number): [number, number];
     get_request_mode(): SizeRequestMode;
     get_sensitive(): boolean;
-    get_size(
-        widget: Widget,
-        cell_area?: Gdk.Rectangle | null
-    ): [number | null, number | null, number | null, number | null];
+    get_size(widget: Widget, cell_area: Gdk.Rectangle | null): [number, number, number, number];
     get_state(widget: Widget | null, cell_state: CellRendererState): StateFlags;
     get_visible(): boolean;
     is_activatable(): boolean;
@@ -5185,15 +5216,12 @@ export abstract class CellRenderer extends GObject.InitiallyUnowned {
     vfunc_editing_canceled(): void;
     vfunc_editing_started(editable: CellEditable, path: string): void;
     vfunc_get_aligned_area(widget: Widget, flags: CellRendererState, cell_area: Gdk.Rectangle): Gdk.Rectangle;
-    vfunc_get_preferred_height(widget: Widget): [number | null, number | null];
-    vfunc_get_preferred_height_for_width(widget: Widget, width: number): [number | null, number | null];
-    vfunc_get_preferred_width(widget: Widget): [number | null, number | null];
-    vfunc_get_preferred_width_for_height(widget: Widget, height: number): [number | null, number | null];
+    vfunc_get_preferred_height(widget: Widget): [number, number];
+    vfunc_get_preferred_height_for_width(widget: Widget, width: number): [number, number];
+    vfunc_get_preferred_width(widget: Widget): [number, number];
+    vfunc_get_preferred_width_for_height(widget: Widget, height: number): [number, number];
     vfunc_get_request_mode(): SizeRequestMode;
-    vfunc_get_size(
-        widget: Widget,
-        cell_area?: Gdk.Rectangle | null
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_size(widget: Widget, cell_area: Gdk.Rectangle | null): [number, number, number, number];
     vfunc_render(
         cr: cairo.Context,
         widget: Widget,
@@ -5209,6 +5237,7 @@ export abstract class CellRenderer extends GObject.InitiallyUnowned {
         cell_area: Gdk.Rectangle,
         flags: CellRendererState
     ): CellEditable | null;
+    static set_accessible_type(type: GObject.GType): void;
 }
 export module CellRendererAccel {
     export interface ConstructorProperties extends CellRendererText.ConstructorProperties {
@@ -5915,7 +5944,7 @@ export class CellView extends Widget implements Atk.ImplementorIface, Buildable,
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -5929,7 +5958,7 @@ export class CellView extends Widget implements Atk.ImplementorIface, Buildable,
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -5967,6 +5996,9 @@ export class CheckButton extends ToggleButton implements Atk.ImplementorIface, A
     constructor(properties?: Partial<CheckButton.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<CheckButton.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    toggle_button: ToggleButton;
+
     // Constructors
 
     static ["new"](): CheckButton;
@@ -6001,6 +6033,9 @@ export class CheckMenuItem extends MenuItem implements Atk.ImplementorIface, Act
     set drawAsRadio(val: boolean);
     get inconsistent(): boolean;
     set inconsistent(val: boolean);
+
+    // Fields
+    menu_item: MenuItem;
 
     // Signals
 
@@ -6078,6 +6113,9 @@ export class CheckMenuItemAccessible extends MenuItemAccessible implements Atk.A
 
     constructor(properties?: Partial<CheckMenuItemAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<CheckMenuItemAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: CheckMenuItemAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -6212,6 +6250,9 @@ export class ColorButton
     set use_alpha(val: boolean);
     get useAlpha(): boolean;
     set useAlpha(val: boolean);
+
+    // Fields
+    button: Button;
 
     // Signals
 
@@ -6719,6 +6760,9 @@ export class ComboBoxAccessible extends ContainerAccessible implements Atk.Actio
     constructor(properties?: Partial<ComboBoxAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ComboBoxAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ComboBoxAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -6854,6 +6898,9 @@ export abstract class Container extends Widget implements Atk.ImplementorIface, 
     get resizeMode(): ResizeMode;
     set resizeMode(val: ResizeMode);
 
+    // Fields
+    widget: Widget;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -6924,6 +6971,11 @@ export abstract class Container extends Widget implements Atk.ImplementorIface, 
         pspec: GObject.ParamSpec
     ): void;
     vfunc_set_focus_child(child?: Widget | null): void;
+    static find_child_property(property_name: string): GObject.ParamSpec | null;
+    static handle_border_width(): void;
+    static install_child_properties(pspecs: GObject.ParamSpec[]): void;
+    static install_child_property(property_id: number, pspec: GObject.ParamSpec): void;
+    static list_child_properties(): GObject.ParamSpec[];
 
     // Implemented Members
 
@@ -6935,7 +6987,7 @@ export abstract class Container extends Widget implements Atk.ImplementorIface, 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -6949,7 +7001,7 @@ export abstract class Container extends Widget implements Atk.ImplementorIface, 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -6967,15 +7019,18 @@ export class ContainerAccessible extends WidgetAccessible implements Atk.Compone
     constructor(properties?: Partial<ContainerAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ContainerAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ContainerAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -6987,11 +7042,11 @@ export class ContainerAccessible extends WidgetAccessible implements Atk.Compone
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -7011,6 +7066,9 @@ export class ContainerCellAccessible extends CellAccessible implements Atk.Actio
 
     constructor(properties?: Partial<ContainerCellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ContainerCellAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ContainerCellAccessiblePrivate | any;
 
     // Constructors
 
@@ -7052,13 +7110,13 @@ export class ContainerCellAccessible extends CellAccessible implements Atk.Actio
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.get_position
     get_position(...args: never[]): any;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -7070,13 +7128,13 @@ export class ContainerCellAccessible extends CellAccessible implements Atk.Actio
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.vfunc_get_position
     vfunc_get_position(...args: never[]): any;
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -7108,6 +7166,9 @@ export class CssProvider extends GObject.Object implements StyleProvider {
 
     constructor(properties?: Partial<CssProvider.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<CssProvider.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: CssProviderPrivate;
 
     // Signals
 
@@ -7162,6 +7223,11 @@ export class Dialog extends Window implements Atk.ImplementorIface, Buildable {
     get use_header_bar(): number;
     get useHeaderBar(): number;
 
+    // Fields
+    // This accessor conflicts with a property, field, or function name in a parent class or interface.
+    // @ts-expect-error
+    window: Window | any;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -7206,6 +7272,9 @@ export class DrawingArea extends Widget implements Atk.ImplementorIface, Buildab
     constructor(properties?: Partial<DrawingArea.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<DrawingArea.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    widget: Widget;
+
     // Constructors
 
     static ["new"](): DrawingArea;
@@ -7220,7 +7289,7 @@ export class DrawingArea extends Widget implements Atk.ImplementorIface, Buildab
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -7234,7 +7303,7 @@ export class DrawingArea extends Widget implements Atk.ImplementorIface, Buildab
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -7631,7 +7700,7 @@ export class Entry extends Widget implements Atk.ImplementorIface, Buildable, Ce
     get_input_purpose(): InputPurpose;
     get_invisible_char(): number;
     get_layout(): Pango.Layout;
-    get_layout_offsets(): [number | null, number | null];
+    get_layout_offsets(): [number, number];
     get_max_length(): number;
     get_max_width_chars(): number;
     get_overwrite_mode(): boolean;
@@ -7705,7 +7774,7 @@ export class Entry extends Widget implements Atk.ImplementorIface, Buildable, Ce
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -7719,7 +7788,7 @@ export class Entry extends Widget implements Atk.ImplementorIface, Buildable, Ce
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -7738,7 +7807,7 @@ export class Entry extends Widget implements Atk.ImplementorIface, Buildable, Ce
     get_chars(start_pos: number, end_pos: number): string;
     get_editable(): boolean;
     get_position(): number;
-    get_selection_bounds(): [boolean, number | null, number | null];
+    get_selection_bounds(): [boolean, number, number];
     insert_text(new_text: string, new_text_length: number, position: number): number;
     paste_clipboard(): void;
     select_region(start_pos: number, end_pos: number): void;
@@ -7750,7 +7819,7 @@ export class Entry extends Widget implements Atk.ImplementorIface, Buildable, Ce
     vfunc_do_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_get_chars(start_pos: number, end_pos: number): string;
     vfunc_get_position(): number;
-    vfunc_get_selection_bounds(): [boolean, number | null, number | null];
+    vfunc_get_selection_bounds(): [boolean, number, number];
     vfunc_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_set_position(position: number): void;
     vfunc_set_selection_bounds(start_pos: number, end_pos: number): void;
@@ -7765,6 +7834,9 @@ export class EntryAccessible extends WidgetAccessible implements Atk.Action, Atk
 
     constructor(properties?: Partial<EntryAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<EntryAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: EntryAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -7796,11 +7868,11 @@ export class EntryAccessible extends WidgetAccessible implements Atk.Action, Atk
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -7812,11 +7884,11 @@ export class EntryAccessible extends WidgetAccessible implements Atk.Action, Atk
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -7849,10 +7921,7 @@ export class EntryAccessible extends WidgetAccessible implements Atk.Action, Atk
     get_caret_offset(): number;
     get_character_at_offset(offset: number): number;
     get_character_count(): number;
-    get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     get_default_attributes(): Atk.AttributeSet;
     get_n_selections(): number;
     get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -7885,10 +7954,7 @@ export class EntryAccessible extends WidgetAccessible implements Atk.Action, Atk
     vfunc_get_caret_offset(): number;
     vfunc_get_character_at_offset(offset: number): number;
     vfunc_get_character_count(): number;
-    vfunc_get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     vfunc_get_default_attributes(): Atk.AttributeSet;
     vfunc_get_n_selections(): number;
     vfunc_get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -8118,7 +8184,7 @@ export class EntryCompletion extends GObject.Object implements Buildable, CellLa
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -8132,7 +8198,7 @@ export class EntryCompletion extends GObject.Object implements Buildable, CellLa
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -8198,11 +8264,11 @@ export class EntryIconAccessible extends Atk.Object implements Atk.Action, Atk.C
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -8214,11 +8280,11 @@ export class EntryIconAccessible extends Atk.Object implements Atk.Action, Atk.C
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -8252,6 +8318,9 @@ export class EventBox extends Bin implements Atk.ImplementorIface, Buildable {
     set visible_window(val: boolean);
     get visibleWindow(): boolean;
     set visibleWindow(val: boolean);
+
+    // Fields
+    bin: Bin;
 
     // Constructors
 
@@ -8476,6 +8545,10 @@ export class Expander extends Bin implements Atk.ImplementorIface, Buildable {
     get useUnderline(): boolean;
     set useUnderline(val: boolean);
 
+    // Fields
+    bin: Bin;
+    priv: ExpanderPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -8520,6 +8593,9 @@ export class ExpanderAccessible extends ContainerAccessible implements Atk.Actio
 
     constructor(properties?: Partial<ExpanderAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ExpanderAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ExpanderAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -8655,7 +8731,7 @@ export class FileChooserButton extends Box implements Atk.ImplementorIface, Buil
     get_choice(id: string): string;
     get_create_folders(): boolean;
     get_current_folder(): string | null;
-    get_current_folder_file(): Gio.File;
+    get_current_folder_file(): Gio.File | null;
     get_current_folder_uri(): string | null;
     get_current_name(): string;
     get_do_overwrite_confirmation(): boolean;
@@ -8724,6 +8800,9 @@ export class FileChooserDialog extends Dialog implements Atk.ImplementorIface, B
     constructor(properties?: Partial<FileChooserDialog.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<FileChooserDialog.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: FileChooserDialogPrivate | any;
+
     // Implemented Properties
 
     get action(): FileChooserAction;
@@ -8777,7 +8856,7 @@ export class FileChooserDialog extends Dialog implements Atk.ImplementorIface, B
     get_choice(id: string): string;
     get_create_folders(): boolean;
     get_current_folder(): string | null;
-    get_current_folder_file(): Gio.File;
+    get_current_folder_file(): Gio.File | null;
     get_current_folder_uri(): string | null;
     get_current_name(): string;
     get_do_overwrite_confirmation(): boolean;
@@ -8928,7 +9007,7 @@ export class FileChooserNative extends NativeDialog implements FileChooser {
     get_choice(id: string): string;
     get_create_folders(): boolean;
     get_current_folder(): string | null;
-    get_current_folder_file(): Gio.File;
+    get_current_folder_file(): Gio.File | null;
     get_current_folder_uri(): string | null;
     get_current_name(): string;
     get_do_overwrite_confirmation(): boolean;
@@ -9004,6 +9083,9 @@ export class FileChooserWidget extends Box implements Atk.ImplementorIface, Buil
     get searchMode(): boolean;
     set searchMode(val: boolean);
     get subtitle(): string;
+
+    // Fields
+    priv: FileChooserWidgetPrivate;
 
     // Signals
 
@@ -9108,7 +9190,7 @@ export class FileChooserWidget extends Box implements Atk.ImplementorIface, Buil
     get_choice(id: string): string;
     get_create_folders(): boolean;
     get_current_folder(): string | null;
-    get_current_folder_file(): Gio.File;
+    get_current_folder_file(): Gio.File | null;
     get_current_folder_uri(): string | null;
     get_current_name(): string;
     get_do_overwrite_confirmation(): boolean;
@@ -9166,6 +9248,49 @@ export class FileChooserWidget extends Box implements Atk.ImplementorIface, Buil
     get_orientation(): Orientation;
     set_orientation(orientation: Orientation): void;
 }
+export module FileChooserWidgetAccessible {
+    export interface ConstructorProperties extends ContainerAccessible.ConstructorProperties {
+        [key: string]: any;
+    }
+}
+export class FileChooserWidgetAccessible extends ContainerAccessible implements Atk.Action, Atk.Component {
+    static $gtype: GObject.GType<FileChooserWidgetAccessible>;
+
+    constructor(properties?: Partial<FileChooserWidgetAccessible.ConstructorProperties>, ...args: any[]);
+    _init(properties?: Partial<FileChooserWidgetAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: FileChooserWidgetAccessiblePrivate | any;
+
+    // Implemented Members
+
+    do_action(i: number): boolean;
+    get_description(i: number): string | null;
+    // Conflicted with Atk.Object.get_description
+    get_description(...args: never[]): any;
+    get_keybinding(i: number): string | null;
+    get_localized_name(i: number): string | null;
+    get_n_actions(): number;
+    get_name(i: number): string | null;
+    // Conflicted with Atk.Object.get_name
+    get_name(...args: never[]): any;
+    set_description(i: number, desc: string): boolean;
+    // Conflicted with Atk.Object.set_description
+    set_description(...args: never[]): any;
+    vfunc_do_action(i: number): boolean;
+    vfunc_get_description(i: number): string | null;
+    // Conflicted with Atk.Object.vfunc_get_description
+    vfunc_get_description(...args: never[]): any;
+    vfunc_get_keybinding(i: number): string | null;
+    vfunc_get_localized_name(i: number): string | null;
+    vfunc_get_n_actions(): number;
+    vfunc_get_name(i: number): string | null;
+    // Conflicted with Atk.Object.vfunc_get_name
+    vfunc_get_name(...args: never[]): any;
+    vfunc_set_description(i: number, desc: string): boolean;
+    // Conflicted with Atk.Object.vfunc_set_description
+    vfunc_set_description(...args: never[]): any;
+}
 export module FileFilter {
     export interface ConstructorProperties extends GObject.InitiallyUnowned.ConstructorProperties {
         [key: string]: any;
@@ -9208,7 +9333,7 @@ export class FileFilter extends GObject.InitiallyUnowned implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     parser_finished(builder: Builder): void;
     set_buildable_property(builder: Builder, name: string, value: GObject.Value | any): void;
@@ -9220,7 +9345,7 @@ export class FileFilter extends GObject.InitiallyUnowned implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -9237,6 +9362,9 @@ export class Fixed extends Container implements Atk.ImplementorIface, Buildable 
 
     constructor(properties?: Partial<Fixed.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Fixed.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    container: Container;
 
     // Constructors
 
@@ -9298,6 +9426,9 @@ export class FlowBox extends Container implements Atk.ImplementorIface, Buildabl
     set selection_mode(val: SelectionMode);
     get selectionMode(): SelectionMode;
     set selectionMode(val: SelectionMode);
+
+    // Fields
+    container: Container;
 
     // Signals
 
@@ -9393,6 +9524,9 @@ export class FlowBoxAccessible extends ContainerAccessible implements Atk.Compon
 
     constructor(properties?: Partial<FlowBoxAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<FlowBoxAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: FlowBoxAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -9502,6 +9636,9 @@ export class FontButton
     set use_size(val: boolean);
     get useSize(): boolean;
     set useSize(val: boolean);
+
+    // Fields
+    button: Button;
 
     // Signals
 
@@ -9885,6 +10022,9 @@ export class Frame extends Bin implements Atk.ImplementorIface, Buildable {
     get shadowType(): ShadowType;
     set shadowType(val: ShadowType);
 
+    // Fields
+    bin: Bin;
+
     // Constructors
 
     static ["new"](label?: string | null): Frame;
@@ -9892,7 +10032,7 @@ export class Frame extends Bin implements Atk.ImplementorIface, Buildable {
     // Members
 
     get_label(): string | null;
-    get_label_align(): [number | null, number | null];
+    get_label_align(): [number, number];
     get_label_widget(): Widget | null;
     get_shadow_type(): ShadowType;
     set_label(label?: string | null): void;
@@ -9911,6 +10051,9 @@ export class FrameAccessible extends ContainerAccessible implements Atk.Componen
 
     constructor(properties?: Partial<FrameAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<FrameAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: FrameAccessiblePrivate | any;
 }
 export module GLArea {
     export interface ConstructorProperties extends Widget.ConstructorProperties {
@@ -10009,7 +10152,7 @@ export class GLArea extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -10023,7 +10166,7 @@ export class GLArea extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -10085,7 +10228,7 @@ export abstract class Gesture extends EventController {
     get_group(): Gesture[];
     get_last_event(sequence?: Gdk.EventSequence | null): Gdk.Event | null;
     get_last_updated_sequence(): Gdk.EventSequence | null;
-    get_point(sequence?: Gdk.EventSequence | null): [boolean, number | null, number | null];
+    get_point(sequence: Gdk.EventSequence | null): [boolean, number, number];
     get_sequence_state(sequence: Gdk.EventSequence): EventSequenceState;
     get_sequences(): Gdk.EventSequence[];
     get_window(): Gdk.Window | null;
@@ -10131,8 +10274,8 @@ export class GestureDrag extends GestureSingle {
 
     // Members
 
-    get_offset(): [boolean, number | null, number | null];
-    get_start_point(): [boolean, number | null, number | null];
+    get_offset(): [boolean, number, number];
+    get_start_point(): [boolean, number, number];
 }
 export module GestureLongPress {
     export interface ConstructorProperties extends GestureSingle.ConstructorProperties {
@@ -10493,6 +10636,9 @@ export class HBox extends Box implements Atk.ImplementorIface, Buildable, Orient
     constructor(properties?: Partial<HBox.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HBox.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    box: Box;
+
     // Implemented Properties
 
     get orientation(): Orientation;
@@ -10520,6 +10666,9 @@ export class HButtonBox extends ButtonBox implements Atk.ImplementorIface, Build
     constructor(properties?: Partial<HButtonBox.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HButtonBox.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    button_box: ButtonBox;
+
     // Constructors
 
     static ["new"](): HButtonBox;
@@ -10534,6 +10683,9 @@ export class HPaned extends Paned implements Atk.ImplementorIface, Buildable, Or
 
     constructor(properties?: Partial<HPaned.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HPaned.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    paned: Paned;
 
     // Implemented Properties
 
@@ -10597,7 +10749,7 @@ export class HSV extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -10611,7 +10763,7 @@ export class HSV extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -10628,6 +10780,9 @@ export class HScale extends Scale implements Atk.ImplementorIface, Buildable, Or
 
     constructor(properties?: Partial<HScale.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HScale.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    scale: Scale;
 
     // Constructors
 
@@ -10649,6 +10804,9 @@ export class HScrollbar extends Scrollbar implements Atk.ImplementorIface, Build
     constructor(properties?: Partial<HScrollbar.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HScrollbar.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    scrollbar: Scrollbar;
+
     // Constructors
 
     static ["new"](adjustment?: Adjustment | null): HScrollbar;
@@ -10665,6 +10823,9 @@ export class HSeparator extends Separator implements Atk.ImplementorIface, Build
 
     constructor(properties?: Partial<HSeparator.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<HSeparator.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    separator: Separator;
 
     // Implemented Properties
 
@@ -10720,6 +10881,9 @@ export class HandleBox extends Bin implements Atk.ImplementorIface, Buildable {
     set snap_edge_set(val: boolean);
     get snapEdgeSet(): boolean;
     set snapEdgeSet(val: boolean);
+
+    // Fields
+    bin: Bin;
 
     // Signals
 
@@ -10800,6 +10964,9 @@ export class HeaderBar extends Container implements Atk.ImplementorIface, Builda
     set subtitle(val: string);
     get title(): string;
     set title(val: string);
+
+    // Fields
+    container: Container;
 
     // Constructors
 
@@ -10929,6 +11096,9 @@ export class IMContextSimple extends IMContext {
     constructor(properties?: Partial<IMContextSimple.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<IMContextSimple.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    object: IMContext;
+
     // Constructors
 
     static ["new"](): IMContextSimple;
@@ -10947,6 +11117,9 @@ export class IMMulticontext extends IMContext {
 
     constructor(properties?: Partial<IMMulticontext.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<IMMulticontext.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    object: IMContext;
 
     // Constructors
 
@@ -10991,7 +11164,7 @@ export class IconFactory extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -11005,7 +11178,7 @@ export class IconFactory extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -11048,17 +11221,17 @@ export class IconInfo extends GObject.Object {
     load_surface(for_window?: Gdk.Window | null): cairo.Surface;
     load_symbolic(
         fg: Gdk.RGBA,
-        success_color?: Gdk.RGBA | null,
-        warning_color?: Gdk.RGBA | null,
-        error_color?: Gdk.RGBA | null
-    ): [GdkPixbuf.Pixbuf, boolean | null];
+        success_color: Gdk.RGBA | null,
+        warning_color: Gdk.RGBA | null,
+        error_color: Gdk.RGBA | null
+    ): [GdkPixbuf.Pixbuf, boolean];
     load_symbolic_async(
         fg: Gdk.RGBA,
         success_color?: Gdk.RGBA | null,
         warning_color?: Gdk.RGBA | null,
         error_color?: Gdk.RGBA | null,
         cancellable?: Gio.Cancellable | null
-    ): Promise<[GdkPixbuf.Pixbuf, boolean | null]>;
+    ): Promise<[GdkPixbuf.Pixbuf, boolean]>;
     load_symbolic_async(
         fg: Gdk.RGBA,
         success_color: Gdk.RGBA | null,
@@ -11074,13 +11247,13 @@ export class IconInfo extends GObject.Object {
         error_color?: Gdk.RGBA | null,
         cancellable?: Gio.Cancellable | null,
         callback?: Gio.AsyncReadyCallback<this> | null
-    ): Promise<[GdkPixbuf.Pixbuf, boolean | null]> | void;
-    load_symbolic_finish(res: Gio.AsyncResult): [GdkPixbuf.Pixbuf, boolean | null];
-    load_symbolic_for_context(context: StyleContext): [GdkPixbuf.Pixbuf, boolean | null];
+    ): Promise<[GdkPixbuf.Pixbuf, boolean]> | void;
+    load_symbolic_finish(res: Gio.AsyncResult): [GdkPixbuf.Pixbuf, boolean];
+    load_symbolic_for_context(context: StyleContext): [GdkPixbuf.Pixbuf, boolean];
     load_symbolic_for_context_async(
         context: StyleContext,
         cancellable?: Gio.Cancellable | null
-    ): Promise<[GdkPixbuf.Pixbuf, boolean | null]>;
+    ): Promise<[GdkPixbuf.Pixbuf, boolean]>;
     load_symbolic_for_context_async(
         context: StyleContext,
         cancellable: Gio.Cancellable | null,
@@ -11090,9 +11263,9 @@ export class IconInfo extends GObject.Object {
         context: StyleContext,
         cancellable?: Gio.Cancellable | null,
         callback?: Gio.AsyncReadyCallback<this> | null
-    ): Promise<[GdkPixbuf.Pixbuf, boolean | null]> | void;
-    load_symbolic_for_context_finish(res: Gio.AsyncResult): [GdkPixbuf.Pixbuf, boolean | null];
-    load_symbolic_for_style(style: Style, state: StateType): [GdkPixbuf.Pixbuf, boolean | null];
+    ): Promise<[GdkPixbuf.Pixbuf, boolean]> | void;
+    load_symbolic_for_context_finish(res: Gio.AsyncResult): [GdkPixbuf.Pixbuf, boolean];
+    load_symbolic_for_style(style: Style, state: StateType): [GdkPixbuf.Pixbuf, boolean];
     set_raw_coordinates(raw_coordinates: boolean): void;
 }
 export module IconTheme {
@@ -11433,6 +11606,9 @@ export class IconViewAccessible extends ContainerAccessible implements Atk.Compo
     constructor(properties?: Partial<IconViewAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<IconViewAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: IconViewAccessiblePrivate | any;
+
     // Implemented Members
 
     add_selection(i: number): boolean;
@@ -11522,6 +11698,9 @@ export class Image extends Misc implements Atk.ImplementorIface, Buildable {
     get useFallback(): boolean;
     set useFallback(val: boolean);
 
+    // Fields
+    misc: Misc;
+
     // Constructors
 
     static ["new"](): Image;
@@ -11539,12 +11718,12 @@ export class Image extends Misc implements Atk.ImplementorIface, Buildable {
 
     clear(): void;
     get_animation(): GdkPixbuf.PixbufAnimation | null;
-    get_gicon(): [Gio.Icon | null, number | null];
-    get_icon_name(): [string | null, number | null];
-    get_icon_set(): [IconSet | null, number | null];
+    get_gicon(): [Gio.Icon | null, number];
+    get_icon_name(): [string, number];
+    get_icon_set(): [IconSet | null, number];
     get_pixbuf(): GdkPixbuf.Pixbuf | null;
     get_pixel_size(): number;
-    get_stock(): [string | null, number | null];
+    get_stock(): [string, number];
     get_storage_type(): ImageType;
     set_from_animation(animation: GdkPixbuf.PixbufAnimation): void;
     set_from_file(filename?: string | null): void;
@@ -11568,15 +11747,18 @@ export class ImageAccessible extends WidgetAccessible implements Atk.Component, 
     constructor(properties?: Partial<ImageAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ImageAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ImageAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -11588,11 +11770,11 @@ export class ImageAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -11603,13 +11785,13 @@ export class ImageAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_set_size(width: number, height: number): boolean;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module ImageCellAccessible {
@@ -11626,17 +11808,20 @@ export class ImageCellAccessible
     constructor(properties?: Partial<ImageCellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ImageCellAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ImageCellAccessiblePrivate | any;
+
     // Implemented Members
 
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module ImageMenuItem {
@@ -11670,6 +11855,9 @@ export class ImageMenuItem extends MenuItem implements Atk.ImplementorIface, Act
     set use_stock(val: boolean);
     get useStock(): boolean;
     set useStock(val: boolean);
+
+    // Fields
+    menu_item: MenuItem;
 
     // Implemented Properties
 
@@ -11815,6 +12003,9 @@ export class Invisible extends Widget implements Atk.ImplementorIface, Buildable
     get screen(): Gdk.Screen;
     set screen(val: Gdk.Screen);
 
+    // Fields
+    widget: Widget;
+
     // Constructors
 
     static ["new"](): Invisible;
@@ -11835,7 +12026,7 @@ export class Invisible extends Widget implements Atk.ImplementorIface, Buildable
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -11849,7 +12040,7 @@ export class Invisible extends Widget implements Atk.ImplementorIface, Buildable
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -11961,6 +12152,9 @@ export class Label extends Misc implements Atk.ImplementorIface, Buildable {
     get yalign(): number;
     set yalign(val: number);
 
+    // Fields
+    misc: Misc;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -12002,7 +12196,7 @@ export class Label extends Misc implements Atk.ImplementorIface, Buildable {
     get_justify(): Justification;
     get_label(): string;
     get_layout(): Pango.Layout;
-    get_layout_offsets(): [number | null, number | null];
+    get_layout_offsets(): [number, number];
     get_line_wrap(): boolean;
     get_line_wrap_mode(): Pango.WrapMode;
     get_lines(): number;
@@ -12059,15 +12253,18 @@ export class LabelAccessible extends WidgetAccessible implements Atk.Component, 
     constructor(properties?: Partial<LabelAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<LabelAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: LabelAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -12079,11 +12276,11 @@ export class LabelAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -12109,10 +12306,7 @@ export class LabelAccessible extends WidgetAccessible implements Atk.Component, 
     get_caret_offset(): number;
     get_character_at_offset(offset: number): number;
     get_character_count(): number;
-    get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     get_default_attributes(): Atk.AttributeSet;
     get_n_selections(): number;
     get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -12145,10 +12339,7 @@ export class LabelAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_get_caret_offset(): number;
     vfunc_get_character_at_offset(offset: number): number;
     vfunc_get_character_count(): number;
-    vfunc_get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     vfunc_get_default_attributes(): Atk.AttributeSet;
     vfunc_get_n_selections(): number;
     vfunc_get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -12195,6 +12386,9 @@ export class Layout extends Container implements Atk.ImplementorIface, Buildable
     get width(): number;
     set width(val: number);
 
+    // Fields
+    container: Container;
+
     // Implemented Properties
 
     get hadjustment(): Adjustment;
@@ -12218,7 +12412,7 @@ export class Layout extends Container implements Atk.ImplementorIface, Buildable
 
     get_bin_window(): Gdk.Window;
     get_hadjustment(): Adjustment;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     get_vadjustment(): Adjustment;
     move(child_widget: Widget, x: number, y: number): void;
     put(child_widget: Widget, x: number, y: number): void;
@@ -12315,7 +12509,7 @@ export class LevelBar extends Widget implements Atk.ImplementorIface, Buildable,
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -12329,7 +12523,7 @@ export class LevelBar extends Widget implements Atk.ImplementorIface, Buildable,
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -12349,15 +12543,18 @@ export class LevelBarAccessible extends WidgetAccessible implements Atk.Componen
     constructor(properties?: Partial<LevelBarAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<LevelBarAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: LevelBarAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -12369,11 +12566,11 @@ export class LevelBarAccessible extends WidgetAccessible implements Atk.Componen
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -12389,7 +12586,7 @@ export class LevelBarAccessible extends WidgetAccessible implements Atk.Componen
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -12399,7 +12596,7 @@ export class LevelBarAccessible extends WidgetAccessible implements Atk.Componen
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -12501,6 +12698,9 @@ export class LinkButtonAccessible
     constructor(properties?: Partial<LinkButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<LinkButtonAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: LinkButtonAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -12533,13 +12733,13 @@ export class LinkButtonAccessible
     vfunc_get_hyperlink(): Atk.Hyperlink;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module ListBox {
@@ -12649,6 +12849,9 @@ export class ListBoxAccessible extends ContainerAccessible implements Atk.Compon
 
     constructor(properties?: Partial<ListBoxAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ListBoxAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ListBoxAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -12796,7 +12999,7 @@ export class ListStore
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -12810,7 +13013,7 @@ export class ListStore
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -12933,6 +13136,9 @@ export class LockButton extends Button implements Atk.ImplementorIface, Actionab
     get tooltipUnlock(): string;
     set tooltipUnlock(val: string);
 
+    // Fields
+    priv: LockButtonPrivate;
+
     // Implemented Properties
 
     get action_name(): string;
@@ -12994,6 +13200,9 @@ export class LockButtonAccessible extends ButtonAccessible implements Atk.Action
     constructor(properties?: Partial<LockButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<LockButtonAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: LockButtonAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -13024,13 +13233,13 @@ export class LockButtonAccessible extends ButtonAccessible implements Atk.Action
     vfunc_set_description(...args: never[]): any;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module Menu {
@@ -13111,6 +13320,9 @@ export class Menu extends MenuShell implements Atk.ImplementorIface, Buildable {
     set tearoff_title(val: string);
     get tearoffTitle(): string;
     set tearoffTitle(val: string);
+
+    // Fields
+    menu_shell: MenuShell;
 
     // Signals
 
@@ -13221,6 +13433,9 @@ export class MenuAccessible extends MenuShellAccessible implements Atk.Component
     constructor(properties?: Partial<MenuAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<MenuAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: MenuAccessiblePrivate | any;
+
     // Implemented Members
 
     add_selection(i: number): boolean;
@@ -13263,6 +13478,9 @@ export class MenuBar extends MenuShell implements Atk.ImplementorIface, Buildabl
     set pack_direction(val: PackDirection);
     get packDirection(): PackDirection;
     set packDirection(val: PackDirection);
+
+    // Fields
+    menu_shell: MenuShell;
 
     // Constructors
 
@@ -13349,6 +13567,9 @@ export class MenuButtonAccessible extends ToggleButtonAccessible implements Atk.
 
     constructor(properties?: Partial<MenuButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<MenuButtonAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: MenuButtonAccessiblePrivate | any;
 }
 export module MenuItem {
     export interface ConstructorProperties extends Bin.ConstructorProperties {
@@ -13386,6 +13607,9 @@ export class MenuItem extends Bin implements Atk.ImplementorIface, Actionable, A
     set use_underline(val: boolean);
     get useUnderline(): boolean;
     set useUnderline(val: boolean);
+
+    // Fields
+    bin: Bin;
 
     // Signals
 
@@ -13497,6 +13721,9 @@ export class MenuItemAccessible extends ContainerAccessible implements Atk.Actio
     constructor(properties?: Partial<MenuItemAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<MenuItemAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: MenuItemAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -13559,6 +13786,9 @@ export abstract class MenuShell extends Container implements Atk.ImplementorIfac
     set take_focus(val: boolean);
     get takeFocus(): boolean;
     set takeFocus(val: boolean);
+
+    // Fields
+    container: Container;
 
     // Signals
 
@@ -13626,6 +13856,9 @@ export class MenuShellAccessible extends ContainerAccessible implements Atk.Comp
 
     constructor(properties?: Partial<MenuShellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<MenuShellAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: MenuShellAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -13789,10 +14022,13 @@ export abstract class Misc extends Widget implements Atk.ImplementorIface, Build
     get ypad(): number;
     set ypad(val: number);
 
+    // Fields
+    widget: Widget;
+
     // Members
 
-    get_alignment(): [number | null, number | null];
-    get_padding(): [number | null, number | null];
+    get_alignment(): [number, number];
+    get_padding(): [number, number];
     set_alignment(xalign: number, yalign: number): void;
     set_padding(xpad: number, ypad: number): void;
 
@@ -13806,7 +14042,7 @@ export abstract class Misc extends Widget implements Atk.ImplementorIface, Build
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -13820,7 +14056,7 @@ export abstract class Misc extends Widget implements Atk.ImplementorIface, Build
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -13935,6 +14171,9 @@ export class MountOperation extends Gio.MountOperation {
     get isShowing(): boolean;
     get screen(): Gdk.Screen;
     set screen(val: Gdk.Screen);
+
+    // Fields
+    priv: MountOperationPrivate | any;
 
     // Constructors
 
@@ -14166,6 +14405,9 @@ export class NotebookAccessible extends ContainerAccessible implements Atk.Compo
     constructor(properties?: Partial<NotebookAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<NotebookAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: NotebookAccessiblePrivate | any;
+
     // Implemented Members
 
     add_selection(i: number): boolean;
@@ -14195,6 +14437,9 @@ export class NotebookPageAccessible extends Atk.Object implements Atk.Component 
     constructor(properties?: Partial<NotebookPageAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<NotebookPageAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: NotebookPageAccessiblePrivate;
+
     // Constructors
 
     static ["new"](notebook: NotebookAccessible, child: Widget): NotebookPageAccessible;
@@ -14207,11 +14452,11 @@ export class NotebookPageAccessible extends Atk.Object implements Atk.Component 
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -14223,11 +14468,11 @@ export class NotebookPageAccessible extends Atk.Object implements Atk.Component 
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -14311,6 +14556,9 @@ export class OffscreenWindow extends Window implements Atk.ImplementorIface, Bui
     constructor(properties?: Partial<OffscreenWindow.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<OffscreenWindow.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    parent_object: Window;
+
     // Constructors
 
     static ["new"](): OffscreenWindow;
@@ -14330,6 +14578,9 @@ export class Overlay extends Bin implements Atk.ImplementorIface, Buildable {
 
     constructor(properties?: Partial<Overlay.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Overlay.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: OverlayPrivate;
 
     // Signals
 
@@ -14466,6 +14717,9 @@ export class Paned extends Container implements Atk.ImplementorIface, Buildable,
     get wideHandle(): boolean;
     set wideHandle(val: boolean);
 
+    // Fields
+    container: Container;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -14535,6 +14789,9 @@ export class PanedAccessible extends ContainerAccessible implements Atk.Componen
     constructor(properties?: Partial<PanedAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<PanedAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: PanedAccessiblePrivate | any;
+
     // Implemented Members
 
     get_current_value(): unknown;
@@ -14544,7 +14801,7 @@ export class PanedAccessible extends ContainerAccessible implements Atk.Componen
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -14554,7 +14811,7 @@ export class PanedAccessible extends ContainerAccessible implements Atk.Componen
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -14789,6 +15046,12 @@ export class Plug extends Window implements Atk.ImplementorIface, Buildable {
     get socket_window(): Gdk.Window;
     get socketWindow(): Gdk.Window;
 
+    // Fields
+    // This accessor conflicts with a property, field, or function name in a parent class or interface.
+    // @ts-expect-error
+    window: Window | any;
+    priv: PlugPrivate | any;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -14824,6 +15087,9 @@ export class PlugAccessible extends WindowAccessible implements Atk.Component, A
 
     constructor(properties?: Partial<PlugAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<PlugAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: PlugAccessiblePrivate | any;
 
     // Members
 
@@ -15374,7 +15640,7 @@ export class ProgressBar extends Widget implements Atk.ImplementorIface, Buildab
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -15388,7 +15654,7 @@ export class ProgressBar extends Widget implements Atk.ImplementorIface, Buildab
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -15408,15 +15674,18 @@ export class ProgressBarAccessible extends WidgetAccessible implements Atk.Compo
     constructor(properties?: Partial<ProgressBarAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ProgressBarAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ProgressBarAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -15428,11 +15697,11 @@ export class ProgressBarAccessible extends WidgetAccessible implements Atk.Compo
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -15448,7 +15717,7 @@ export class ProgressBarAccessible extends WidgetAccessible implements Atk.Compo
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -15458,7 +15727,7 @@ export class ProgressBarAccessible extends WidgetAccessible implements Atk.Compo
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -15531,6 +15800,9 @@ export class RadioButton extends CheckButton implements Atk.ImplementorIface, Ac
     // Properties
     set group(val: RadioButton);
 
+    // Fields
+    check_button: CheckButton;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -15572,6 +15844,9 @@ export class RadioButtonAccessible extends ToggleButtonAccessible implements Atk
 
     constructor(properties?: Partial<RadioButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<RadioButtonAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: RadioButtonAccessiblePrivate | any;
 }
 export module RadioMenuItem {
     export interface ConstructorProperties extends CheckMenuItem.ConstructorProperties {
@@ -15587,6 +15862,9 @@ export class RadioMenuItem extends CheckMenuItem implements Atk.ImplementorIface
 
     // Properties
     set group(val: RadioMenuItem);
+
+    // Fields
+    check_menu_item: CheckMenuItem;
 
     // Signals
 
@@ -15632,6 +15910,9 @@ export class RadioMenuItemAccessible
 
     constructor(properties?: Partial<RadioMenuItemAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<RadioMenuItemAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: RadioMenuItemAccessiblePrivate | any;
 }
 export module RadioToolButton {
     export interface ConstructorProperties extends ToggleToolButton.ConstructorProperties {
@@ -15722,6 +16003,10 @@ export abstract class Range extends Widget implements Atk.ImplementorIface, Buil
     get upperStepperSensitivity(): SensitivityType;
     set upperStepperSensitivity(val: SensitivityType);
 
+    // Fields
+    widget: Widget;
+    priv: RangePrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -15760,7 +16045,7 @@ export abstract class Range extends Widget implements Atk.ImplementorIface, Buil
     get_restrict_to_fill_level(): boolean;
     get_round_digits(): number;
     get_show_fill_level(): boolean;
-    get_slider_range(): [number | null, number | null];
+    get_slider_range(): [number, number];
     get_slider_size_fixed(): boolean;
     get_upper_stepper_sensitivity(): SensitivityType;
     get_value(): number;
@@ -15795,7 +16080,7 @@ export abstract class Range extends Widget implements Atk.ImplementorIface, Buil
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -15809,7 +16094,7 @@ export abstract class Range extends Widget implements Atk.ImplementorIface, Buil
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -15829,15 +16114,18 @@ export class RangeAccessible extends WidgetAccessible implements Atk.Component, 
     constructor(properties?: Partial<RangeAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<RangeAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: RangeAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -15849,11 +16137,11 @@ export class RangeAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -15869,7 +16157,7 @@ export class RangeAccessible extends WidgetAccessible implements Atk.Component, 
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -15879,7 +16167,7 @@ export class RangeAccessible extends WidgetAccessible implements Atk.Component, 
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -15896,6 +16184,13 @@ export class RcStyle extends GObject.Object {
 
     // Fields
     name: string;
+    bg_pixmap_name: string[];
+    font_desc: Pango.FontDescription;
+    color_flags: RcFlags[];
+    fg: Gdk.Color[];
+    bg: Gdk.Color[];
+    text: Gdk.Color[];
+    base: Gdk.Color[];
     xthickness: number;
     ythickness: number;
 
@@ -15996,7 +16291,7 @@ export class RecentAction extends Action implements Buildable, RecentChooser {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -16010,7 +16305,7 @@ export class RecentAction extends Action implements Buildable, RecentChooser {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -16430,7 +16725,7 @@ export class RecentFilter extends GObject.InitiallyUnowned implements Buildable 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     parser_finished(builder: Builder): void;
     set_buildable_property(builder: Builder, name: string, value: GObject.Value | any): void;
@@ -16442,7 +16737,7 @@ export class RecentFilter extends GObject.InitiallyUnowned implements Buildable 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -16507,6 +16802,9 @@ export class RendererCellAccessible extends CellAccessible implements Atk.Action
     // Properties
     get renderer(): CellRenderer;
 
+    // Fields
+    priv: RendererCellAccessiblePrivate | any;
+
     // Constructors
 
     static ["new"](renderer: CellRenderer): RendererCellAccessible;
@@ -16541,13 +16839,13 @@ export class RendererCellAccessible extends CellAccessible implements Atk.Action
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.get_position
     get_position(...args: never[]): any;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -16559,13 +16857,13 @@ export class RendererCellAccessible extends CellAccessible implements Atk.Action
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
     // Conflicted with Atk.TableCell.vfunc_get_position
     vfunc_get_position(...args: never[]): any;
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -16670,6 +16968,9 @@ export class Scale extends Range implements Atk.ImplementorIface, Buildable, Ori
     get valuePos(): PositionType;
     set valuePos(val: PositionType);
 
+    // Fields
+    range: Range;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -16697,7 +16998,7 @@ export class Scale extends Range implements Atk.ImplementorIface, Buildable, Ori
     get_draw_value(): boolean;
     get_has_origin(): boolean;
     get_layout(): Pango.Layout | null;
-    get_layout_offsets(): [number | null, number | null];
+    get_layout_offsets(): [number, number];
     get_value_pos(): PositionType;
     set_digits(digits: number): void;
     set_draw_value(draw_value: boolean): void;
@@ -16705,7 +17006,7 @@ export class Scale extends Range implements Atk.ImplementorIface, Buildable, Ori
     set_value_pos(pos: PositionType): void;
     vfunc_draw_value(): void;
     vfunc_format_value(value: number): string;
-    vfunc_get_layout_offsets(): [number | null, number | null];
+    vfunc_get_layout_offsets(): [number, number];
 
     // Implemented Members
 
@@ -16723,6 +17024,9 @@ export class ScaleAccessible extends RangeAccessible implements Atk.Component, A
     constructor(properties?: Partial<ScaleAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ScaleAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ScaleAccessiblePrivate | any;
+
     // Implemented Members
 
     get_current_value(): unknown;
@@ -16732,7 +17036,7 @@ export class ScaleAccessible extends RangeAccessible implements Atk.Component, A
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -16742,7 +17046,7 @@ export class ScaleAccessible extends RangeAccessible implements Atk.Component, A
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -16861,6 +17165,9 @@ export class ScaleButtonAccessible extends ButtonAccessible implements Atk.Actio
     constructor(properties?: Partial<ScaleButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ScaleButtonAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ScaleButtonAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -16891,13 +17198,13 @@ export class ScaleButtonAccessible extends ButtonAccessible implements Atk.Actio
     vfunc_set_description(...args: never[]): any;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
     get_current_value(): unknown;
     get_increment(): number;
@@ -16906,7 +17213,7 @@ export class ScaleButtonAccessible extends ButtonAccessible implements Atk.Actio
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -16916,7 +17223,7 @@ export class ScaleButtonAccessible extends ButtonAccessible implements Atk.Actio
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -16930,6 +17237,9 @@ export class Scrollbar extends Range implements Atk.ImplementorIface, Buildable,
 
     constructor(properties?: Partial<Scrollbar.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Scrollbar.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    range: Range;
 
     // Implemented Properties
 
@@ -17042,6 +17352,10 @@ export class ScrolledWindow extends Bin implements Atk.ImplementorIface, Buildab
     get windowPlacementSet(): boolean;
     set windowPlacementSet(val: boolean);
 
+    // Fields
+    container: Bin;
+    priv: ScrolledWindowPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -17117,6 +17431,9 @@ export class ScrolledWindowAccessible extends ContainerAccessible implements Atk
 
     constructor(properties?: Partial<ScrolledWindowAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ScrolledWindowAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ScrolledWindowAccessiblePrivate | any;
 }
 export module SearchBar {
     export interface ConstructorProperties extends Bin.ConstructorProperties {
@@ -17219,7 +17536,7 @@ export class SearchEntry extends Entry implements Atk.ImplementorIface, Buildabl
     get_chars(start_pos: number, end_pos: number): string;
     get_editable(): boolean;
     get_position(): number;
-    get_selection_bounds(): [boolean, number | null, number | null];
+    get_selection_bounds(): [boolean, number, number];
     insert_text(new_text: string, new_text_length: number, position: number): number;
     paste_clipboard(): void;
     select_region(start_pos: number, end_pos: number): void;
@@ -17231,7 +17548,7 @@ export class SearchEntry extends Entry implements Atk.ImplementorIface, Buildabl
     vfunc_do_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_get_chars(start_pos: number, end_pos: number): string;
     vfunc_get_position(): number;
-    vfunc_get_selection_bounds(): [boolean, number | null, number | null];
+    vfunc_get_selection_bounds(): [boolean, number, number];
     vfunc_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_set_position(position: number): void;
     vfunc_set_selection_bounds(start_pos: number, end_pos: number): void;
@@ -17246,6 +17563,10 @@ export class Separator extends Widget implements Atk.ImplementorIface, Buildable
 
     constructor(properties?: Partial<Separator.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Separator.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    widget: Widget;
+    priv: SeparatorPrivate;
 
     // Implemented Properties
 
@@ -17266,7 +17587,7 @@ export class Separator extends Widget implements Atk.ImplementorIface, Buildable
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -17280,7 +17601,7 @@ export class Separator extends Widget implements Atk.ImplementorIface, Buildable
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -17299,6 +17620,9 @@ export class SeparatorMenuItem extends MenuItem implements Atk.ImplementorIface,
 
     constructor(properties?: Partial<SeparatorMenuItem.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SeparatorMenuItem.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    menu_item: MenuItem;
 
     // Implemented Properties
 
@@ -17916,6 +18240,8 @@ export class Settings extends GObject.Object implements StyleProvider {
     static get_default(): Settings | null;
     static get_for_screen(screen: Gdk.Screen): Settings;
     static install_property(pspec: GObject.ParamSpec): void;
+    // Conflicted with GObject.Object.install_property
+    static install_property(...args: never[]): any;
     static install_property_parser(pspec: GObject.ParamSpec, parser: RcPropertyParser): void;
 
     // Implemented Members
@@ -18159,6 +18485,11 @@ export class ShortcutsWindow extends Window implements Atk.ImplementorIface, Bui
     get viewName(): string;
     set viewName(val: string);
 
+    // Fields
+    // This accessor conflicts with a property, field, or function name in a parent class or interface.
+    // @ts-expect-error
+    window: Window | any;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -18222,7 +18553,7 @@ export class SizeGroup extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -18236,7 +18567,7 @@ export class SizeGroup extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -18253,6 +18584,10 @@ export class Socket extends Container implements Atk.ImplementorIface, Buildable
 
     constructor(properties?: Partial<Socket.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Socket.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    container: Container;
+    priv: SocketPrivate;
 
     // Signals
 
@@ -18288,6 +18623,9 @@ export class SocketAccessible extends ContainerAccessible implements Atk.Compone
 
     constructor(properties?: Partial<SocketAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SocketAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: SocketAccessiblePrivate | any;
 
     // Members
 
@@ -18339,6 +18677,9 @@ export class SpinButton extends Entry implements Atk.ImplementorIface, Buildable
     get wrap(): boolean;
     set wrap(val: boolean);
 
+    // Fields
+    entry: Entry;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -18381,9 +18722,9 @@ export class SpinButton extends Entry implements Atk.ImplementorIface, Buildable
     configure(adjustment: Adjustment | null, climb_rate: number, digits: number): void;
     get_adjustment(): Adjustment;
     get_digits(): number;
-    get_increments(): [number | null, number | null];
+    get_increments(): [number, number];
     get_numeric(): boolean;
-    get_range(): [number | null, number | null];
+    get_range(): [number, number];
     get_snap_to_ticks(): boolean;
     get_update_policy(): SpinButtonUpdatePolicy;
     get_value(): number;
@@ -18421,7 +18762,7 @@ export class SpinButton extends Entry implements Atk.ImplementorIface, Buildable
     get_chars(start_pos: number, end_pos: number): string;
     get_editable(): boolean;
     get_position(): number;
-    get_selection_bounds(): [boolean, number | null, number | null];
+    get_selection_bounds(): [boolean, number, number];
     insert_text(new_text: string, new_text_length: number, position: number): number;
     paste_clipboard(): void;
     select_region(start_pos: number, end_pos: number): void;
@@ -18433,7 +18774,7 @@ export class SpinButton extends Entry implements Atk.ImplementorIface, Buildable
     vfunc_do_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_get_chars(start_pos: number, end_pos: number): string;
     vfunc_get_position(): number;
-    vfunc_get_selection_bounds(): [boolean, number | null, number | null];
+    vfunc_get_selection_bounds(): [boolean, number, number];
     vfunc_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_set_position(position: number): void;
     vfunc_set_selection_bounds(start_pos: number, end_pos: number): void;
@@ -18453,6 +18794,9 @@ export class SpinButtonAccessible
 
     constructor(properties?: Partial<SpinButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SpinButtonAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: SpinButtonAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -18506,10 +18850,7 @@ export class SpinButtonAccessible
     get_caret_offset(): number;
     get_character_at_offset(offset: number): number;
     get_character_count(): number;
-    get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     get_default_attributes(): Atk.AttributeSet;
     get_n_selections(): number;
     get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -18542,10 +18883,7 @@ export class SpinButtonAccessible
     vfunc_get_caret_offset(): number;
     vfunc_get_character_at_offset(offset: number): number;
     vfunc_get_character_count(): number;
-    vfunc_get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     vfunc_get_default_attributes(): Atk.AttributeSet;
     vfunc_get_n_selections(): number;
     vfunc_get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -18579,7 +18917,7 @@ export class SpinButtonAccessible
     get_minimum_value(): unknown;
     get_range(): Atk.Range | null;
     get_sub_ranges(): Atk.Range[];
-    get_value_and_text(): [number, string | null];
+    get_value_and_text(): [number, string];
     set_current_value(value: GObject.Value | any): boolean;
     set_value(new_value: number): void;
     vfunc_get_current_value(): unknown;
@@ -18589,7 +18927,7 @@ export class SpinButtonAccessible
     vfunc_get_minimum_value(): unknown;
     vfunc_get_range(): Atk.Range | null;
     vfunc_get_sub_ranges(): Atk.Range[];
-    vfunc_get_value_and_text(): [number, string | null];
+    vfunc_get_value_and_text(): [number, string];
     vfunc_set_current_value(value: GObject.Value | any): boolean;
     vfunc_set_value(new_value: number): void;
 }
@@ -18628,7 +18966,7 @@ export class Spinner extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -18642,7 +18980,7 @@ export class Spinner extends Widget implements Atk.ImplementorIface, Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -18660,15 +18998,18 @@ export class SpinnerAccessible extends WidgetAccessible implements Atk.Component
     constructor(properties?: Partial<SpinnerAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SpinnerAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: SpinnerAccessiblePrivate | any;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -18680,11 +19021,11 @@ export class SpinnerAccessible extends WidgetAccessible implements Atk.Component
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -18695,13 +19036,13 @@ export class SpinnerAccessible extends WidgetAccessible implements Atk.Component
     vfunc_set_size(width: number, height: number): boolean;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module Stack {
@@ -18846,6 +19187,9 @@ export class StackSwitcher extends Box implements Atk.ImplementorIface, Buildabl
     get stack(): Stack;
     set stack(val: Stack);
 
+    // Fields
+    widget: Box;
+
     // Implemented Properties
 
     get orientation(): Orientation;
@@ -18931,6 +19275,9 @@ export class StatusIcon extends GObject.Object {
     set tooltipText(val: string);
     get visible(): boolean;
     set visible(val: boolean);
+
+    // Fields
+    priv: StatusIconPrivate;
 
     // Signals
 
@@ -19026,6 +19373,9 @@ export class Statusbar extends Box implements Atk.ImplementorIface, Buildable, O
     constructor(properties?: Partial<Statusbar.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<Statusbar.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    parent_widget: Box;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -19075,6 +19425,9 @@ export class StatusbarAccessible extends ContainerAccessible implements Atk.Comp
 
     constructor(properties?: Partial<StatusbarAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<StatusbarAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: StatusbarAccessiblePrivate | any;
 }
 export module Style {
     export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
@@ -19092,8 +19445,20 @@ export class Style extends GObject.Object {
     get context(): StyleContext;
 
     // Fields
+    fg: Gdk.Color[];
+    bg: Gdk.Color[];
+    light: Gdk.Color[];
+    dark: Gdk.Color[];
+    mid: Gdk.Color[];
+    text: Gdk.Color[];
+    base: Gdk.Color[];
+    text_aa: Gdk.Color[];
+    black: Gdk.Color;
+    white: Gdk.Color;
+    font_desc: Pango.FontDescription;
     xthickness: number;
     ythickness: number;
+    background: cairo.Pattern[];
 
     // Signals
 
@@ -19399,6 +19764,10 @@ export class StyleContext extends GObject.Object {
     get screen(): Gdk.Screen;
     set screen(val: Gdk.Screen);
 
+    // Fields
+    parent_object: GObject.Object;
+    priv: StyleContextPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -19602,7 +19971,7 @@ export class Switch extends Widget implements Atk.ImplementorIface, Actionable, 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -19616,7 +19985,7 @@ export class Switch extends Widget implements Atk.ImplementorIface, Actionable, 
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -19633,6 +20002,9 @@ export class SwitchAccessible extends WidgetAccessible implements Atk.Action, At
 
     constructor(properties?: Partial<SwitchAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<SwitchAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: SwitchAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -19664,11 +20036,11 @@ export class SwitchAccessible extends WidgetAccessible implements Atk.Action, At
     vfunc_set_description(...args: never[]): any;
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -19680,11 +20052,11 @@ export class SwitchAccessible extends WidgetAccessible implements Atk.Action, At
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -19734,6 +20106,9 @@ export class Table extends Container implements Atk.ImplementorIface, Buildable 
     get rowSpacing(): number;
     set rowSpacing(val: number);
 
+    // Fields
+    container: Container;
+
     // Constructors
 
     static ["new"](rows: number, columns: number, homogeneous: boolean): Table;
@@ -19763,7 +20138,7 @@ export class Table extends Container implements Atk.ImplementorIface, Buildable 
     get_default_row_spacing(): number;
     get_homogeneous(): boolean;
     get_row_spacing(row: number): number;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     resize(rows: number, columns: number): void;
     set_col_spacing(column: number, spacing: number): void;
     set_col_spacings(spacing: number): void;
@@ -19781,6 +20156,9 @@ export class TearoffMenuItem extends MenuItem implements Atk.ImplementorIface, A
 
     constructor(properties?: Partial<TearoffMenuItem.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TearoffMenuItem.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    menu_item: MenuItem;
 
     // Implemented Properties
 
@@ -19860,6 +20238,9 @@ export class TextBuffer extends GObject.Object {
     get tagTable(): TextTagTable;
     get text(): string;
     set text(val: string);
+
+    // Fields
+    priv: TextBufferPrivate;
 
     // Signals
 
@@ -20040,6 +20421,9 @@ export class TextCellAccessible
     constructor(properties?: Partial<TextCellAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TextCellAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: TextCellAccessiblePrivate | any;
+
     // Implemented Members
 
     add_selection(start_offset: number, end_offset: number): boolean;
@@ -20052,10 +20436,7 @@ export class TextCellAccessible
     get_caret_offset(): number;
     get_character_at_offset(offset: number): number;
     get_character_count(): number;
-    get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     get_default_attributes(): Atk.AttributeSet;
     get_n_selections(): number;
     get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -20088,10 +20469,7 @@ export class TextCellAccessible
     vfunc_get_caret_offset(): number;
     vfunc_get_character_at_offset(offset: number): number;
     vfunc_get_character_count(): number;
-    vfunc_get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     vfunc_get_default_attributes(): Atk.AttributeSet;
     vfunc_get_n_selections(): number;
     vfunc_get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -20557,6 +20935,9 @@ export class TextTag extends GObject.Object {
     get wrapModeSet(): boolean;
     set wrapModeSet(val: boolean);
 
+    // Fields
+    priv: TextTagPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -20594,6 +20975,9 @@ export class TextTagTable extends GObject.Object implements Buildable {
 
     constructor(properties?: Partial<TextTagTable.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TextTagTable.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: TextTagTablePrivate;
 
     // Signals
 
@@ -20638,7 +21022,7 @@ export class TextTagTable extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -20652,7 +21036,7 @@ export class TextTagTable extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -20890,7 +21274,7 @@ export class TextView extends Container implements Atk.ImplementorIface, Buildab
     add_child_in_window(child: Widget, which_window: TextWindowType, xpos: number, ypos: number): void;
     backward_display_line(iter: TextIter): boolean;
     backward_display_line_start(iter: TextIter): boolean;
-    buffer_to_window_coords(win: TextWindowType, buffer_x: number, buffer_y: number): [number | null, number | null];
+    buffer_to_window_coords(win: TextWindowType, buffer_x: number, buffer_y: number): [number, number];
     forward_display_line(iter: TextIter): boolean;
     forward_display_line_end(iter: TextIter): boolean;
     get_accepts_tab(): boolean;
@@ -20906,7 +21290,7 @@ export class TextView extends Container implements Atk.ImplementorIface, Buildab
     get_input_hints(): InputHints;
     get_input_purpose(): InputPurpose;
     get_iter_at_location(x: number, y: number): [boolean, TextIter];
-    get_iter_at_position(x: number, y: number): [boolean, TextIter, number | null];
+    get_iter_at_position(x: number, y: number): [boolean, TextIter, number];
     get_iter_location(iter: TextIter): Gdk.Rectangle;
     get_justification(): Justification;
     get_left_margin(): number;
@@ -20958,7 +21342,7 @@ export class TextView extends Container implements Atk.ImplementorIface, Buildab
     set_top_margin(top_margin: number): void;
     set_wrap_mode(wrap_mode: WrapMode): void;
     starts_display_line(iter: TextIter): boolean;
-    window_to_buffer_coords(win: TextWindowType, window_x: number, window_y: number): [number | null, number | null];
+    window_to_buffer_coords(win: TextWindowType, window_x: number, window_y: number): [number, number];
     vfunc_backspace(): void;
     vfunc_copy_clipboard(): void;
     vfunc_cut_clipboard(): void;
@@ -21003,6 +21387,9 @@ export class TextViewAccessible
     constructor(properties?: Partial<TextViewAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TextViewAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: TextViewAccessiblePrivate | any;
+
     // Implemented Members
 
     copy_text(start_pos: number, end_pos: number): void;
@@ -21037,10 +21424,7 @@ export class TextViewAccessible
     get_caret_offset(): number;
     get_character_at_offset(offset: number): number;
     get_character_count(): number;
-    get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     get_default_attributes(): Atk.AttributeSet;
     get_n_selections(): number;
     get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -21073,10 +21457,7 @@ export class TextViewAccessible
     vfunc_get_caret_offset(): number;
     vfunc_get_character_at_offset(offset: number): number;
     vfunc_get_character_count(): number;
-    vfunc_get_character_extents(
-        offset: number,
-        coords: Atk.CoordType
-    ): [number | null, number | null, number | null, number | null];
+    vfunc_get_character_extents(offset: number, coords: Atk.CoordType): [number, number, number, number];
     vfunc_get_default_attributes(): Atk.AttributeSet;
     vfunc_get_n_selections(): number;
     vfunc_get_offset_at_point(x: number, y: number, coords: Atk.CoordType): number;
@@ -21118,6 +21499,10 @@ export class ThemingEngine extends GObject.Object {
 
     // Properties
     get name(): string;
+
+    // Fields
+    parent_object: GObject.Object;
+    priv: ThemingEnginePrivate;
 
     // Members
 
@@ -21241,7 +21626,7 @@ export class ToggleAction extends Action implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -21255,7 +21640,7 @@ export class ToggleAction extends Action implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -21363,6 +21748,9 @@ export class ToggleButtonAccessible extends ButtonAccessible implements Atk.Acti
     constructor(properties?: Partial<ToggleButtonAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ToggleButtonAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: ToggleButtonAccessiblePrivate | any;
+
     // Implemented Members
 
     do_action(i: number): boolean;
@@ -21393,13 +21781,13 @@ export class ToggleButtonAccessible extends ButtonAccessible implements Atk.Acti
     vfunc_set_description(...args: never[]): any;
     get_image_description(): string;
     get_image_locale(): string | null;
-    get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_image_size(): [number | null, number | null];
+    get_image_position(coord_type: Atk.CoordType): [number, number];
+    get_image_size(): [number, number];
     set_image_description(description: string): boolean;
     vfunc_get_image_description(): string;
     vfunc_get_image_locale(): string | null;
-    vfunc_get_image_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_image_size(): [number | null, number | null];
+    vfunc_get_image_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_image_size(): [number, number];
     vfunc_set_image_description(description: string): boolean;
 }
 export module ToggleToolButton {
@@ -21717,6 +22105,9 @@ export class ToolItemGroup extends Container implements Atk.ImplementorIface, Bu
     get labelWidget(): Widget;
     set labelWidget(val: Widget);
 
+    // Fields
+    priv: ToolItemGroupPrivate;
+
     // Constructors
 
     static ["new"](label: string): ToolItemGroup;
@@ -21793,6 +22184,9 @@ export class ToolPalette extends Container implements Atk.ImplementorIface, Buil
     set toolbar_style(val: ToolbarStyle);
     get toolbarStyle(): ToolbarStyle;
     set toolbarStyle(val: ToolbarStyle);
+
+    // Fields
+    priv: ToolPalettePrivate;
 
     // Implemented Properties
 
@@ -21892,6 +22286,10 @@ export class Toolbar extends Container implements Atk.ImplementorIface, Buildabl
     set toolbar_style(val: ToolbarStyle);
     get toolbarStyle(): ToolbarStyle;
     set toolbarStyle(val: ToolbarStyle);
+
+    // Fields
+    container: Container;
+    priv: ToolbarPrivate;
 
     // Signals
 
@@ -22005,6 +22403,9 @@ export class ToplevelAccessible extends Atk.Object {
 
     constructor(properties?: Partial<ToplevelAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<ToplevelAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: ToplevelAccessiblePrivate;
 
     // Members
 
@@ -22259,6 +22660,9 @@ export class TreeStore
     constructor(properties?: Partial<TreeStore.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TreeStore.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: TreeStorePrivate;
+
     // Constructors
 
     static ["new"](types: GObject.GType[]): TreeStore;
@@ -22300,7 +22704,7 @@ export class TreeStore
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -22314,7 +22718,7 @@ export class TreeStore
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -22639,10 +23043,7 @@ export class TreeView extends Container implements Atk.ImplementorIface, Buildab
     get_level_indentation(): number;
     get_model(): TreeModel | null;
     get_n_columns(): number;
-    get_path_at_pos(
-        x: number,
-        y: number
-    ): [boolean, TreePath | null, TreeViewColumn | null, number | null, number | null];
+    get_path_at_pos(x: number, y: number): [boolean, TreePath | null, TreeViewColumn | null, number, number];
     get_reorderable(): boolean;
     get_rubber_banding(): boolean;
     get_rules_hint(): boolean;
@@ -22661,10 +23062,7 @@ export class TreeView extends Container implements Atk.ImplementorIface, Buildab
     get_visible_rect(): Gdk.Rectangle;
     insert_column(column: TreeViewColumn, position: number): number;
     insert_column_with_data_func(position: number, title: string, cell: CellRenderer, func: TreeCellDataFunc): number;
-    is_blank_at_pos(
-        x: number,
-        y: number
-    ): [boolean, TreePath | null, TreeViewColumn | null, number | null, number | null];
+    is_blank_at_pos(x: number, y: number): [boolean, TreePath | null, TreeViewColumn | null, number, number];
     is_rubber_banding_active(): boolean;
     map_expanded_rows(func: TreeViewMappingFunc): void;
     move_column_after(column: TreeViewColumn, base_column?: TreeViewColumn | null): void;
@@ -22760,6 +23158,9 @@ export class TreeViewAccessible
 
     constructor(properties?: Partial<TreeViewAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<TreeViewAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: TreeViewAccessiblePrivate | any;
 
     // Implemented Members
 
@@ -22961,6 +23362,9 @@ export class TreeViewColumn extends GObject.InitiallyUnowned implements Buildabl
     get x_offset(): number;
     get xOffset(): number;
 
+    // Fields
+    priv: TreeViewColumnPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -22978,8 +23382,8 @@ export class TreeViewColumn extends GObject.InitiallyUnowned implements Buildabl
     // Members
 
     add_attribute(cell_renderer: CellRenderer, attribute: string, column: number): void;
-    cell_get_position(cell_renderer: CellRenderer): [boolean, number | null, number | null];
-    cell_get_size(cell_area?: Gdk.Rectangle | null): [number | null, number | null, number | null, number | null];
+    cell_get_position(cell_renderer: CellRenderer): [boolean, number, number];
+    cell_get_size(cell_area: Gdk.Rectangle | null): [number, number, number, number];
     cell_is_visible(): boolean;
     cell_set_cell_data(tree_model: TreeModel, iter: TreeIter, is_expander: boolean, is_expanded: boolean): void;
     clear(): void;
@@ -23040,7 +23444,7 @@ export class TreeViewColumn extends GObject.InitiallyUnowned implements Buildabl
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -23054,7 +23458,7 @@ export class TreeViewColumn extends GObject.InitiallyUnowned implements Buildabl
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -23167,7 +23571,7 @@ export class UIManager extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -23181,7 +23585,7 @@ export class UIManager extends GObject.Object implements Buildable {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -23198,6 +23602,9 @@ export class VBox extends Box implements Atk.ImplementorIface, Buildable, Orient
 
     constructor(properties?: Partial<VBox.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VBox.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    box: Box;
 
     // Implemented Properties
 
@@ -23226,6 +23633,9 @@ export class VButtonBox extends ButtonBox implements Atk.ImplementorIface, Build
     constructor(properties?: Partial<VButtonBox.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VButtonBox.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    button_box: ButtonBox;
+
     // Constructors
 
     static ["new"](): VButtonBox;
@@ -23240,6 +23650,9 @@ export class VPaned extends Paned implements Atk.ImplementorIface, Buildable, Or
 
     constructor(properties?: Partial<VPaned.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VPaned.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    paned: Paned;
 
     // Implemented Properties
 
@@ -23266,6 +23679,9 @@ export class VScale extends Scale implements Atk.ImplementorIface, Buildable, Or
     constructor(properties?: Partial<VScale.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VScale.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    scale: Scale;
+
     // Constructors
 
     static ["new"](adjustment: Adjustment): VScale;
@@ -23286,6 +23702,9 @@ export class VScrollbar extends Scrollbar implements Atk.ImplementorIface, Build
     constructor(properties?: Partial<VScrollbar.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VScrollbar.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    scrollbar: Scrollbar;
+
     // Constructors
 
     static ["new"](adjustment?: Adjustment | null): VScrollbar;
@@ -23302,6 +23721,9 @@ export class VSeparator extends Separator implements Atk.ImplementorIface, Build
 
     constructor(properties?: Partial<VSeparator.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<VSeparator.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    separator: Separator;
 
     // Implemented Properties
 
@@ -23335,6 +23757,9 @@ export class Viewport extends Bin implements Atk.ImplementorIface, Buildable, Sc
     set shadow_type(val: ShadowType);
     get shadowType(): ShadowType;
     set shadowType(val: ShadowType);
+
+    // Fields
+    bin: Bin;
 
     // Implemented Properties
 
@@ -23949,7 +24374,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     can_activate_accel(signal_id: number): boolean;
     child_focus(direction: DirectionType): boolean;
     child_notify(child_property: string): void;
-    class_path(): [number | null, string | null, string | null];
+    class_path(): [number, string, string];
     compute_expand(orientation: Orientation): boolean;
     create_pango_context(): Pango.Context;
     create_pango_layout(text?: string | null): Pango.Layout;
@@ -24000,7 +24425,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     get_action_group(prefix: string): Gio.ActionGroup | null;
     get_allocated_baseline(): number;
     get_allocated_height(): number;
-    get_allocated_size(): [Allocation, number | null];
+    get_allocated_size(): [Allocation, number];
     get_allocated_width(): number;
     get_allocation(): Allocation;
     get_ancestor(widget_type: GObject.GType): Widget | null;
@@ -24043,15 +24468,13 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     get_parent(): Widget | null;
     get_parent_window(): Gdk.Window | null;
     get_path(): WidgetPath;
-    get_pointer(): [number | null, number | null];
-    get_preferred_height(): [number | null, number | null];
-    get_preferred_height_and_baseline_for_width(
-        width: number
-    ): [number | null, number | null, number | null, number | null];
-    get_preferred_height_for_width(width: number): [number | null, number | null];
+    get_pointer(): [number, number];
+    get_preferred_height(): [number, number];
+    get_preferred_height_and_baseline_for_width(width: number): [number, number, number, number];
+    get_preferred_height_for_width(width: number): [number, number];
     get_preferred_size(): [Requisition | null, Requisition | null];
-    get_preferred_width(): [number | null, number | null];
-    get_preferred_width_for_height(height: number): [number | null, number | null];
+    get_preferred_width(): [number, number];
+    get_preferred_width_for_height(height: number): [number, number];
     get_realized(): boolean;
     get_receives_default(): boolean;
     get_request_mode(): SizeRequestMode;
@@ -24061,7 +24484,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     get_screen(): Gdk.Screen;
     get_sensitive(): boolean;
     get_settings(): Settings;
-    get_size_request(): [number | null, number | null];
+    get_size_request(): [number, number];
     get_state(): StateType;
     get_state_flags(): StateFlags;
     get_style(): Style;
@@ -24118,7 +24541,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     override_cursor(cursor?: Gdk.RGBA | null, secondary_cursor?: Gdk.RGBA | null): void;
     override_font(font_desc?: Pango.FontDescription | null): void;
     override_symbolic_color(name: string, color?: Gdk.RGBA | null): void;
-    path(): [number | null, string | null, string | null];
+    path(): [number, string, string];
     queue_allocate(): void;
     queue_compute_expand(): void;
     queue_draw(): void;
@@ -24200,7 +24623,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     style_attach(): void;
     style_get_property(property_name: string, value: GObject.Value | any): void;
     thaw_child_notify(): void;
-    translate_coordinates(dest_widget: Widget, src_x: number, src_y: number): [boolean, number | null, number | null];
+    translate_coordinates(dest_widget: Widget, src_x: number, src_y: number): [boolean, number, number];
     trigger_tooltip_query(): void;
     unmap(): void;
     unparent(): void;
@@ -24253,13 +24676,11 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     vfunc_focus_in_event(event: Gdk.EventFocus): boolean;
     vfunc_focus_out_event(event: Gdk.EventFocus): boolean;
     vfunc_get_accessible(): Atk.Object;
-    vfunc_get_preferred_height(): [number | null, number | null];
-    vfunc_get_preferred_height_and_baseline_for_width(
-        width: number
-    ): [number | null, number | null, number | null, number | null];
-    vfunc_get_preferred_height_for_width(width: number): [number | null, number | null];
-    vfunc_get_preferred_width(): [number | null, number | null];
-    vfunc_get_preferred_width_for_height(height: number): [number | null, number | null];
+    vfunc_get_preferred_height(): [number, number];
+    vfunc_get_preferred_height_and_baseline_for_width(width: number): [number, number, number, number];
+    vfunc_get_preferred_height_for_width(width: number): [number, number];
+    vfunc_get_preferred_width(): [number, number];
+    vfunc_get_preferred_width_for_height(height: number): [number, number];
     vfunc_get_request_mode(): SizeRequestMode;
     vfunc_grab_broken_event(event: Gdk.EventGrabBroken): boolean;
     vfunc_grab_focus(): void;
@@ -24309,6 +24730,18 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
     static pop_composite_child(): void;
     static push_composite_child(): void;
     static set_default_direction(dir: TextDirection): void;
+    static bind_template_callback_full(callback_name: string, callback_symbol: GObject.Callback): void;
+    static bind_template_child_full(name: string, internal_child: boolean, struct_offset: number): void;
+    static find_style_property(property_name: string): GObject.ParamSpec;
+    static get_css_name(): string;
+    static install_style_property(pspec: GObject.ParamSpec): void;
+    static list_style_properties(): GObject.ParamSpec[];
+    static set_accessible_role(role: Atk.Role): void;
+    static set_accessible_type(type: GObject.GType): void;
+    static set_connect_func(connect_func: BuilderConnectFunc): void;
+    static set_css_name(name: string): void;
+    static set_template(template_bytes: GLib.Bytes | Uint8Array): void;
+    static set_template_from_resource(resource_name: string): void;
 
     // Implemented Members
 
@@ -24320,7 +24753,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     parser_finished(builder: Builder): void;
     set_buildable_property(builder: Builder, name: string, value: GObject.Value | any): void;
@@ -24332,7 +24765,7 @@ export abstract class Widget extends GObject.InitiallyUnowned implements Atk.Imp
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -24350,15 +24783,18 @@ export class WidgetAccessible extends Accessible implements Atk.Component {
     constructor(properties?: Partial<WidgetAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WidgetAccessible.ConstructorProperties>, ...args: any[]): void;
 
+    // Fields
+    priv: WidgetAccessiblePrivate;
+
     // Implemented Members
 
     contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     get_alpha(): number;
-    get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     get_layer(): Atk.Layer;
     get_mdi_zorder(): number;
-    get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    get_size(): [number | null, number | null];
+    get_position(coord_type: Atk.CoordType): [number, number];
+    get_size(): [number, number];
     grab_focus(): boolean;
     ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     remove_focus_handler(handler_id: number): void;
@@ -24370,11 +24806,11 @@ export class WidgetAccessible extends Accessible implements Atk.Component {
     vfunc_bounds_changed(bounds: Atk.Rectangle): void;
     vfunc_contains(x: number, y: number, coord_type: Atk.CoordType): boolean;
     vfunc_get_alpha(): number;
-    vfunc_get_extents(coord_type: Atk.CoordType): [number | null, number | null, number | null, number | null];
+    vfunc_get_extents(coord_type: Atk.CoordType): [number, number, number, number];
     vfunc_get_layer(): Atk.Layer;
     vfunc_get_mdi_zorder(): number;
-    vfunc_get_position(coord_type: Atk.CoordType): [number | null, number | null];
-    vfunc_get_size(): [number | null, number | null];
+    vfunc_get_position(coord_type: Atk.CoordType): [number, number];
+    vfunc_get_size(): [number, number];
     vfunc_grab_focus(): boolean;
     vfunc_ref_accessible_at_point(x: number, y: number, coord_type: Atk.CoordType): Atk.Object | null;
     vfunc_remove_focus_handler(handler_id: number): void;
@@ -24551,6 +24987,10 @@ export class Window extends Bin implements Atk.ImplementorIface, Buildable {
     get windowPosition(): WindowPosition;
     set windowPosition(val: WindowPosition);
 
+    // Fields
+    bin: Bin;
+    priv: WindowPrivate;
+
     // Signals
 
     connect(id: string, callback: (...args: any[]) => any): number;
@@ -24593,7 +25033,7 @@ export class Window extends Bin implements Atk.ImplementorIface, Buildable {
     get_application(): Application | null;
     get_attached_to(): Widget | null;
     get_decorated(): boolean;
-    get_default_size(): [number | null, number | null];
+    get_default_size(): [number, number];
     get_default_widget(): Widget | null;
     get_deletable(): boolean;
     get_destroy_with_parent(): boolean;
@@ -24611,12 +25051,12 @@ export class Window extends Bin implements Atk.ImplementorIface, Buildable {
     get_mnemonics_visible(): boolean;
     get_modal(): boolean;
     get_opacity(): number;
-    get_position(): [number | null, number | null];
+    get_position(): [number, number];
     get_resizable(): boolean;
     get_resize_grip_area(): [boolean, Gdk.Rectangle];
     get_role(): string | null;
     get_screen(): Gdk.Screen;
-    get_size(): [number | null, number | null];
+    get_size(): [number, number];
     get_skip_pager_hint(): boolean;
     get_skip_taskbar_hint(): boolean;
     get_title(): string | null;
@@ -24711,6 +25151,9 @@ export class WindowAccessible extends ContainerAccessible implements Atk.Compone
 
     constructor(properties?: Partial<WindowAccessible.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WindowAccessible.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: WindowAccessiblePrivate | any;
 }
 export module WindowGroup {
     export interface ConstructorProperties extends GObject.Object.ConstructorProperties {
@@ -24722,6 +25165,9 @@ export class WindowGroup extends GObject.Object {
 
     constructor(properties?: Partial<WindowGroup.ConstructorProperties>, ...args: any[]);
     _init(properties?: Partial<WindowGroup.ConstructorProperties>, ...args: any[]): void;
+
+    // Fields
+    priv: WindowGroupPrivate;
 
     // Constructors
 
@@ -24748,6 +25194,7 @@ export class AccelGroupEntry {
     constructor(copy: AccelGroupEntry);
 
     // Fields
+    key: AccelKey;
     closure: GObject.Closure;
     accel_path_quark: GLib.Quark;
 }
@@ -24902,9 +25349,13 @@ export class BindingEntry {
     // Fields
     keyval: number;
     modifiers: Gdk.ModifierType;
+    binding_set: BindingSet;
     destroyed: number;
     in_emission: number;
     marks_unbound: number;
+    set_next: BindingEntry;
+    hash_next: BindingEntry;
+    signals: BindingSignal;
 
     // Members
     static add_signal_from_string(binding_set: BindingSet, signal_desc: string): GLib.TokenType;
@@ -24922,18 +25373,16 @@ export class BindingEntry {
 export class BindingSet {
     static $gtype: GObject.GType<BindingSet>;
 
-    constructor(
-        properties?: Partial<{
-            set_name?: string;
-            priority?: number;
-            parsed?: number;
-        }>
-    );
     constructor(copy: BindingSet);
 
     // Fields
     set_name: string;
     priority: number;
+    widget_path_pspecs: any[];
+    widget_class_pspecs: any[];
+    class_branch_pspecs: any[];
+    entries: BindingEntry;
+    current: BindingEntry;
     parsed: number;
 
     // Members
@@ -24945,17 +25394,13 @@ export class BindingSet {
 export class BindingSignal {
     static $gtype: GObject.GType<BindingSignal>;
 
-    constructor(
-        properties?: Partial<{
-            signal_name?: string;
-            n_args?: number;
-        }>
-    );
     constructor(copy: BindingSignal);
 
     // Fields
+    next: BindingSignal;
     signal_name: string;
     n_args: number;
+    args: BindingArg[];
 }
 
 export class BooleanCellAccessiblePrivate {
@@ -25279,6 +25724,12 @@ export class FileChooserDialogPrivate {
     constructor(copy: FileChooserDialogPrivate);
 }
 
+export class FileChooserWidgetAccessiblePrivate {
+    static $gtype: GObject.GType<FileChooserWidgetAccessiblePrivate>;
+
+    constructor(copy: FileChooserWidgetAccessiblePrivate);
+}
+
 export class FileChooserWidgetPrivate {
     static $gtype: GObject.GType<FileChooserWidgetPrivate>;
 
@@ -25301,15 +25752,10 @@ export class FileFilterInfo {
 export class FixedChild {
     static $gtype: GObject.GType<FixedChild>;
 
-    constructor(
-        properties?: Partial<{
-            x?: number;
-            y?: number;
-        }>
-    );
     constructor(copy: FixedChild);
 
     // Fields
+    widget: Widget;
     x: number;
     y: number;
 }
@@ -25461,6 +25907,7 @@ export class IconSet {
     static $gtype: GObject.GType<IconSet>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: IconSet);
 
     // Constructors
@@ -25494,6 +25941,7 @@ export class IconSource {
     static $gtype: GObject.GType<IconSource>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: IconSource);
 
     // Constructors
@@ -25950,6 +26398,7 @@ export class RcProperty {
     type_name: GLib.Quark;
     property_name: GLib.Quark;
     origin: string;
+    value: GObject.Value;
 
     // Members
     static parse_border(pspec: GObject.ParamSpec, gstring: GLib.String, property_value: GObject.Value | any): boolean;
@@ -25990,16 +26439,6 @@ export class RecentChooserWidgetPrivate {
 export class RecentData {
     static $gtype: GObject.GType<RecentData>;
 
-    constructor(
-        properties?: Partial<{
-            display_name?: string;
-            description?: string;
-            mime_type?: string;
-            app_name?: string;
-            app_exec?: string;
-            is_private?: boolean;
-        }>
-    );
     constructor(copy: RecentData);
 
     // Fields
@@ -26008,6 +26447,7 @@ export class RecentData {
     mime_type: string;
     app_name: string;
     app_exec: string;
+    groups: string[];
     is_private: boolean;
 }
 
@@ -26021,6 +26461,8 @@ export class RecentFilterInfo {
     uri: string;
     display_name: string;
     mime_type: string;
+    applications: string[];
+    groups: string[];
     age: number;
 }
 
@@ -26197,15 +26639,11 @@ export class SettingsPrivate {
 export class SettingsValue {
     static $gtype: GObject.GType<SettingsValue>;
 
-    constructor(
-        properties?: Partial<{
-            origin?: string;
-        }>
-    );
     constructor(copy: SettingsValue);
 
     // Fields
     origin: string;
+    value: GObject.Value;
 }
 
 export class SizeGroupPrivate {
@@ -26338,25 +26776,10 @@ export class SymbolicColor {
 export class TableChild {
     static $gtype: GObject.GType<TableChild>;
 
-    constructor(
-        properties?: Partial<{
-            left_attach?: number;
-            right_attach?: number;
-            top_attach?: number;
-            bottom_attach?: number;
-            xpadding?: number;
-            ypadding?: number;
-            xexpand?: number;
-            yexpand?: number;
-            xshrink?: number;
-            yshrink?: number;
-            xfill?: number;
-            yfill?: number;
-        }>
-    );
     constructor(copy: TableChild);
 
     // Fields
+    widget: Widget;
     left_attach: number;
     right_attach: number;
     top_attach: number;
@@ -26408,7 +26831,6 @@ export class TableRowCol {
 export class TargetEntry {
     static $gtype: GObject.GType<TargetEntry>;
 
-    constructor(target: string, flags: number, info: number);
     constructor(
         properties?: Partial<{
             target?: string;
@@ -26447,7 +26869,7 @@ export class TargetList {
     add_table(targets: TargetEntry[]): void;
     add_text_targets(info: number): void;
     add_uri_targets(info: number): void;
-    find(target: Gdk.Atom): [boolean, number | null];
+    find(target: Gdk.Atom): [boolean, number];
     ref(): TargetList;
     remove(target: Gdk.Atom): void;
     unref(): void;
@@ -26456,15 +26878,10 @@ export class TargetList {
 export class TargetPair {
     static $gtype: GObject.GType<TargetPair>;
 
-    constructor(
-        properties?: Partial<{
-            flags?: number;
-            info?: number;
-        }>
-    );
     constructor(copy: TargetPair);
 
     // Fields
+    target: Gdk.Atom;
     flags: number;
     info: number;
 }
@@ -26480,6 +26897,8 @@ export class TextAppearance {
 
     constructor(
         properties?: Partial<{
+            bg_color?: Gdk.Color;
+            fg_color?: Gdk.Color;
             rise?: number;
             underline?: number;
             strikethrough?: number;
@@ -26491,6 +26910,8 @@ export class TextAppearance {
     constructor(copy: TextAppearance);
 
     // Fields
+    bg_color: Gdk.Color;
+    fg_color: Gdk.Color;
     rise: number;
     underline: number;
     strikethrough: number;
@@ -26503,12 +26924,36 @@ export class TextAttributes {
     static $gtype: GObject.GType<TextAttributes>;
 
     constructor();
+    constructor(
+        properties?: Partial<{
+            appearance?: TextAppearance;
+            justification?: Justification;
+            direction?: TextDirection;
+            font?: Pango.FontDescription;
+            font_scale?: number;
+            left_margin?: number;
+            right_margin?: number;
+            indent?: number;
+            pixels_above_lines?: number;
+            pixels_below_lines?: number;
+            pixels_inside_wrap?: number;
+            tabs?: Pango.TabArray;
+            wrap_mode?: WrapMode;
+            language?: Pango.Language;
+            invisible?: number;
+            bg_full_height?: number;
+            editable?: number;
+            no_fallback?: number;
+            letter_spacing?: number;
+        }>
+    );
     constructor(copy: TextAttributes);
 
     // Fields
-    refcount: number;
+    appearance: TextAppearance;
     justification: Justification;
     direction: TextDirection;
+    font: Pango.FontDescription;
     font_scale: number;
     left_margin: number;
     right_margin: number;
@@ -26516,7 +26961,9 @@ export class TextAttributes {
     pixels_above_lines: number;
     pixels_below_lines: number;
     pixels_inside_wrap: number;
+    tabs: Pango.TabArray;
     wrap_mode: WrapMode;
+    language: Pango.Language;
     invisible: number;
     bg_full_height: number;
     editable: number;
@@ -26554,41 +27001,7 @@ export class TextCellAccessiblePrivate {
 export class TextIter {
     static $gtype: GObject.GType<TextIter>;
 
-    constructor(
-        properties?: Partial<{
-            dummy1?: any;
-            dummy2?: any;
-            dummy3?: number;
-            dummy4?: number;
-            dummy5?: number;
-            dummy6?: number;
-            dummy7?: number;
-            dummy8?: number;
-            dummy9?: any;
-            dummy10?: any;
-            dummy11?: number;
-            dummy12?: number;
-            dummy13?: number;
-            dummy14?: any;
-        }>
-    );
     constructor(copy: TextIter);
-
-    // Fields
-    dummy1: any;
-    dummy2: any;
-    dummy3: number;
-    dummy4: number;
-    dummy5: number;
-    dummy6: number;
-    dummy7: number;
-    dummy8: number;
-    dummy9: any;
-    dummy10: any;
-    dummy11: number;
-    dummy12: number;
-    dummy13: number;
-    dummy14: any;
 
     // Members
     assign(other: TextIter): void;
@@ -26844,6 +27257,7 @@ export class TreePath {
     static $gtype: GObject.GType<TreePath>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: TreePath);
 
     // Constructors
@@ -26947,6 +27361,7 @@ export class WidgetPath {
     static $gtype: GObject.GType<WidgetPath>;
 
     constructor();
+    constructor(properties?: Partial<{}>);
     constructor(copy: WidgetPath);
 
     // Constructors
@@ -27032,6 +27447,9 @@ export class _MountOperationHandlerIface {
     static $gtype: GObject.GType<_MountOperationHandlerIface>;
 
     constructor(copy: _MountOperationHandlerIface);
+
+    // Fields
+    parent_iface: GObject.TypeInterface;
 }
 
 export class _MountOperationHandlerProxy {
@@ -27044,6 +27462,9 @@ export class _MountOperationHandlerProxyClass {
     static $gtype: GObject.GType<_MountOperationHandlerProxyClass>;
 
     constructor(copy: _MountOperationHandlerProxyClass);
+
+    // Fields
+    parent_class: Gio.DBusProxy;
 }
 
 export class _MountOperationHandlerProxyPrivate {
@@ -27062,6 +27483,9 @@ export class _MountOperationHandlerSkeletonClass {
     static $gtype: GObject.GType<_MountOperationHandlerSkeletonClass>;
 
     constructor(copy: _MountOperationHandlerSkeletonClass);
+
+    // Fields
+    parent_class: Gio.DBusInterfaceSkeleton;
 }
 
 export class _MountOperationHandlerSkeletonPrivate {
@@ -27158,7 +27582,7 @@ export interface BuildablePrototype extends GObject.Object {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     get_name(): string;
     parser_finished(builder: Builder): void;
@@ -27172,7 +27596,7 @@ export interface BuildablePrototype extends GObject.Object {
         builder: Builder,
         child: GObject.Object | null,
         tagname: string
-    ): [boolean, GLib.MarkupParser, any | null];
+    ): [boolean, GLib.MarkupParser, any];
     vfunc_get_internal_child<T = GObject.Object>(builder: Builder, childname: string): T;
     vfunc_get_name(): string;
     vfunc_parser_finished(builder: Builder): void;
@@ -27311,7 +27735,7 @@ export interface EditablePrototype extends GObject.Object {
     get_chars(start_pos: number, end_pos: number): string;
     get_editable(): boolean;
     get_position(): number;
-    get_selection_bounds(): [boolean, number | null, number | null];
+    get_selection_bounds(): [boolean, number, number];
     insert_text(new_text: string, new_text_length: number, position: number): number;
     paste_clipboard(): void;
     select_region(start_pos: number, end_pos: number): void;
@@ -27323,7 +27747,7 @@ export interface EditablePrototype extends GObject.Object {
     vfunc_do_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_get_chars(start_pos: number, end_pos: number): string;
     vfunc_get_position(): number;
-    vfunc_get_selection_bounds(): [boolean, number | null, number | null];
+    vfunc_get_selection_bounds(): [boolean, number, number];
     vfunc_insert_text(new_text: string, new_text_length: number, position: number): number;
     vfunc_set_position(position: number): void;
     vfunc_set_selection_bounds(start_pos: number, end_pos: number): void;
@@ -27369,7 +27793,7 @@ export interface FileChooserPrototype extends GObject.Object {
     get_choice(id: string): string;
     get_create_folders(): boolean;
     get_current_folder(): string | null;
-    get_current_folder_file(): Gio.File;
+    get_current_folder_file(): Gio.File | null;
     get_current_folder_uri(): string | null;
     get_current_name(): string;
     get_do_overwrite_confirmation(): boolean;

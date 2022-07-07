@@ -1,11 +1,11 @@
 {
-    "name": "@gi-types/gst1",
+    "name": "@gi-types/handy1",
     "publishConfig": {
         "access": "public",
         "tag": "latest"
     },
-    "version": "1.20.0",
-    "description": "TypeScript definitions for Gst",
+    "version": "1.0.0",
+    "description": "TypeScript definitions for Handy",
     "license": "MIT",
     "contributors": [
         {
@@ -26,12 +26,18 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/gi-ts/gtk3",
-        "directory": "packages/@gi-types/gst1"
+        "directory": "packages/@gi-types/handy1"
     },
     "scripts": {},
     "dependencies": {
+        "@gi-types/atk1": "^2.36.0",
+        "@gi-types/gdk3": "^3.24.0",
+        "@gi-types/gdkpixbuf2": "^2.0.0",
+        "@gi-types/gio2": "^2.68.0",
         "@gi-types/glib2": "^2.68.0",
-        "@gi-types/gobject2": "^2.68.0"
+        "@gi-types/gobject2": "^2.68.0",
+        "@gi-types/gtk3": "^3.24.0",
+        "@gi-types/pango1": "^1.0.0"
     },
     "typeScriptVersion": "4.1",
     "gitHead": null

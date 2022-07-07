@@ -1,7 +1,7 @@
 {
     "name": "NMA",
     "api_version": "1.0",
-    "package_version": "1.8.30",
+    "package_version": "1.8.40",
     "imports": {
         "Atk": "1.0",
         "Gio": "2.0",

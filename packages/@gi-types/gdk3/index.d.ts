@@ -1,7 +1,7 @@
 /**
  * Gdk 3.0
  *
- * Generated from 3.24.29
+ * Generated from 3.24.34
  */
 
 import * as cairo from "@gi-types/cairo1";
@@ -3362,7 +3362,7 @@ export abstract class Cursor extends GObject.Object {
     get_cursor_type(): CursorType;
     get_display(): Display;
     get_image(): GdkPixbuf.Pixbuf | null;
-    get_surface(): [cairo.Surface | null, number | null, number | null];
+    get_surface(): [cairo.Surface | null, number, number];
     ref(): Cursor;
     unref(): void;
 }
@@ -3456,14 +3456,14 @@ export abstract class Device extends GObject.Object {
     get_n_axes(): number;
     get_n_keys(): number;
     get_name(): string;
-    get_position(): [Screen | null, number | null, number | null];
-    get_position_double(): [Screen | null, number | null, number | null];
+    get_position(): [Screen | null, number, number];
+    get_position_double(): [Screen | null, number, number];
     get_product_id(): string | null;
     get_seat(): Seat;
     get_source(): InputSource;
     get_vendor_id(): string | null;
-    get_window_at_position(): [Window | null, number | null, number | null];
-    get_window_at_position_double(): [Window | null, number | null, number | null];
+    get_window_at_position(): [Window | null, number, number];
+    get_window_at_position_double(): [Window | null, number, number];
     grab(
         window: Window,
         grab_ownership: GrabOwnership,
@@ -3603,10 +3603,10 @@ export class Display extends GObject.Object {
     get_n_monitors(): number;
     get_n_screens(): number;
     get_name(): string;
-    get_pointer(): [Screen | null, number | null, number | null, ModifierType | null];
+    get_pointer(): [Screen | null, number, number, ModifierType | null];
     get_primary_monitor(): Monitor | null;
     get_screen(screen_num: number): Screen;
-    get_window_at_pointer(): [Window | null, number | null, number | null];
+    get_window_at_pointer(): [Window | null, number, number];
     has_pending(): boolean;
     is_closed(): boolean;
     keyboard_ungrab(time_: number): void;
@@ -3784,7 +3784,7 @@ export abstract class FrameClock extends GObject.Object {
     get_frame_counter(): number;
     get_frame_time(): number;
     get_history_start(): number;
-    get_refresh_info(base_time: number): [number | null, number];
+    get_refresh_info(base_time: number): [number, number];
     get_timings(frame_counter: number): FrameTimings | null;
     request_phase(phase: FrameClockPhase): void;
 }
@@ -3814,7 +3814,7 @@ export abstract class GLContext extends GObject.Object {
     get_debug_enabled(): boolean;
     get_display(): Display | null;
     get_forward_compatible(): boolean;
-    get_required_version(): [number | null, number | null];
+    get_required_version(): [number, number];
     get_shared_context(): GLContext | null;
     get_use_es(): boolean;
     get_version(): [number, number];
@@ -3873,7 +3873,7 @@ export class Keymap extends GObject.Object {
         hardware_keycode: number,
         state: ModifierType,
         group: number
-    ): [boolean, number | null, number | null, number | null, ModifierType | null];
+    ): [boolean, number, number, number, ModifierType | null];
     static get_default(): Keymap;
     static get_for_display(display: Display): Keymap;
 }
@@ -4082,12 +4082,12 @@ export class Visual extends GObject.Object {
     // Members
 
     get_bits_per_rgb(): number;
-    get_blue_pixel_details(): [number | null, number | null, number | null];
+    get_blue_pixel_details(): [number, number, number];
     get_byte_order(): ByteOrder;
     get_colormap_size(): number;
     get_depth(): number;
-    get_green_pixel_details(): [number | null, number | null, number | null];
-    get_red_pixel_details(): [number | null, number | null, number | null];
+    get_green_pixel_details(): [number, number, number];
+    get_red_pixel_details(): [number, number, number];
     get_screen(): Screen;
     get_visual_type(): VisualType;
     static get_best(): Visual;
@@ -4232,8 +4232,8 @@ export abstract class Window extends GObject.Object {
         timestamp: number
     ): void;
     configure_finished(): void;
-    coords_from_parent(parent_x: number, parent_y: number): [number | null, number | null];
-    coords_to_parent(x: number, y: number): [number | null, number | null];
+    coords_from_parent(parent_x: number, parent_y: number): [number, number];
+    coords_to_parent(x: number, y: number): [number, number];
     create_gl_context(): GLContext;
     create_similar_image_surface(format: cairo.Format, width: number, height: number, scale: number): cairo.Surface;
     create_similar_surface(content: cairo.Content, width: number, height: number): cairo.Surface;
@@ -4261,8 +4261,8 @@ export abstract class Window extends GObject.Object {
     get_decorations(): [boolean, WMDecoration];
     get_device_cursor(device: Device): Cursor | null;
     get_device_events(device: Device): EventMask;
-    get_device_position(device: Device): [Window | null, number | null, number | null, ModifierType | null];
-    get_device_position_double(device: Device): [Window | null, number | null, number | null, ModifierType | null];
+    get_device_position(device: Device): [Window | null, number, number, ModifierType | null];
+    get_device_position_double(device: Device): [Window | null, number, number, ModifierType | null];
     get_display(): Display;
     get_drag_protocol(): [DragProtocol, Window | null];
     get_effective_parent(): Window;
@@ -4273,15 +4273,15 @@ export abstract class Window extends GObject.Object {
     get_frame_clock(): FrameClock;
     get_frame_extents(): Rectangle;
     get_fullscreen_mode(): FullscreenMode;
-    get_geometry(): [number | null, number | null, number | null, number | null];
+    get_geometry(): [number, number, number, number];
     get_group(): Window;
     get_height(): number;
     get_modal_hint(): boolean;
-    get_origin(): [number, number | null, number | null];
+    get_origin(): [number, number, number];
     get_parent(): Window;
     get_pass_through(): boolean;
-    get_pointer(): [Window | null, number | null, number | null, ModifierType | null];
-    get_position(): [number | null, number | null];
+    get_pointer(): [Window | null, number, number, ModifierType | null];
+    get_position(): [number, number];
     get_root_coords(x: number, y: number): [number, number];
     get_root_origin(): [number, number];
     get_scale_factor(): number;
@@ -4292,7 +4292,7 @@ export abstract class Window extends GObject.Object {
     get_toplevel(): Window;
     get_type_hint(): WindowTypeHint;
     get_update_area(): cairo.Region;
-    get_user_data(): any | null;
+    get_user_data(): any;
     get_visible_region(): cairo.Region;
     get_visual(): Visual;
     get_width(): number;
@@ -4387,7 +4387,7 @@ export abstract class Window extends GObject.Object {
     vfunc_create_surface(width: number, height: number): cairo.Surface;
     vfunc_from_embedder(embedder_x: number, embedder_y: number, offscreen_x: number, offscreen_y: number): void;
     vfunc_to_embedder(offscreen_x: number, offscreen_y: number, embedder_x: number, embedder_y: number): void;
-    static at_pointer(): [Window, number | null, number | null];
+    static at_pointer(): [Window, number, number];
     static constrain_size(geometry: Geometry, flags: WindowHints, width: number, height: number): [number, number];
     static process_all_updates(): void;
     static set_debug_updates(setting: boolean): void;
@@ -4439,6 +4439,7 @@ export class EventAny {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
 }
 
@@ -4449,6 +4450,7 @@ export class EventButton {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     x: number;
@@ -4456,6 +4458,7 @@ export class EventButton {
     axes: number;
     state: ModifierType;
     button: number;
+    device: Device;
     x_root: number;
     y_root: number;
 }
@@ -4467,6 +4470,7 @@ export class EventConfigure {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     x: number;
     y: number;
@@ -4481,7 +4485,9 @@ export class EventCrossing {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    subwindow: Window;
     time: number;
     x: number;
     y: number;
@@ -4500,7 +4506,9 @@ export class EventDND {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    context: DragContext;
     time: number;
     x_root: number;
     y_root: number;
@@ -4513,7 +4521,10 @@ export class EventExpose {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    area: Rectangle;
+    region: cairo.Region;
     count: number;
 }
 
@@ -4524,6 +4535,7 @@ export class EventFocus {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     "in": number;
 }
@@ -4535,9 +4547,11 @@ export class EventGrabBroken {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     keyboard: boolean;
     implicit: boolean;
+    grab_window: Window;
 }
 
 export class EventKey {
@@ -4547,6 +4561,7 @@ export class EventKey {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     state: ModifierType;
@@ -4565,6 +4580,7 @@ export class EventMotion {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     x: number;
@@ -4572,6 +4588,7 @@ export class EventMotion {
     axes: number;
     state: ModifierType;
     is_hint: number;
+    device: Device;
     x_root: number;
     y_root: number;
 }
@@ -4583,8 +4600,11 @@ export class EventOwnerChange {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    owner: Window;
     reason: OwnerChange;
+    selection: Atom;
     time: number;
     selection_time: number;
 }
@@ -4596,6 +4616,7 @@ export class EventPadAxis {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     group: number;
@@ -4611,6 +4632,7 @@ export class EventPadButton {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     group: number;
@@ -4625,6 +4647,7 @@ export class EventPadGroupMode {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     group: number;
@@ -4638,7 +4661,9 @@ export class EventProperty {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    atom: Atom;
     time: number;
     state: PropertyState;
 }
@@ -4650,8 +4675,10 @@ export class EventProximity {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
+    device: Device;
 }
 
 export class EventScroll {
@@ -4661,12 +4688,14 @@ export class EventScroll {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     x: number;
     y: number;
     state: ModifierType;
     direction: ScrollDirection;
+    device: Device;
     x_root: number;
     y_root: number;
     delta_x: number;
@@ -4681,8 +4710,13 @@ export class EventSelection {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
+    selection: Atom;
+    target: Atom;
+    property: Atom;
     time: number;
+    requestor: Window;
 }
 
 export class EventSequence {
@@ -4698,6 +4732,7 @@ export class EventSetting {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     action: SettingAction;
     name: string;
@@ -4710,13 +4745,16 @@ export class EventTouch {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     time: number;
     x: number;
     y: number;
     axes: number;
     state: ModifierType;
+    sequence: EventSequence;
     emulating_pointer: boolean;
+    device: Device;
     x_root: number;
     y_root: number;
 }
@@ -4728,6 +4766,7 @@ export class EventTouchpadPinch {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     phase: number;
     n_fingers: number;
@@ -4750,6 +4789,7 @@ export class EventTouchpadSwipe {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     phase: number;
     n_fingers: number;
@@ -4770,6 +4810,7 @@ export class EventVisibility {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     state: VisibilityState;
 }
@@ -4781,6 +4822,7 @@ export class EventWindowState {
 
     // Fields
     type: EventType;
+    window: Window;
     send_event: number;
     changed_mask: WindowState;
     new_window_state: WindowState;
@@ -4917,15 +4959,11 @@ export class Rectangle {
 export class TimeCoord {
     static $gtype: GObject.GType<TimeCoord>;
 
-    constructor(
-        properties?: Partial<{
-            time?: number;
-        }>
-    );
     constructor(copy: TimeCoord);
 
     // Fields
     time: number;
+    axes: number[];
 }
 
 export class WindowAttr {
@@ -4941,7 +4979,9 @@ export class WindowAttr {
     width: number;
     height: number;
     wclass: WindowWindowClass;
+    visual: Visual;
     window_type: WindowType;
+    cursor: Cursor;
     wmclass_name: string;
     wmclass_class: string;
     override_redirect: boolean;
@@ -4962,6 +5002,30 @@ export class Event {
 
     // Fields
     type: EventType;
+    any: EventAny;
+    expose: EventExpose;
+    visibility: EventVisibility;
+    motion: EventMotion;
+    button: EventButton;
+    touch: EventTouch;
+    scroll: EventScroll;
+    key: EventKey;
+    crossing: EventCrossing;
+    focus_change: EventFocus;
+    configure: EventConfigure;
+    property: EventProperty;
+    selection: EventSelection;
+    owner_change: EventOwnerChange;
+    proximity: EventProximity;
+    dnd: EventDND;
+    window_state: EventWindowState;
+    setting: EventSetting;
+    grab_broken: EventGrabBroken;
+    touchpad_swipe: EventTouchpadSwipe;
+    touchpad_pinch: EventTouchpadPinch;
+    pad_button: EventPadButton;
+    pad_axis: EventPadAxis;
+    pad_group_mode: EventPadGroupMode;
 
     // Constructors
     static ["new"](type: EventType): Event;
@@ -4975,7 +5039,7 @@ export class Event {
     get_axis(axis_use: AxisUse): [boolean, number];
     get_button(): [boolean, number];
     get_click_count(): [boolean, number];
-    get_coords(): [boolean, number | null, number | null];
+    get_coords(): [boolean, number, number];
     get_device(): Device | null;
     get_device_tool(): DeviceTool;
     get_event_sequence(): EventSequence;
@@ -4983,7 +5047,7 @@ export class Event {
     get_keycode(): [boolean, number];
     get_keyval(): [boolean, number];
     get_pointer_emulated(): boolean;
-    get_root_coords(): [boolean, number | null, number | null];
+    get_root_coords(): [boolean, number, number];
     get_scancode(): number;
     get_screen(): Screen;
     get_scroll_deltas(): [boolean, number, number];
